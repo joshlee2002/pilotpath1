@@ -121,69 +121,71 @@ function HeroSection() {
             </div>
           </div>
 
-          {/* Right: Roadmap preview panel — hidden on small mobile, shown from lg */}
+          {/* Right: Platform preview — decorative, no competing CTAs */}
           <div className="hidden lg:block animate-fade-in-up delay-200">
             <div
               className="rounded-2xl p-6"
               style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.12)", backdropFilter: "blur(20px)" }}
             >
+              {/* Header */}
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "oklch(0.55 0.04 240)" }}>Roadmap Generator</span>
+                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "oklch(0.55 0.04 240)" }}>Sample Roadmap</span>
                 </div>
                 <span className="text-xs px-2 py-0.5 rounded-full font-bold" style={{ background: "oklch(0.72 0.18 65 / 0.2)", color: "oklch(0.85 0.15 65)" }}>Free</span>
               </div>
 
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-2.5 mb-5">
-                {[
-                  { label: "Assessments", value: stats && stats.totalAssessments > 0 ? (stats.totalAssessments >= 1000 ? `${(stats.totalAssessments / 1000).toFixed(1)}k` : stats.totalAssessments.toString()) : "Live", icon: <Users className="w-3.5 h-3.5" />, color: "oklch(0.65 0.18 230)" },
-                  { label: "Avg IQ Score", value: stats && stats.avgScore > 0 ? `${stats.avgScore}` : "Ready", icon: <Activity className="w-3.5 h-3.5" />, color: "oklch(0.72 0.18 65)" },
-                  { label: "Top Barrier", value: stats ? (stats.mostCommonBarrier.length > 10 ? stats.mostCommonBarrier.slice(0, 10) + "…" : stats.mostCommonBarrier) : "Finance", icon: <TrendingUp className="w-3.5 h-3.5" />, color: "oklch(0.78 0.18 25)" },
-                ].map((tile) => (
-                  <div
-                    key={tile.label}
-                    className="rounded-xl p-3 transition-all"
-                    style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}
-                  >
-                    <div className="flex items-center gap-1.5 mb-1.5" style={{ color: tile.color }}>
-                      {tile.icon}
-                      <span className="text-[10px] font-semibold uppercase tracking-wider leading-tight" style={{ color: "oklch(0.55 0.04 240)" }}>{tile.label}</span>
-                    </div>
-                    <div className="text-white font-display font-bold text-sm">{tile.value}</div>
+              {/* Candidate summary */}
+              <div className="rounded-xl p-4 mb-4" style={{ background: "oklch(0.45 0.18 240 / 0.1)", border: "1px solid oklch(0.45 0.18 240 / 0.2)" }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: ctaGradient }}>JM</div>
+                  <div>
+                    <div className="text-sm font-semibold text-white">Jamie, 24 — London</div>
+                    <div className="text-xs" style={{ color: "oklch(0.6 0.04 240)" }}>Goal: Airline Pilot (ATPL)</div>
                   </div>
-                ))}
+                  <div className="ml-auto text-right">
+                    <div className="text-lg font-display font-black" style={{ background: ctaGradient, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>84</div>
+                    <div className="text-[10px] uppercase tracking-wider" style={{ color: "oklch(0.55 0.04 240)" }}>IQ Score</div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: "Route", value: "Integrated ATPL" },
+                    { label: "Budget", value: "£50k–£100k" },
+                    { label: "Timeline", value: "Within 12 months" },
+                    { label: "Top barrier", value: "Finance" },
+                  ].map(item => (
+                    <div key={item.label} className="rounded-lg px-3 py-2" style={{ background: "oklch(1 0 0 / 0.05)" }}>
+                      <div className="text-[10px] uppercase tracking-wider mb-0.5" style={{ color: "oklch(0.5 0.04 240)" }}>{item.label}</div>
+                      <div className="text-xs font-semibold text-white/80">{item.value}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              {/* Tool links */}
-              <div className="space-y-1.5">
-                <div className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: "oklch(0.4 0.04 240)" }}>All Decision Tools</div>
-                {[
-                  { label: "Pilot Roadmap Generator", href: "/roadmap", badge: "New" },
-                  { label: "Career Readiness Assessment", href: "/quiz", badge: "Most popular" },
-                  { label: "Training Cost Calculator", href: "/calculator", badge: null },
-                  { label: "Quiz Hub — 7 Quizzes", href: "/quizzes", badge: null },
-                ].map((tool) => (
-                  <Link
-                    key={tool.href}
-                    href={tool.href}
-                    className="flex items-center justify-between px-3 py-2.5 rounded-lg transition-all no-underline group"
-                    style={{ background: "oklch(1 0 0 / 0.04)", border: "1px solid oklch(1 0 0 / 0.07)" }}
-                    onMouseEnter={e => (e.currentTarget.style.background = "oklch(1 0 0 / 0.08)")}
-                    onMouseLeave={e => (e.currentTarget.style.background = "oklch(1 0 0 / 0.04)")}
-                  >
-                    <span className="text-xs font-medium text-white/70 group-hover:text-white transition-colors">{tool.label}</span>
-                    <div className="flex items-center gap-2">
-                      {tool.badge && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold" style={{ background: "oklch(0.72 0.18 65 / 0.2)", color: "oklch(0.85 0.15 65)" }}>
-                          {tool.badge}
-                        </span>
-                      )}
-                      <ArrowRight className="w-3 h-3 text-white/30 group-hover:text-white/70 transition-colors" />
+              {/* Recommended schools */}
+              <div>
+                <div className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: "oklch(0.4 0.04 240)" }}>Matched Flight Schools</div>
+                <div className="space-y-1.5">
+                  {[
+                    { name: "Oxford Aviation Academy", match: "98%", location: "Oxford, UK" },
+                    { name: "L3Harris Airline Academy", match: "94%", location: "Bournemouth, UK" },
+                    { name: "CAE Oxford", match: "91%", location: "Oxford, UK" },
+                  ].map(school => (
+                    <div
+                      key={school.name}
+                      className="flex items-center justify-between px-3 py-2.5 rounded-lg"
+                      style={{ background: "oklch(1 0 0 / 0.04)", border: "1px solid oklch(1 0 0 / 0.07)" }}
+                    >
+                      <div>
+                        <div className="text-xs font-medium text-white/80">{school.name}</div>
+                        <div className="text-[10px]" style={{ color: "oklch(0.5 0.04 240)" }}>{school.location}</div>
+                      </div>
+                      <span className="text-[11px] font-bold px-2 py-0.5 rounded-full" style={{ background: "oklch(0.72 0.18 65 / 0.15)", color: "oklch(0.85 0.15 65)" }}>{school.match}</span>
                     </div>
-                  </Link>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -201,9 +203,9 @@ function SocialProofBar() {
       <div className="container py-4">
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
           {[
-            { value: "16+", label: "UK & international schools listed" },
-            { value: "24", label: "In-depth training guides" },
-            { value: "7", label: "Interactive quizzes" },
+            { value: "16+", label: "UK flight schools listed" },
+            { value: "30+", label: "In-depth training guides" },
+            { value: "9", label: "Free interactive tools" },
             { value: "Free", label: "Always, no registration" },
           ].map((stat) => (
             <div key={stat.label} className="flex items-center gap-3">

@@ -18,6 +18,9 @@ import HowToBecomePilot from "./pages/guides/HowToBecomePilot";
 import PilotTrainingCosts from "./pages/guides/PilotTrainingCosts";
 import IntegratedVsModular from "./pages/guides/IntegratedVsModular";
 import Class1Medical from "./pages/guides/Class1Medical";
+import AdhdPilotGuide from "./pages/guides/AdhdPilotGuide";
+import BaSpeedbirdGuide from "./pages/guides/BaSpeedbirdGuide";
+import IntegratedVsModularCost from "./pages/guides/IntegratedVsModularCost";
 import AirlinePilotSalary from "./pages/guides/AirlinePilotSalary";
 import BestRouteToAirline from "./pages/guides/BestRouteToAirline";
 import FinanceGuide from "./pages/guides/FinanceGuide";
@@ -120,6 +123,9 @@ function Router() {
       <Route path="/guides/pilot-training-costs" component={PilotTrainingCosts} />
       <Route path="/guides/integrated-vs-modular" component={IntegratedVsModular} />
       <Route path="/guides/class-1-medical" component={Class1Medical} />
+      <Route path="/guides/adhd-pilot-uk" component={AdhdPilotGuide} />
+      <Route path="/guides/ba-speedbird-academy" component={BaSpeedbirdGuide} />
+      <Route path="/guides/integrated-vs-modular-cost" component={IntegratedVsModularCost} />
       <Route path="/guides/airline-pilot-salary" component={AirlinePilotSalary} />
       <Route path="/guides/best-route-to-airline" component={BestRouteToAirline} />
       <Route path="/guides/finance-guide" component={FinanceGuide} />

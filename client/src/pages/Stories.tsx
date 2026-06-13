@@ -185,14 +185,18 @@ export default function Stories() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5"
               style={{ background: "oklch(0.45 0.18 240 / 0.15)", border: "1px solid oklch(0.45 0.18 240 / 0.3)", color: "oklch(0.7 0.18 240)" }}>
               <Quote className="w-3 h-3" />
-              Real Pilot Stories
+              Pilot Training Journeys
             </div>
             <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-4" style={{ letterSpacing: "-0.02em" }}>
               How They Did It
             </h1>
-            <p className="text-base md:text-lg lg:text-xl max-w-2xl" style={{ color: "oklch(0.65 0.04 240)" }}>
-              Honest accounts from working UK pilots — what they trained on, what it cost, how long it took, and what they wish they'd known.
+            <p className="text-base md:text-lg lg:text-xl max-w-2xl mb-5" style={{ color: "oklch(0.65 0.04 240)" }}>
+              Training journeys from working UK pilots — what route they took, what it cost, how long it took, and what they wish they'd known.
             </p>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs" style={{ background: "oklch(0.72 0.18 65 / 0.1)", border: "1px solid oklch(0.72 0.18 65 / 0.25)", color: "oklch(0.75 0.15 65)" }}>
+              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              These profiles are composite case studies based on real training routes, costs, and timelines sourced from UK flight schools and CAA data. Names and identifying details are illustrative. <a href="mailto:hello@aviatoriq.co.uk?subject=Share my pilot story" className="underline ml-1 font-semibold" style={{ color: "oklch(0.85 0.15 65)" }}>Share your real story →</a>
+            </div>
           </div>
         </div>
 
