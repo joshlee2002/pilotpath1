@@ -54,6 +54,16 @@ function HeroSection() {
         alignItems: "center",
       }}
     >
+      {/* Hero background photo */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: "url('/images/hero-cockpit.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center 30%",
+          opacity: 0.12,
+        }}
+      />
       {/* Grid overlay */}
       <div
         className="absolute inset-0 pointer-events-none"

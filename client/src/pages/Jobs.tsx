@@ -194,6 +194,7 @@ export default function Jobs() {
           className="relative overflow-hidden py-10 md:py-16"
           style={{ background: "linear-gradient(160deg, oklch(0.10 0.10 255) 0%, oklch(0.14 0.12 248) 100%)" }}
         >
+          <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "url('/images/airline-fleet.jpg')", backgroundSize: "cover", backgroundPosition: "center 50%", opacity: 0.09 }} />
           <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: "linear-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 0.025) 1px, transparent 1px)", backgroundSize: "56px 56px" }} />
           <div className="container max-w-4xl relative">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-5"
