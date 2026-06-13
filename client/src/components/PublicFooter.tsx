@@ -120,7 +120,7 @@ export default function PublicFooter() {
             <div className="space-y-3">
               {[
                 { stat: "16+", label: "UK & international schools" },
-                { stat: "24", label: "In-depth training guides" },
+                { stat: "33+", label: "In-depth training guides" },
                 { stat: "Free", label: "Always, no paywall" },
                 { stat: "2026", label: "Data up to date" },
               ].map((item) => (

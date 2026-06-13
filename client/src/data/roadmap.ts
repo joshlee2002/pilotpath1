@@ -32,8 +32,8 @@ export const roadmapQuestions: Question[] = [
     title: 'How old are you?',
     options: [
       { label: 'Under 18', value: 'under18', points: { future: 10 } },
-      { label: '18 - 35', value: '18to35', points: { sponsored: 2, integrated: 2, hybrid: 2, modular: 1 } },
-      { label: '36 - 50', value: '36to50', points: { modular: 5, integrated: 1 } },
+      { label: '18 – 35', value: '18to35', points: { sponsored: 2, integrated: 2, hybrid: 2, modular: 1 } },
+      { label: '36 – 50', value: '36to50', points: { modular: 5, integrated: 1 } },
       { label: '51+', value: 'over50', points: { modular: 5 } }
     ]
   },
@@ -42,8 +42,9 @@ export const roadmapQuestions: Question[] = [
     title: 'What is your realistic budget or funding capacity?',
     options: [
       { label: 'Less than £10,000', value: 'low', points: { sponsored: 10, hybrid: 1 } },
-      { label: '£10,000 - £50,000', value: 'medium', points: { hybrid: 5, modular: 3 } },
-      { label: '£50,000 - £90,000', value: 'high', points: { modular: 5, integrated: 1 } },
+      { label: '£10,000 – £50,000', value: 'medium', points: { hybrid: 5, modular: 3 } },
+      { label: '£50,000 – £70,000', value: 'high', points: { modular: 6, hybrid: 2 } },
+      { label: '£70,000 – £90,000', value: 'veryhigh_eu', points: { integrated: 6, modular: 3, hybrid: 1 } },
       { label: '£90,000+', value: 'veryhigh', points: { integrated: 10, modular: 2 } }
     ]
   },
@@ -68,8 +69,8 @@ export const roadmapQuestions: Question[] = [
     id: 'relocation',
     title: 'Are you willing to relocate to Europe for training?',
     options: [
-      { label: 'Yes, I will go wherever is cheapest/best', value: 'yes', points: { modular: 3, hybrid: 3 } },
-      { label: 'No, I need to stay in the UK', value: 'no', points: { integrated: 2, modular: 1 } }
+      { label: 'Yes — I will go wherever is cheapest/best', value: 'yes', points: { integrated: 2, modular: 2, hybrid: 3 } },
+      { label: 'No — I need to stay in the UK', value: 'no', points: { integrated: 2, modular: 1 } }
     ]
   }
 ];
@@ -81,107 +82,110 @@ export const roadmapResults: Record<PathId, RoadmapResult> = {
     tagline: 'The Golden Ticket',
     description: 'Based on your age, academics, and budget, your best shot is aiming for a fully funded airline cadet programme. These are highly competitive (often less than 1% acceptance rates), but they cover the entire £100k+ cost of training. If you don\'t secure a spot, you\'ll need to look at military options or save aggressively for the modular route.',
     cost: '£0 (Airline covers tuition)',
-    timeline: '18-24 months',
+    timeline: '18–24 months',
     risk: 'Low Financial Risk / High Competition',
     steps: [
-      'Book a Class 1 Medical to ensure you are eligible before applying.',
-      'Research the BA Speedbird, Jet2 FlightPath, and Aer Lingus Future Pilot programmes.',
-      'Invest in aptitude testing preparation (e.g., Cut-e, PILAPT).',
-      'Gain customer service or leadership experience to boost your non-technical skills.',
-      'Create a backup plan (Plan B) in case you don\'t pass the brutal selection process.'
+      'Book a Class 1 Medical to confirm you are commercially eligible before applying to anything.',
+      'Research the BA Speedbird Academy, Jet2 FlightPath, and Wizz Air Pilot Academy programmes.',
+      'Invest in aptitude testing preparation — airlines use Cut-e, PILAPT, and Compass assessments.',
+      'Build your non-technical profile: customer service, leadership, and teamwork experience all count.',
+      'Create a solid Plan B (modular route) in case selection does not go your way first time.'
     ],
     schools: [
-      { name: 'BA Speedbird Academy', description: 'Fully funded by British Airways. Extremely competitive.' },
-      { name: 'Jet2 FlightPath', description: 'Fully funded ATPL with a guaranteed job on the Boeing 737.' },
-      { name: 'Royal Air Force (RAF)', description: 'Paid to train, but requires a 12-year military commitment.' }
+      { name: 'BA Speedbird Academy', description: 'Fully funded by British Airways. Trains at CAE Oxford and Jerez. Extremely competitive — roughly 1,500 applicants per 30 places.' },
+      { name: 'Jet2 FlightPath Academy', description: 'Fully funded ATPL with a guaranteed Jet2 first officer position on the Boeing 737/757 fleet.' },
+      { name: 'Royal Air Force (RAF)', description: 'Paid to train with a world-class military flying programme, but requires a 12-year service commitment.' }
     ],
-    watchOut: 'Do not pay for a PPL just to boost your application. Airlines are testing your aptitude and personality, not your existing flying skills.'
+    watchOut: 'Do not pay for a PPL just to boost your cadet application. Airlines test aptitude and personality, not existing flying hours. Spend that money on psychometric test prep instead.'
   },
   integrated: {
     id: 'integrated',
     title: 'The Fast-Track Integrated',
     tagline: 'The Direct Route',
-    description: 'You have the capital and the time to dedicate fully to your training. The Integrated ATPL route takes you from zero experience to a frozen ATPL in one continuous, highly structured course. It is the most expensive route, but it is fast, focused, and often includes strong airline placement support.',
-    cost: '£90,000 - £130,000+',
-    timeline: '18-24 months',
+    description: 'You have the capital and the time to commit fully to training. The Integrated ATPL takes you from zero to a frozen ATPL in one continuous, structured programme — typically 18 months. It is the most expensive route, but it is fast, focused, and the major schools offer strong airline placement support. If you are willing to train in Europe, you can save £15,000–£25,000 versus a UK school for an identical qualification.',
+    cost: '£85,000 – £130,000 (UK) · €75,000 – €110,000 (Europe)',
+    timeline: '18–24 months',
     risk: 'High Financial Risk / Fast Completion',
     steps: [
-      'Book a Class 1 Medical immediately. Do not spend £100k without knowing you can fly commercially.',
-      'Visit at least 3 major integrated flight schools on their open days.',
-      'Ask schools for their true placement statistics, not just marketing numbers.',
-      'Secure your funding. If using a loan secured against property, understand the risks.',
-      'Prepare for the school\'s internal assessment day.'
+      'Book a Class 1 Medical immediately — do not spend £100k+ without confirming you can fly commercially.',
+      'Visit at least 3 integrated flight schools on their open days and ask for their verified placement statistics.',
+      'If budget is a constraint, compare European EASA schools (Spain, Netherlands, Portugal) — the licence is identical.',
+      'Secure your funding before enrolling. If using a loan secured against property, understand the full risk.',
+      'Budget an extra 15–20% for hidden costs: Type Rating (£25k–£35k), living costs, and resit fees are rarely included in the headline price.'
     ],
     schools: [
-      { name: 'CAE Oxford', description: 'Premium global academy with strong airline connections.' },
-      { name: 'Skyborne', description: 'Modern UK academy partnered with BA and Jet2.' },
-      { name: 'FTEJerez', description: 'All-inclusive campus in Spain, popular with UK cadets.' }
+      { name: 'CAE Oxford Aviation Academy', description: 'Premium global academy with campuses in Oxford and Phoenix. Strong airline partnerships with easyJet and Wizz Air.' },
+      { name: 'Skyborne Airline Academy', description: 'Modern UK academy (Gloucestershire) partnered with BA and Jet2. Transparent pricing and strong placement record.' },
+      { name: 'FTEJerez (Spain)', description: 'All-inclusive EASA campus in southern Spain. Popular with UK cadets — typically £20k cheaper than equivalent UK schools.' },
+      { name: 'L3Harris Airline Academy', description: 'Campuses in Bournemouth and Palma. One of the largest integrated providers in Europe with direct airline pathways.' }
     ],
-    watchOut: 'The quoted price rarely includes the Type Rating (£25k-£35k) or living costs. Budget an extra 15% for hidden fees and delays.'
+    watchOut: 'The quoted headline price almost never includes the Type Rating (£25k–£35k) or living costs during training. Always ask for a full all-in cost breakdown before signing anything.'
   },
   modular: {
     id: 'modular',
     title: 'The Smart Modular',
     tagline: 'The Flexible Route',
-    description: 'You need flexibility, either to keep working, spread the cost, or simply to save money. The Modular route allows you to complete your training step-by-step (PPL, Theory, Hour Building, CPL/IR). It requires immense self-discipline, but you will end up with the exact same licence as an integrated student for £30k-£50k less.',
-    cost: '£55,000 - £85,000',
-    timeline: '2-4 years (Self-paced)',
+    description: 'You need flexibility — to keep working, spread the cost, or simply save money. The Modular route lets you complete training step-by-step: PPL, ATPL theory, hour building, then CPL/IR. It requires immense self-discipline and takes longer, but you end up with the exact same licence as an integrated student for £30,000–£50,000 less. Many successful airline pilots took this route.',
+    cost: '£45,000 – £75,000',
+    timeline: '2–4 years (self-paced)',
     risk: 'Lower Financial Risk / Requires High Discipline',
     steps: [
-      'Book a Class 1 Medical to ensure commercial eligibility.',
-      'Find a local flying club and start your Private Pilot Licence (PPL).',
-      'Enroll in a distance-learning ATPL theory course (e.g., Bristol Groundschool).',
-      'Plan your hour building. Consider going to Greece or the US for better weather and cheaper aircraft rental.',
-      'Save aggressively. Pay for each module in cash as you go to avoid debt.'
+      'Book a Class 1 Medical before spending a penny on training — confirm commercial eligibility first.',
+      'Find a local flying club with a good reputation and start your PPL. Aim for a club with modern aircraft and a structured syllabus.',
+      'Enrol in a distance-learning ATPL theory course (Bristol Groundschool or ATPL Online are the industry standards).',
+      'Plan your hour building carefully — Greece, Portugal, and the US offer better weather and cheaper aircraft rental than the UK.',
+      'Save aggressively between modules and pay cash as you go to avoid compounding debt.'
     ],
     schools: [
-      { name: 'Bristol Groundschool', description: 'The industry standard for distance-learning ATPL theory.' },
-      { name: 'Bartolini Air (Poland)', description: 'Highly respected for modular CPL/IR, partnered with Ryanair.' },
-      { name: 'Local UK Aero Clubs', description: 'The best place to start your PPL and build your foundation.' }
+      { name: 'Bristol Groundschool', description: 'The UK industry standard for distance-learning ATPL theory. Excellent pass rates and comprehensive study materials.' },
+      { name: 'Bartolini Air (Kraków, Poland)', description: 'Highly respected for modular CPL/IR training. Official Ryanair partner school with strong placement support.' },
+      { name: 'Aeros Flying Club (Wellesbourne)', description: 'One of the best-value PPL training clubs in the UK Midlands — modern fleet, structured syllabus, good instructor continuity.' },
+      { name: 'Tayside Aviation (Dundee)', description: 'Established Scottish ATO offering modular CPL/IR and multi-engine training with competitive pricing.' }
     ],
-    watchOut: 'Skill decay. If you leave too much time between modules, you will need to pay for extra refresher flights, wiping out your savings.'
+    watchOut: 'Skill decay is the silent killer of the modular route. If you leave too long between modules, you will need expensive refresher flights to get back to standard. Keep momentum — treat it like a second job.'
   },
   hybrid: {
     id: 'hybrid',
-    title: 'The Hybrid / Airline-Bonded',
+    title: 'The Airline-Bonded Programme',
     tagline: 'The Middle Ground',
-    description: 'You have some capital, but not enough for a full £100k course. Your best route is an airline-bonded or pre-financed programme. You pay a smaller upfront fee, and the airline finances the rest, deducting it from your future salary. You are bonded to that airline for several years, but you get a guaranteed job.',
-    cost: '£15,000 - £40,000 upfront (Rest deducted from salary)',
-    timeline: '18-24 months',
+    description: 'You have some capital but not enough for a full £100k integrated course. Your best route is an airline-bonded or pre-financed programme. You pay a smaller upfront fee (typically £15k–£40k), and the airline finances the rest — deducting it from your future salary over several years. You are bonded to that airline, but you get a guaranteed job on completion.',
+    cost: '£15,000 – £40,000 upfront (remainder deducted from salary)',
+    timeline: '18–24 months',
     risk: 'Medium Financial Risk / Bonded to Airline',
     steps: [
-      'Book a Class 1 Medical.',
-      'Research the Wizz Air Pilot Academy and Ryanair Future Flyer programmes.',
-      'Prepare for intense aptitude and psychometric testing (e.g., Cut-e).',
-      'Ensure you are comfortable living and working in Eastern/Central Europe, as this is where you will likely be based initially.',
-      'Review the bond contracts carefully to understand what happens if you fail training.'
+      'Book a Class 1 Medical — all bonded programmes require this before selection.',
+      'Research the Wizz Air Pilot Academy, Ryanair Future Flyer, and TUI MPL programmes in detail.',
+      'Prepare intensively for aptitude and psychometric testing — Cut-e and PILAPT are the most common platforms used.',
+      'Understand the geography: most bonded programmes base you in Eastern or Central Europe initially.',
+      'Read every line of the bond contract. Understand exactly what you owe if you fail training or leave early.'
     ],
     schools: [
-      { name: 'Wizz Air Pilot Academy', description: 'Requires ~€14k upfront. The rest is deducted from your salary over 5 years.' },
-      { name: 'Ryanair Future Flyer', description: 'Mentored programme. You fund the ATPL, but the Type Rating is bonded.' }
+      { name: 'Wizz Air Pilot Academy', description: 'Requires approximately €14,000 upfront. The remainder is deducted from your salary over 5 years. Based in Budapest.' },
+      { name: 'Ryanair Future Flyer', description: 'You fund the ATPL training yourself, but the Type Rating is provided and bonded. Strong placement guarantee.' },
+      { name: 'TUI MPL Programme', description: 'Multi-Crew Pilot Licence route — trains you specifically for TUI operations. Lower upfront cost than a full integrated ATPL.' }
     ],
-    watchOut: 'If you fail the course or leave the airline before your bond expires, you will be liable for the full remaining cost of the training.'
+    watchOut: 'If you fail the course or resign before your bond expires, you will be liable for the full remaining training cost. Read the contract with a lawyer before signing.'
   },
   future: {
     id: 'future',
     title: 'The Future Aviator',
     tagline: 'Laying the Groundwork',
-    description: 'You are too young to start commercial training, which is actually a huge advantage. You have time to build the exact profile airlines are looking for without spending a fortune. Focus on your education, get free flying experience, and start saving.',
-    cost: 'Minimal',
+    description: 'You are too young to start commercial training — which is actually a significant advantage. You have time to build exactly the profile airlines are looking for, without spending a fortune. Focus on your education, get free flying experience through the Air Cadets, and start saving. Pilots who plan early almost always have a smoother path.',
+    cost: 'Minimal now',
     timeline: 'Ongoing until age 18',
-    risk: 'Zero Risk',
+    risk: 'Zero Financial Risk',
     steps: [
-      'Join the Air Cadets (ATC). It provides incredible aviation exposure, discipline, and often free flying lessons.',
-      'Focus on your GCSEs and A-Levels, particularly Maths and Physics.',
-      'Start saving money now. Even a part-time job will help fund your initial PPL later.',
-      'If you plan to go to University, look into the University Air Squadrons (UAS).',
-      'Read books on aviation, understand the industry, and visit local airfields.'
+      'Join the Air Training Corps (ATC / RAFAC). It provides aviation exposure, discipline, and often free gliding and powered flying lessons.',
+      'Focus on your GCSEs and A-Levels — Maths and Physics are the most relevant subjects for ATPL theory.',
+      'Start saving now. Even a part-time job putting aside £100/month will fund a significant portion of your PPL by 18.',
+      'If you plan to go to university, look into University Air Squadrons (UAS) — free military flying training alongside your degree.',
+      'Visit airfields, attend aviation events (RIAT, Farnborough), and read widely about the industry.'
     ],
     schools: [
-      { name: 'Air Cadets (RAFAC)', description: 'The best possible start for a UK teenager interested in aviation.' },
-      { name: 'University Air Squadrons', description: 'Free military flying training while you complete your degree.' },
-      { name: 'The Air League', description: 'Apply for their gliding and flying scholarships.' }
+      { name: 'Air Training Corps (RAFAC)', description: 'The best possible start for a UK teenager. Free gliding, powered flying scholarships, and a structured aviation education.' },
+      { name: 'University Air Squadrons', description: 'Free military flying training on the Grob Tutor while completing your degree. Available at 18 UK universities.' },
+      { name: 'The Air League', description: 'Apply for their annual flying and gliding scholarships — open to young people aged 14–24 with financial need.' }
     ],
-    watchOut: 'Do not let anyone convince you that you *must* have a degree to be a pilot. You don\'t. But good GCSEs are essential.'
+    watchOut: 'You do not need a degree to become a commercial pilot. But strong GCSEs (especially Maths and English) are essential for ATPL theory. Do not let anyone tell you otherwise.'
   }
 };

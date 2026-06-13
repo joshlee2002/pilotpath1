@@ -87,11 +87,33 @@ export default function RoadmapGenerator() {
     });
 
     let winningPath: PathId = 'modular';
-    if (finalAnswers['age'] === 'under18') winningPath = 'future';
-    else if (finalAnswers['budget'] === 'low' && finalAnswers['education'] !== 'none') winningPath = 'sponsored';
-    else if (finalAnswers['budget'] === 'veryhigh' && finalAnswers['time'] === 'fulltime') winningPath = 'integrated';
-    else if (finalAnswers['budget'] === 'medium' && finalAnswers['relocation'] === 'yes') winningPath = 'hybrid';
-    else {
+    const budget = finalAnswers['budget'];
+    const time = finalAnswers['time'];
+    const relocation = finalAnswers['relocation'];
+    const education = finalAnswers['education'];
+    const age = finalAnswers['age'];
+
+    if (age === 'under18') {
+      winningPath = 'future';
+    } else if (budget === 'low' && education !== 'none') {
+      // No money → aim for sponsored cadet
+      winningPath = 'sponsored';
+    } else if (budget === 'veryhigh' && time === 'fulltime') {
+      // £90k+ and full-time → UK integrated
+      winningPath = 'integrated';
+    } else if (budget === 'veryhigh_eu' && time === 'fulltime' && relocation === 'yes') {
+      // £70–90k + willing to relocate → European integrated is viable
+      winningPath = 'integrated';
+    } else if (budget === 'veryhigh_eu' && time === 'fulltime' && relocation === 'no') {
+      // £70–90k but UK only → modular is safer (UK integrated is a stretch)
+      winningPath = 'modular';
+    } else if ((budget === 'medium' || budget === 'high') && relocation === 'yes') {
+      // £10–70k + willing to relocate → airline-bonded hybrid
+      winningPath = 'hybrid';
+    } else if (time === 'parttime') {
+      // Needs to keep working → modular only real option
+      winningPath = 'modular';
+    } else {
       let maxScore = -1;
       Object.entries(scores).forEach(([path, score]) => {
         if (score > maxScore) { maxScore = score; winningPath = path as PathId; }
