@@ -34,7 +34,7 @@ import {
 import { scoreLead } from "./scoring";
 import { generatePilotBlueprint } from "./pdfReport";
 import { scoreLicenceQuiz } from "./licenceQuizScoring";
-import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail, createFinanceInterest, createFlightDeckShare, getFlightDeckShare } from "./db";
+import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail, createFinanceInterest, createFlightDeckShare, getFlightDeckShare, createCalcSession } from "./db";
 import { nanoid } from "nanoid";
 
 // ─── Admin guard ──────────────────────────────────────────────────────────────
@@ -701,5 +701,21 @@ Use honest, direct language. If their barrier is funding, say so clearly and giv
       return getLaunchStats();
     }),
   }),
+  calculator: router({
+    saveSession: publicProcedure
+      .input(z.object({
+        route: z.string(),
+        location: z.string(),
+        pace: z.string(),
+        experience: z.string(),
+        funding: z.string(),
+        totalEstimate: z.number().int(),
+      }))
+      .mutation(async ({ input }) => {
+        await createCalcSession(input);
+        return { ok: true };
+      }),
+  }),
 });
+
 export type AppRouter = typeof appRouter;

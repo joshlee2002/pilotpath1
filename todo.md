@@ -212,3 +212,12 @@
 - [x] Rewrite PilotTrainingCosts guide (11 min, full cost breakdown table)
 - [x] Rewrite BestRouteToAirline guide (9 min, cadet programme table)
 - [x] Rewrite TrainingTimeline guide (8 min, timeline table)
+
+## Phase 18 – Personalised Pilot Training Cost Calculator
+- [x] Replace static Calculator.tsx with personalised multi-step calculator (5 inputs)
+- [x] Client-side cost engine: route × location × pace × experience × funding adjustments
+- [x] Live results panel: specific midpoint estimate, itemised breakdown, monthly payment plan
+- [x] "What this means for you" insight paragraph based on inputs
+- [x] calc_sessions table added to schema and applied to live DB (analytics)
+- [x] tRPC procedure: saveCalcSession (saves inputs + result for analytics)
+- [x] Write vitest tests for cost calculation engine

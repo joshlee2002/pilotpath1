@@ -233,3 +233,17 @@ export const flightDeckShares = mysqlTable("flight_deck_shares", {
 });
 export type FlightDeckShare = typeof flightDeckShares.$inferSelect;
 export type InsertFlightDeckShare = typeof flightDeckShares.$inferInsert;
+
+// ─── Calculator Sessions ──────────────────────────────────────────────────────
+export const calcSessions = mysqlTable("calc_sessions", {
+  id: int("id").autoincrement().primaryKey(),
+  route: varchar("route", { length: 64 }).notNull(),
+  location: varchar("location", { length: 64 }).notNull(),
+  pace: varchar("pace", { length: 32 }).notNull(),
+  experience: varchar("experience", { length: 32 }).notNull(),
+  funding: varchar("funding", { length: 32 }).notNull(),
+  totalEstimate: int("totalEstimate").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type CalcSession = typeof calcSessions.$inferSelect;
+export type InsertCalcSession = typeof calcSessions.$inferInsert;

@@ -16,6 +16,7 @@ import {
   LeadAssignment,
   SchoolWaitlistEntry,
   adminNotes,
+  calcSessions,
   flightSchools,
   introductionRequests,
   leadAssignments,
@@ -23,6 +24,7 @@ import {
   licenceQuizLeads,
   schoolWaitlist,
   users,
+  InsertCalcSession,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
@@ -557,4 +559,15 @@ export async function getFlightDeckShare(shareId: string): Promise<string | null
   if (!db) return null;
   const rows = await db.select().from(flightDeckShares).where(eq(flightDeckShares.shareId, shareId)).limit(1);
   return rows[0]?.resultJson ?? null;
+}
+
+// ─── Calculator Sessions ──────────────────────────────────────────────────────
+export async function createCalcSession(data: Omit<InsertCalcSession, "id" | "createdAt">): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  try {
+    await db.insert(calcSessions).values(data);
+  } catch (e) {
+    console.error("[DB] createCalcSession failed:", e);
+  }
 }
