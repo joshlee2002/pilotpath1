@@ -27,6 +27,7 @@ import Results from "./pages/Results";
 import Schools from "./pages/Schools";
 import Calculator from "./pages/Calculator";
 import GuidesIndex from "./pages/GuidesIndex";
+import GuidesIndexUS from "./pages/GuidesIndexUS";
 
 // Guide pages
 import HowToBecomePilot from "./pages/guides/HowToBecomePilot";
@@ -59,6 +60,7 @@ import MedicalCheck from "./pages/MedicalCheck";
 
 // Partner page
 import Partner from "./pages/Partner";
+import PartnerUS from "./pages/PartnerUS";
 
 // New tools
 import MedicalConditionLookup from "./pages/MedicalConditionLookup";
@@ -70,6 +72,7 @@ import QuizPage from "./pages/quizzes/QuizPage";
 
 // Roadmap Generator
 import RoadmapGenerator from "./pages/RoadmapGenerator";
+import RoadmapGeneratorUS from "./pages/RoadmapGeneratorUS";
 
 // New SEO guides
 import AmITooOld from "./pages/guides/AmITooOld";
@@ -218,6 +221,9 @@ function Router() {
       <Route path="/us/medical-lookup" component={MedicalConditionLookupUS} />
       <Route path="/us/cadet-eligibility" component={CadetEligibilityUS} />
       <Route path="/us/calculator" component={CalculatorUS} />
+      <Route path="/us/roadmap" component={RoadmapGeneratorUS} />
+      <Route path="/us/partner" component={PartnerUS} />
+      <Route path="/us/guides" component={GuidesIndexUS} />
       <Route path="/us/guides/how-to-become-a-pilot" component={HowToBecomePilotUS} />
       <Route path="/us/guides/part-61-vs-141" component={Part61Vs141} />
       <Route path="/us/guides/faa-medical-requirements" component={FaaMedicalGuide} />

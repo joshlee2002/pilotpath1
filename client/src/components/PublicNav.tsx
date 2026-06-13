@@ -50,8 +50,8 @@ const ukNavLinks = [
 ];
 
 const usNavLinks = [
-  { label: "US Guides", href: "/guides" },
-  { label: "Flight Schools", href: "/schools" },
+  { label: "US Guides", href: "/us/guides" },
+  { label: "US Schools", href: "/us/schools" },
   { label: "Jobs", href: "/jobs" },
   { label: "Stories", href: "/stories" },
   { label: "About", href: "/about" },
@@ -67,12 +67,14 @@ const ukToolLinks = [
 ];
 
 const usToolLinks = [
+  { label: "US Pilot Roadmap", href: "/us/roadmap", desc: "Part 141, Part 61, cadet, or university — find your FAA path", icon: "🗺️" },
   { label: "US Cost Calculator", href: "/us/calculator", desc: "Part 61 vs 141 costs, checkrides, and FAA exams", icon: "🧮" },
   { label: "FAA Medical Condition Lookup", href: "/us/medical-lookup", desc: "Check conditions against FAA First Class standards", icon: "🔍" },
   { label: "US Cadet Eligibility Checker", href: "/us/cadet-eligibility", desc: "United Aviate, Delta Propel, American, Southwest", icon: "✈️" },
 ];
 
-const FOR_SCHOOLS = { label: "For Schools", href: "/partner" };
+const FOR_SCHOOLS_UK = { label: "For Schools", href: "/partner" };
+const FOR_SCHOOLS_US = { label: "For US Schools", href: "/us/partner" };
 
 // ─── Currency Switcher ────────────────────────────────────────────────────────
 function CurrencySwitcher() {
@@ -295,13 +297,13 @@ export default function PublicNav() {
             </button>
 
             <Link
-              href={FOR_SCHOOLS.href}
+              href={isUS ? FOR_SCHOOLS_US.href : FOR_SCHOOLS_UK.href}
               className="px-4 py-2 rounded-lg text-sm font-semibold transition-all no-underline"
               style={{ color: "white", border: "1px solid oklch(1 0 0 / 0.15)" }}
               onMouseEnter={e => (e.currentTarget.style.background = "oklch(1 0 0 / 0.08)")}
               onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
             >
-              For Schools
+              {isUS ? FOR_SCHOOLS_US.label : FOR_SCHOOLS_UK.label}
             </Link>
             <Link
               href={ctaHref}
@@ -377,12 +379,12 @@ export default function PublicNav() {
             </div>
 
             <Link
-              href={FOR_SCHOOLS.href}
+              href={isUS ? FOR_SCHOOLS_US.href : FOR_SCHOOLS_UK.href}
               onClick={() => setMobileOpen(false)}
               className="block px-4 py-3 text-sm font-semibold rounded-lg no-underline"
               style={{ color: "oklch(0.7 0.04 240)" }}
             >
-              For Schools
+              {isUS ? FOR_SCHOOLS_US.label : FOR_SCHOOLS_UK.label}
             </Link>
 
             {/* Mobile currency picker */}
