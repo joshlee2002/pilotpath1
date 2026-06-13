@@ -172,15 +172,26 @@
 
 ## Phase 15 – Licence Quiz ("Which Pilot Licence Is Right For You?")
 
-- [ ] Add licenceQuizLeads table to drizzle schema and apply migration
-- [ ] Build scoring logic in server/licenceQuizScoring.ts (6 outcomes)
-- [ ] Add tRPC procedures: submitLicenceQuiz, getLicenceQuizStats
-- [ ] Build 8-step quiz UI at /quiz/licence
-- [ ] Build results page at /quiz/licence/results with immediate result display
-- [ ] Add email gate for detailed PDF breakdown (email + consent only)
-- [ ] Add social proof stat ("X% of users with this result take the career assessment")
-- [ ] Add AviatorIQ Career Assessment CTA funnel on results page
-- [ ] Add licence quiz entry point card on homepage
-- [ ] Add licence quiz link in PublicNav and footer
-- [ ] Register /quiz/licence and /quiz/licence/results routes in App.tsx
-- [ ] Write vitest tests for licence quiz scoring logic
+- [x] Add licenceQuizLeads table to drizzle schema and apply migration
+- [x] Build scoring logic in server/licenceQuizScoring.ts (6 outcomes)
+- [x] Add tRPC procedures: submitLicenceQuiz, getLicenceQuizStats
+- [x] Build 8-step quiz UI at /quiz/licence
+- [x] Build results page at /quiz/licence/results with immediate result display
+- [x] Add email gate for detailed PDF breakdown (email + consent only)
+- [x] Add social proof stat ("X% of users with this result take the career assessment")
+- [x] Add AviatorIQ Career Assessment CTA funnel on results page
+- [x] Add licence quiz entry point card on homepage
+- [x] Add licence quiz link in PublicNav and footer
+- [x] Register /quiz/licence and /quiz/licence/results routes in App.tsx
+- [x] Write vitest tests for licence quiz scoring logic
+
+## Phase 16 – Flight Deck Quiz ("How Close Are You To The Flight Deck?")
+
+- [x] Build client-side scoring engine in client/src/lib/flightDeckScoring.ts
+- [x] Build 6-question quiz UI at /quiz/flight-deck with dark aviation theme
+- [x] Build results page at /quiz/flight-deck/results with Flight Potential Score, barrier card, timeline, and AviatorIQ CTA
+- [x] Register routes in App.tsx
+- [x] Add Flight Deck quiz as primary card in homepage QuizTeaserSection (3-card grid)
+- [x] Update PublicNav Quizzes link to point to /quiz/flight-deck
+- [x] Write vitest tests for flightDeckScoring engine (10 tests)
+- [x] Write vitest tests for licenceQuizScoring engine (8 tests)

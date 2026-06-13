@@ -15,7 +15,9 @@ const guideLinks = [
 const platformLinks = [
   { label: "Flight School Directory", href: "/schools" },
   { label: "Cost Calculator", href: "/calculator" },
-  { label: "Take the Assessment", href: "/quiz" },
+  { label: "How Close Are You To The Flight Deck?", href: "/quiz/flight-deck" },
+  { label: "Which Licence Is Right For You?", href: "/quiz/licence" },
+  { label: "Career Readiness Assessment", href: "/quiz" },
   { label: "Partner With AviatorIQ", href: "/partner" },
   { label: "Contact", href: "/contact" },
 ];
