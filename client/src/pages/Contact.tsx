@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, Mail, MessageCircle } from "lucide-react";
 
 export default function Contact() {
+  useEffect(() => {
+    document.title = "Contact AviatorIQ";
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />

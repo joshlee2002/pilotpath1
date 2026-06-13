@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
@@ -84,6 +84,9 @@ function formatGBP(n: number) {
 }
 
 export default function Calculator() {
+  useEffect(() => {
+    document.title = "Pilot Training Cost Calculator – AviatorIQ";
+  }, []);
   const [selectedRoute, setSelectedRoute] = useState("integrated_uk");
   const [adjustments, setAdjustments] = useState<Record<string, number>>({});
 

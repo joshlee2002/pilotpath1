@@ -1,7 +1,11 @@
+import { useEffect } from "react";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 
 export default function Terms() {
+  useEffect(() => {
+    document.title = "Terms of Use – AviatorIQ";
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />

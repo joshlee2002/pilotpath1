@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { useEffect } from "react";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, Clock, BookOpen, ChevronRight } from "lucide-react";
@@ -33,6 +34,10 @@ export default function GuideLayout({
   ctaText = "Take the free pilot assessment",
   ctaHref = "/quiz",
 }: GuideLayoutProps) {
+  useEffect(() => {
+    document.title = `${title} – AviatorIQ`;
+  }, [title]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />

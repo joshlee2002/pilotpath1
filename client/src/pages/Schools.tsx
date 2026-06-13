@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Analytics } from "@/lib/analytics";
@@ -27,6 +27,9 @@ const COUNTRIES = [
 ];
 
 export default function Schools() {
+  useEffect(() => {
+    document.title = "Flight School Directory – AviatorIQ";
+  }, []);
   const [country, setCountry] = useState("");
   const [trainingType, setTrainingType] = useState("");
   const [financeFilter, setFinanceFilter] = useState("");

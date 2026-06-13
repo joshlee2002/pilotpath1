@@ -1,9 +1,13 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, Target, Shield, Users } from "lucide-react";
 
 export default function About() {
+  useEffect(() => {
+    document.title = "About AviatorIQ – Pilot Career Assessment Platform";
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Analytics } from "@/lib/analytics";
@@ -494,6 +494,9 @@ function Step7({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
 
 // ─── Main Quiz Component ──────────────────────────────────────────────────────
 export default function Quiz() {
+  useEffect(() => {
+    document.title = "Free Pilot Career Assessment – AviatorIQ";
+  }, []);
   const [step, setStep] = useState(1);
   const [data, setData] = useState<QuizData>(EMPTY);
   const [started, setStarted] = useState(false);

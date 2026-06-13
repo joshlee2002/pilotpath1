@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -177,6 +177,9 @@ const benefits = [
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export default function Partner() {
+  useEffect(() => {
+    document.title = "Partner With AviatorIQ – Flight School Directory";
+  }, []);
   const [submitted, setSubmitted] = useState(false);
 
   const joinWaitlist = trpc.partner.joinWaitlist.useMutation({

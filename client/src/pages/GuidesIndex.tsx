@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "wouter";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
@@ -65,6 +66,9 @@ const guides = [
 const categories = Array.from(new Set(guides.map((g) => g.category)));
 
 export default function GuidesIndex() {
+  useEffect(() => {
+    document.title = "Pilot Training Guides – AviatorIQ";
+  }, []);
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />

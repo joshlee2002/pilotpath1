@@ -161,6 +161,9 @@ export default function Results() {
   useEffect(() => {
     if (resultQuery.data) Analytics.quizCompleted();
   }, [resultQuery.data]);
+  useEffect(() => {
+    document.title = "Your AviatorIQ Pilot Blueprint – Results";
+  }, []);
 
   const toggleSchool = (id: number) => {
     setSelectedSchoolIds(prev =>
