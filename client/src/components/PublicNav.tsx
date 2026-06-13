@@ -25,14 +25,14 @@ function AnnouncementBar() {
 
   return (
     <div
-      className="w-full text-center py-2 px-4 text-xs font-medium flex items-center justify-center gap-2"
-      style={{ background: "oklch(0.45 0.18 240 / 0.18)", borderBottom: "1px solid oklch(0.45 0.18 240 / 0.25)", color: "oklch(0.80 0.06 240)" }}
+      className="w-full text-center py-2 px-4 text-xs font-semibold flex items-center justify-center gap-2"
+      style={{ background: "oklch(0.55 0.20 65)", color: "oklch(0.10 0.05 50)" }}
     >
-      <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style={{ background: "oklch(0.45 0.18 240 / 0.3)", color: "oklch(0.72 0.18 65)" }}>New</span>
-      <Link href={ann.href} className="no-underline hover:underline transition-all" style={{ color: "oklch(0.85 0.05 240)" }}>
+      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" style={{ background: "oklch(0.10 0.05 50 / 0.2)" }}>New</span>
+      <Link href={ann.href} className="no-underline hover:underline transition-all font-bold" style={{ color: "oklch(0.10 0.05 50)" }}>
         {ann.text}
       </Link>
-      <ArrowRight className="w-3 h-3 flex-shrink-0" style={{ color: "oklch(0.65 0.18 240)" }} />
+      <ArrowRight className="w-3 h-3 flex-shrink-0" />
     </div>
   );
 }
