@@ -3,16 +3,16 @@
  * Tests the leads.submit procedure logic including:
  * - Consent validation
  * - Lead scoring integration
- * - Category assignment
+ * - Category assignment (Hot: 85+, Warm: 55-84, Cold: <55)
  * - Hot lead detection
  */
-import { describe, expect, it, vi, beforeEach } from "vitest";
+import { describe, expect, it } from "vitest";
 import { scoreLead } from "./scoring";
 
 // ── Scoring integration ───────────────────────────────────────────────────────
 
 describe("Lead scoring integration", () => {
-  it("assigns Hot category for a highly qualified lead", () => {
+  it("assigns Hot category for a highly qualified lead (score >= 85)", () => {
     const result = scoreLead({
       pilotGoal: "Airline pilot",
       seriousness: "I want to start as soon as possible",
@@ -24,12 +24,14 @@ describe("Lead scoring integration", () => {
       rightToWorkStudy: "Yes",
       phone: "+44 7700 900000",
       writtenAnswer: "I have been saving for three years and am fully committed.",
+      preferredRoute: "Integrated ATPL (full-time, 18-24 months)",
+      country: "GB",
     });
     expect(result.category).toBe("Hot");
-    expect(result.score).toBeGreaterThanOrEqual(75);
+    expect(result.score).toBeGreaterThanOrEqual(85);
   });
 
-  it("assigns Warm category for a moderately qualified lead", () => {
+  it("assigns Warm category for a moderately qualified lead (score 55-84)", () => {
     const result = scoreLead({
       pilotGoal: "Airline pilot",
       seriousness: "I want to start within 1-3 years",
@@ -39,13 +41,13 @@ describe("Lead scoring integration", () => {
       class1Medical: "I plan to get one",
       rightToWorkStudy: "Yes",
     });
-    // Warm is 45–74
+    // Warm is 55–84 (tightened thresholds)
     expect(result.score).toBeGreaterThanOrEqual(0);
     expect(result.score).toBeLessThanOrEqual(100);
     expect(["Hot", "Warm", "Cold"]).toContain(result.category);
   });
 
-  it("assigns Cold category for a low-qualification lead", () => {
+  it("assigns Cold category for a low-qualification lead (score < 55)", () => {
     const result = scoreLead({
       pilotGoal: "Just exploring",
       seriousness: "Just exploring",
@@ -55,7 +57,7 @@ describe("Lead scoring integration", () => {
       rightToWorkStudy: "No",
     });
     expect(result.category).toBe("Cold");
-    expect(result.score).toBeLessThan(45);
+    expect(result.score).toBeLessThan(55);
   });
 });
 
@@ -111,8 +113,8 @@ describe("Score boundary conditions", () => {
 // ── Hot lead notification logic ───────────────────────────────────────────────
 
 describe("Hot lead notification logic", () => {
-  it("identifies when a lead should trigger owner notification", () => {
-    const hotResult = scoreLead({
+  it("correctly identifies Hot vs non-Hot leads under the 85+ threshold", () => {
+    const result = scoreLead({
       pilotGoal: "Airline pilot",
       seriousness: "I want to start as soon as possible",
       budgetRange: "£100,000+",
@@ -123,10 +125,15 @@ describe("Hot lead notification logic", () => {
       rightToWorkStudy: "Yes",
       phone: "+44 7700 900000",
       writtenAnswer: "Fully committed and ready to start immediately.",
+      preferredRoute: "Integrated ATPL (full-time, 18-24 months)",
+      country: "GB",
     });
-    const shouldNotify = hotResult.category === "Hot";
-    if (hotResult.score >= 75) {
+    const shouldNotify = result.category === "Hot";
+    // Hot threshold is 85+; verify category matches score
+    if (result.score >= 85) {
       expect(shouldNotify).toBe(true);
+    } else {
+      expect(shouldNotify).toBe(false);
     }
   });
 

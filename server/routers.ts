@@ -115,7 +115,7 @@ export const appRouter = router({
           country: input.country,
           startTimeframe: input.startTimeframe,
         });
-        const { score, category } = scoreResult;
+        const { score, category, intentScore } = scoreResult;
 
         // Generate AI summary (non-blocking, best-effort)
         let aiSummary: string | undefined;
@@ -162,6 +162,7 @@ Lead score: ${score}/100 (${category})`;
           leadScore: score,
           leadCategory: category,
           leadValue,
+          intentScore,
           aiSummary,
           status: "New",
           preferredContact: input.preferredContact ?? null,

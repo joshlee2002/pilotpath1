@@ -1,7 +1,7 @@
 /**
  * AviatorIQ Lead Scoring Engine
  * Overall score: 0–100
- * Hot: 75–100 | Warm: 45–74 | Cold: <45
+ * Hot: 85–100 | Warm: 55–84 | Cold: <55
  *
  * Sub-scores (each 0–100) power the 5-dimension score card on the results page:
  *   readiness  – commitment, urgency, timeline
@@ -9,6 +9,12 @@
  *   medical    – Class 1 status, age eligibility
  *   career     – goal clarity, right to work/study, experience
  *   pathway    – route fit based on budget + goal + country
+ *
+ * intentScore (0–100, hidden from users) – commercial intent signal based on
+ *   school contact desire, timeframe urgency, phone provided, finance awareness.
+ *   A lead with intentScore 80+ who requests introductions is likely more
+ *   commercially valuable than a high AviatorIQ score alone.
+ *   Track: Hot Lead → Introduction Request % over time to validate the model.
  */
 
 export interface LeadInput {
@@ -65,6 +71,14 @@ export interface ScoreResult {
   estimatedTimeline: string;
   /** Recommended route */
   recommendedRoute: string;
+  /**
+   * Intent Score (0–100) — hidden from users, admin-only.
+   * Measures commercial intent: school contact desire, timeframe urgency,
+   * phone provided, finance awareness.
+   * Use alongside AviatorIQ score to prioritise leads for outreach.
+   * Key metric to track: Hot Lead → Introduction Request conversion rate.
+   */
+  intentScore: number;
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -193,10 +207,33 @@ export function scoreLead(input: LeadInput): ScoreResult {
     pathway * 0.10
   );
 
+  // ── Category thresholds (tightened for launch) ────────────────────────────
+  // Hot is intentionally hard to achieve. False positives damage school trust.
+  // Review thresholds after first 100 assessments using real conversion data.
   let category: "Hot" | "Warm" | "Cold";
-  if (score >= 75) category = "Hot";
-  else if (score >= 45) category = "Warm";
+  if (score >= 85) category = "Hot";
+  else if (score >= 55) category = "Warm";
   else category = "Cold";
+
+  // ── Intent Score (0–100, hidden from users, admin-only) ───────────────────
+  // Measures commercial intent independent of the AviatorIQ score.
+  // A lead with intentScore 80+ who requests introductions is likely more
+  // commercially valuable than a high AviatorIQ score alone.
+  // Key metric: track Hot Lead → Introduction Request % over time.
+  let intentRaw = 0;
+  // Already engaging with schools (strongest signal)
+  if (input.spokenToSchool === "I have already applied somewhere") intentRaw += 30;
+  else if (input.spokenToSchool === "I have booked a visit/open day") intentRaw += 25;
+  else if (input.spokenToSchool === "Yes") intentRaw += 15;
+  // Timeframe urgency
+  if (input.seriousness === "I want to start as soon as possible") intentRaw += 30;
+  else if (input.seriousness === "I want to start within 12 months") intentRaw += 25;
+  else if (input.seriousness === "I want to start within 1-3 years") intentRaw += 10;
+  // Phone provided = willing to be contacted
+  if (input.phone && input.phone.trim().length > 5) intentRaw += 25;
+  // Finance awareness = actively thinking about how to fund it
+  if (input.wantsFinanceInfo === "Yes") intentRaw += 15;
+  const intentScore = clamp(intentRaw);
 
   // ── Legacy breakdown ──────────────────────────────────────────────────────
   const intent = Math.round(readiness * 0.4);
@@ -238,6 +275,7 @@ export function scoreLead(input: LeadInput): ScoreResult {
   return {
     score,
     category,
+    intentScore,
     breakdown: {
       intent: clamp(intent, 40),
       finance: clamp(financeLegacy, 30),

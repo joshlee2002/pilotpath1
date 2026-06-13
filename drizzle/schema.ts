@@ -72,6 +72,8 @@ export const leads = mysqlTable("leads", {
   leadScore: int("leadScore").default(0).notNull(),
   leadCategory: mysqlEnum("leadCategory", ["Hot", "Warm", "Cold"]).default("Cold").notNull(),
   leadValue: mysqlEnum("leadValue", ["High", "Medium", "Low"]).default("Low").notNull(),
+  /** Intent Score (0–100) — hidden from users, admin-only commercial intent signal */
+  intentScore: int("intentScore").default(0).notNull(),
   // PDF
   pdfKey: varchar("pdfKey", { length: 500 }),
   // Status

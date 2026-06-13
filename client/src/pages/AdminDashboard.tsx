@@ -66,6 +66,7 @@ type Lead = {
   leadScore: number;
   leadCategory: "Hot" | "Warm" | "Cold";
   leadValue: "High" | "Medium" | "Low";
+  intentScore?: number;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -175,6 +176,9 @@ function LeadDetailModal({ lead, onClose }: { lead: Lead; onClose: () => void })
               <CategoryBadge category={lead.leadCategory} />
               <LeadValueBadge value={lead.leadValue ?? 'Low'} />
               <span className="text-sm text-[var(--color-muted-foreground)]">Score: {lead.leadScore}/100</span>
+              {(lead.intentScore ?? 0) > 0 && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200" title="Intent Score — commercial readiness signal (admin only)">⚡ Intent {lead.intentScore}/100</span>
+              )}
             </div>
           </div>
           <button onClick={onClose} className="p-2 rounded-lg hover:bg-[var(--color-muted)] transition-colors">
