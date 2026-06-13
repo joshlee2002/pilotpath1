@@ -175,21 +175,23 @@ export default function FlightDeckResults() {
         </div>
 
         {/* ── Main CTA ── */}
-        <div className="rounded-2xl border border-[var(--color-gold)]/25 bg-[var(--color-gold)]/5 p-6 text-center">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Go deeper</p>
-          <h2 className="text-xl font-display font-bold text-white mb-2">
-            Career Readiness Assessment
-          </h2>
-          <p className="text-white/55 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
-            10 minutes. Get your full AviatorIQ Score, an AI-generated training roadmap, a breakdown of your specific barriers, and matched flight schools — completely free.
-          </p>
-          <Link href="/quiz">
-            <button className="w-full py-4 rounded-xl bg-[var(--color-gold)] text-[var(--color-navy)] font-bold text-sm hover:bg-[var(--color-gold)]/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-              Take the Career Readiness Assessment
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </Link>
-          <div className="flex items-center justify-center gap-4 mt-3 text-white/25 text-xs">
+        <div className="rounded-2xl overflow-hidden">
+          <div className="bg-[var(--color-gold)] px-6 pt-6 pb-5 text-center">
+            <p className="text-[var(--color-navy)]/60 text-xs uppercase tracking-widest font-semibold mb-2">Your next step</p>
+            <h2 className="text-xl font-display font-bold text-[var(--color-navy)] mb-2">
+              Get Your Full Pilot Blueprint
+            </h2>
+            <p className="text-[var(--color-navy)]/75 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
+              10 minutes. Full AviatorIQ Score, AI training roadmap, 5-dimension breakdown, and matched flight schools — completely free.
+            </p>
+            <Link href="/quiz">
+              <button className="w-full py-4 rounded-xl bg-[var(--color-navy)] text-white font-bold text-sm hover:bg-[var(--color-navy)]/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                Take the Career Readiness Assessment
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </Link>
+          </div>
+          <div className="bg-[var(--color-navy)]/40 border-t border-white/10 flex items-center justify-center gap-5 py-3 text-white/50 text-xs">
             <span>✓ Free PDF blueprint</span>
             <span>✓ Matched schools</span>
             <span>✓ AI roadmap</span>

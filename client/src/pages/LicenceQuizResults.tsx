@@ -245,26 +245,26 @@ export default function LicenceQuizResults() {
         </div>
 
         {/* ── Main CTA: funnel to Career Readiness Assessment ── */}
-        <div className="rounded-2xl border border-white/15 bg-white/5 p-6 text-center">
-          <p className="text-white/50 text-xs uppercase tracking-widest mb-3">Ready for the next step?</p>
-          <h2 className="text-xl font-display font-bold text-white mb-2">
-            Take the AviatorIQ Career Readiness Assessment
-          </h2>
-          <p className="text-white/60 text-sm mb-5 max-w-md mx-auto">
-            Discover your personalised readiness score, your biggest obstacle, an AI-generated training roadmap, and matched flight schools — in under 10 minutes.
-          </p>
-          <div className="space-y-3">
+        <div className="rounded-2xl overflow-hidden">
+          <div className="bg-[var(--color-gold)] px-6 pt-6 pb-5 text-center">
+            <p className="text-[var(--color-navy)]/60 text-xs uppercase tracking-widest font-semibold mb-2">Your next step</p>
+            <h2 className="text-xl font-display font-bold text-[var(--color-navy)] mb-2">
+              Get Your Full Pilot Blueprint
+            </h2>
+            <p className="text-[var(--color-navy)]/75 text-sm mb-5 max-w-md mx-auto">
+              Personalised readiness score, biggest obstacle, AI training roadmap, and matched flight schools — in under 10 minutes.
+            </p>
             <Link href="/quiz">
-              <button className="w-full py-3.5 rounded-xl bg-[var(--color-gold)] text-[var(--color-navy)] font-bold text-sm hover:bg-[var(--color-gold)]/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+              <button className="w-full py-4 rounded-xl bg-[var(--color-navy)] text-white font-bold text-sm hover:bg-[var(--color-navy)]/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
                 Take the Career Readiness Assessment
                 <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
-            <div className="flex items-center justify-center gap-4 text-white/30 text-xs">
-              <span>✓ Personalised AI roadmap</span>
-              <span>✓ Matched flight schools</span>
-              <span>✓ Free PDF report</span>
-            </div>
+          </div>
+          <div className="bg-[var(--color-navy)]/40 border-t border-white/10 flex items-center justify-center gap-5 py-3 text-white/50 text-xs">
+            <span>✓ Personalised AI roadmap</span>
+            <span>✓ Matched flight schools</span>
+            <span>✓ Free PDF report</span>
           </div>
         </div>
 

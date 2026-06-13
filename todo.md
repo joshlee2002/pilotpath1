@@ -237,5 +237,5 @@
 - [x] Homepage: hero right panel shows platform preview with score gauge and tools
 - [x] Results page: circular arc score gauge (SVG)
 - [x] Results page: 4-stat instrument panel (Biggest Risk, Best Route, Est. Cost, Timeline)
-- [ ] Results page: Flight Plan styled roadmap with waypoints (roadmap section still uses old style)
+- [x] Results page: Flight Plan styled roadmap with waypoints and runway line (dark navy panel, gold header, numbered waypoints)
 - [x] Global CSS: glassmorphism card tokens, aviation colour palette, cockpit-inspired styles
