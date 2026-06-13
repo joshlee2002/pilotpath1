@@ -360,113 +360,6 @@ export default function Results() {
           </div>
         </div>
 
-        <div className="container max-w-4xl py-10 px-4 space-y-6">
-
-          {/* ── Quick summary cards — REMOVED (now in hero instrument panel) ── */}
-
-          {/* ── Matched Schools + Request Introduction ── */}
-          <div className="card-base p-6 animate-fade-in-up">
-            <h2 className="font-display font-bold text-[var(--color-navy)] text-xl mb-1">Matched Flight Schools</h2>
-            <p className="text-sm text-[var(--color-muted-foreground)] mb-5">
-              {matchedSchools.length > 0
-                ? `We found ${matchedSchools.length} school${matchedSchools.length !== 1 ? "s" : ""} that match your profile. Select up to 3 and request an introduction — we'll make the connection on your behalf.`
-                : "We're expanding our school network. Your profile has been saved and we'll notify you when suitable schools are added."}
-            </p>
-
-            {matchedSchools.length > 0 ? (
-              <>
-                <div className="space-y-3 mb-5">
-                  {(matchedSchools as FlightSchool[]).map((school) => {
-                    const isSelected = selectedSchoolIds.includes(school.id);
-                    const isDisabled = !isSelected && selectedSchoolIds.length >= 3;
-                    return (
-                      <div
-                        key={school.id}
-                        onClick={() => !introSubmitted && !isDisabled && toggleSchool(school.id)}
-                        className={`border rounded-xl p-4 transition-all cursor-pointer ${
-                          introSubmitted ? "opacity-60 cursor-default" :
-                          isSelected ? "border-[var(--color-primary)] bg-[var(--color-primary-light)] shadow-sm" :
-                          isDisabled ? "border-border opacity-50 cursor-not-allowed" :
-                          "border-border hover:border-[var(--color-primary)]/50 hover:bg-muted/30"
-                        }`}
-                      >
-                        <div className="flex items-start gap-3">
-                          <Checkbox
-                            checked={isSelected}
-                            disabled={introSubmitted || isDisabled}
-                            onCheckedChange={() => !introSubmitted && !isDisabled && toggleSchool(school.id)}
-                            className="mt-0.5 flex-shrink-0"
-                            onClick={(e) => e.stopPropagation()}
-                          />
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <h3 className="font-display font-semibold text-[var(--color-navy)] text-sm">{school.name}</h3>
-                              {school.financeAvailable === "yes" && (
-                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Finance available</span>
-                              )}
-                            </div>
-                            <p className="text-xs text-[var(--color-muted-foreground)] mt-0.5 flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {[school.city, school.country].filter(Boolean).join(", ")}
-                              {school.priceRange && ` · ${convertPriceString(school.priceRange, formatPrice)}${currency.code !== "GBP" ? ` (${currency.code})` : ""}`}
-                            </p>
-                            <div className="flex gap-1 mt-1.5 flex-wrap">
-                              {school.integratedAtpl && <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">Integrated ATPL</span>}
-                              {school.modularAtpl && <span className="text-xs bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full">Modular ATPL</span>}
-                              {school.ppl && <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">PPL</span>}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-
-                {!introSubmitted ? (
-                  <div className="space-y-3">
-                    <p className="text-xs text-[var(--color-muted-foreground)]">
-                      {selectedSchoolIds.length === 0
-                        ? "Select up to 3 schools above to request introductions."
-                        : `${selectedSchoolIds.length} school${selectedSchoolIds.length !== 1 ? "s" : ""} selected. We'll send your qualified profile to them — no cold calls, no spam.`}
-                    </p>
-                    <Button
-                      onClick={handleRequestIntros}
-                      disabled={selectedSchoolIds.length === 0 || requestIntros.isPending}
-                      className="w-full btn-cta"
-                      size="lg"
-                    >
-                      {requestIntros.isPending ? (
-                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending requests…</>
-                      ) : (
-                        <><School className="w-4 h-4 mr-2" /> Request Introductions ({selectedSchoolIds.length})</>
-                      )}
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl">
-                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <div>
-                      <p className="font-semibold text-green-800 text-sm">Introduction requests sent!</p>
-                      <p className="text-xs text-green-700 mt-0.5">We've notified the selected schools. Expect to hear back within 2–3 business days.</p>
-                    </div>
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="text-center py-6">
-                <Globe className="w-8 h-8 text-[var(--color-muted-foreground)] mx-auto mb-3" />
-                <p className="font-display font-semibold text-[var(--color-navy)] mb-1">Expanding our school network</p>
-                <p className="text-sm text-[var(--color-muted-foreground)]">
-                  We are still adding schools that match your profile. Your results have been saved.
-                </p>
-                <Link href="/schools" className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)] mt-3">
-                  Browse all schools <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-
         <div className="container max-w-3xl py-10 px-4 space-y-6">
 
           {/* ── Quick summary cards ── */}
@@ -651,132 +544,138 @@ export default function Results() {
             </div>
           )}
 
-          {/* ── AI Roadmap ── */}
+          {/* ── Flight Plan (AI Roadmap) ── */}
           {isGenerating ? (
-            <div className="card-base p-8 text-center animate-fade-in">
-              <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)] mx-auto mb-4" />
-              <p className="font-display font-semibold text-[var(--color-navy)] mb-1">Generating your personalised roadmap…</p>
-              <p className="text-sm text-[var(--color-muted-foreground)]">Our AI is analysing your profile and preparing your training recommendations.</p>
+            <div className="rounded-2xl overflow-hidden" style={{ background: "var(--color-navy)", border: "1px solid oklch(1 0 0 / 0.1)" }}>
+              <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid oklch(1 0 0 / 0.1)" }}>
+                <div className="flex items-center gap-2">
+                  <Map className="w-4 h-4 text-[var(--color-gold)]" />
+                  <span className="text-white font-display font-bold text-sm uppercase tracking-widest">Flight Plan</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin text-[var(--color-gold)]" />
+                  <span className="text-white/50 text-xs">Generating…</span>
+                </div>
+              </div>
+              <div className="p-8 text-center">
+                <p className="text-white/70 text-sm">Our AI is analysing your profile and preparing your personalised training plan.</p>
+              </div>
             </div>
           ) : roadmapError ? (
             <div className="card-base p-6 border-amber-200 bg-amber-50">
               <div className="flex items-center gap-2 text-amber-700 mb-2">
                 <AlertTriangle className="w-5 h-5" />
-                <span className="font-semibold">Roadmap generation delayed</span>
+                <span className="font-semibold">Flight Plan generation delayed</span>
               </div>
               <p className="text-sm text-amber-600">We were unable to generate your AI roadmap right now. Your results have been saved and we will follow up with you shortly.</p>
             </div>
           ) : roadmap ? (
-            <div className="space-y-5">
-              {roadmap.pilotGoalSummary && (
-                <div className="card-base p-6 animate-fade-in-up">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-lg flex items-center justify-center">
-                      <GraduationCap className="w-4 h-4 text-[var(--color-primary)]" />
-                    </div>
-                    <h3 className="font-display font-bold text-[var(--color-navy)]">Your pilot goal</h3>
-                  </div>
-                  <p className="text-[var(--color-muted-foreground)] leading-relaxed">{roadmap.pilotGoalSummary}</p>
+            <div className="rounded-2xl overflow-hidden animate-fade-in-up" style={{ background: "var(--color-navy)", border: "1px solid oklch(1 0 0 / 0.1)" }}>
+              {/* Header bar */}
+              <div className="flex items-center justify-between px-6 py-4" style={{ borderBottom: "1px solid oklch(1 0 0 / 0.1)" }}>
+                <div className="flex items-center gap-2">
+                  <Map className="w-4 h-4 text-[var(--color-gold)]" />
+                  <span className="text-white font-display font-bold text-sm uppercase tracking-widest">Flight Plan</span>
                 </div>
-              )}
-
-              {roadmap.recommendedRoute && (
-                <div className="card-base p-6 animate-fade-in-up delay-100">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-lg flex items-center justify-center">
-                      <Globe className="w-4 h-4 text-[var(--color-primary)]" />
-                    </div>
-                    <h3 className="font-display font-bold text-[var(--color-navy)]">Your best training route</h3>
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg font-display font-bold text-sm mb-3">
+                {roadmap.recommendedRoute && (
+                  <span className="text-xs px-3 py-1 rounded-full font-semibold" style={{ background: "oklch(0.65 0.18 230 / 0.2)", color: "oklch(0.8 0.15 230)", border: "1px solid oklch(0.65 0.18 230 / 0.3)" }}>
                     {roadmap.recommendedRoute}
-                  </div>
-                  {roadmap.routeRationale && (
-                    <p className="text-[var(--color-muted-foreground)] leading-relaxed">{roadmap.routeRationale}</p>
-                  )}
-                </div>
-              )}
-
-              {(roadmap.estimatedCostMin || roadmap.estimatedDuration) && (
-                <div className="card-base p-6 animate-fade-in-up delay-200">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-lg flex items-center justify-center">
-                      <CreditCard className="w-4 h-4 text-[var(--color-primary)]" />
-                    </div>
-                    <h3 className="font-display font-bold text-[var(--color-navy)]">Estimated cost & duration</h3>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    {roadmap.estimatedCostMin && roadmap.estimatedCostMax && (
-                      <div className="p-4 rounded-xl bg-[var(--color-muted)]">
-                        <div className="text-xs text-[var(--color-muted-foreground)] mb-1">Estimated cost range</div>
-                        <div className="font-display font-bold text-[var(--color-navy)]">
-                          {formatPrice(roadmap.estimatedCostMin!)} – {formatPrice(roadmap.estimatedCostMax!)}
-                          {currency.code !== "GBP" && (
-                            <div className="text-xs font-normal text-[var(--color-muted-foreground)] mt-0.5">
-                              ≈ £{roadmap.estimatedCostMin!.toLocaleString("en-GB")} – £{roadmap.estimatedCostMax!.toLocaleString("en-GB")} GBP
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                    {roadmap.estimatedDuration && (
-                      <div className="p-4 rounded-xl bg-[var(--color-muted)]">
-                        <div className="text-xs text-[var(--color-muted-foreground)] mb-1">Estimated duration</div>
-                        <div className="font-display font-bold text-[var(--color-navy)]">{roadmap.estimatedDuration}</div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {roadmap.nextSteps && roadmap.nextSteps.length > 0 && (
-                <div className="card-base p-6 animate-fade-in-up delay-300">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="w-8 h-8 bg-[var(--color-primary-light)] rounded-lg flex items-center justify-center">
-                      <ChevronRight className="w-4 h-4 text-[var(--color-primary)]" />
-                    </div>
-                    <h3 className="font-display font-bold text-[var(--color-navy)]">What to do next</h3>
-                  </div>
-                  <ol className="space-y-3">
-                    {roadmap.nextSteps.map((step, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <span className="w-6 h-6 rounded-full bg-[var(--color-primary)] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
-                        <span className="text-[var(--color-foreground)] leading-relaxed text-sm">{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 animate-fade-in-up delay-400">
-                {roadmap.medicalAdvice && (
-                  <div className="card-base p-5">
-                    <h4 className="font-display font-bold text-[var(--color-navy)] text-sm mb-2">Medical considerations</h4>
-                    <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{roadmap.medicalAdvice}</p>
-                    <Link href="/guides/class-1-medical" className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)] mt-2 no-underline">
-                      Class 1 Medical guide <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </div>
-                )}
-                {roadmap.financeConsiderations && (
-                  <div className="card-base p-5">
-                    <h4 className="font-display font-bold text-[var(--color-navy)] text-sm mb-2">Finance considerations</h4>
-                    <p className="text-sm text-[var(--color-muted-foreground)] leading-relaxed">{roadmap.financeConsiderations}</p>
-                    <Link href="/guides/finance-guide" className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)] mt-2 no-underline">
-                      Finance guide <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </div>
+                  </span>
                 )}
               </div>
 
-              {roadmap.disclaimer && (
-                <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 animate-fade-in-up">
-                  <div className="flex items-start gap-2">
-                    <AlertTriangle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-amber-700 leading-relaxed">{roadmap.disclaimer}</p>
+              <div className="p-6 space-y-0">
+                {/* Goal summary */}
+                {roadmap.pilotGoalSummary && (
+                  <div className="mb-6 p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                    <p className="text-white/70 text-sm leading-relaxed">{roadmap.pilotGoalSummary}</p>
                   </div>
-                </div>
-              )}
+                )}
+
+                {/* Cost & Duration row */}
+                {(roadmap.estimatedCostMin || roadmap.estimatedDuration) && (
+                  <div className="grid grid-cols-2 gap-3 mb-6">
+                    {roadmap.estimatedCostMin && roadmap.estimatedCostMax && (
+                      <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-1">Est. Cost</div>
+                        <div className="font-display font-bold text-[var(--color-gold)] text-sm">
+                          {formatPrice(roadmap.estimatedCostMin!)} – {formatPrice(roadmap.estimatedCostMax!)}
+                        </div>
+                        {currency.code !== "GBP" && (
+                          <div className="text-[10px] text-white/40 mt-0.5">≈ £{roadmap.estimatedCostMin!.toLocaleString("en-GB")} – £{roadmap.estimatedCostMax!.toLocaleString("en-GB")} GBP</div>
+                        )}
+                      </div>
+                    )}
+                    {roadmap.estimatedDuration && (
+                      <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-1">Duration</div>
+                        <div className="font-display font-bold text-white text-sm">{roadmap.estimatedDuration}</div>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Waypoints — next steps */}
+                {roadmap.nextSteps && roadmap.nextSteps.length > 0 && (
+                  <div className="mb-6">
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-4">Waypoints</div>
+                    <div className="relative">
+                      {/* Vertical runway line */}
+                      <div className="absolute left-[18px] top-6 bottom-6 w-px" style={{ background: "linear-gradient(to bottom, oklch(0.72 0.18 65 / 0.6), oklch(0.65 0.18 230 / 0.3))" }} />
+                      <ol className="space-y-4">
+                        {roadmap.nextSteps.map((step, i) => (
+                          <li key={i} className="flex items-start gap-4">
+                            {/* Waypoint dot */}
+                            <div className="relative z-10 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 font-display font-black text-xs"
+                              style={{
+                                background: i === 0 ? "oklch(0.72 0.18 65)" : "oklch(1 0 0 / 0.08)",
+                                border: i === 0 ? "none" : "1px solid oklch(1 0 0 / 0.15)",
+                                color: i === 0 ? "oklch(0.15 0.05 240)" : "oklch(0.8 0.05 230)",
+                              }}>
+                              {i + 1}
+                            </div>
+                            <div className="flex-1 pt-1.5">
+                              <p className="text-white/85 text-sm leading-relaxed">{step}</p>
+                            </div>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  </div>
+                )}
+
+                {/* Medical & Finance advisory row */}
+                {(roadmap.medicalAdvice || roadmap.financeConsiderations) && (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    {roadmap.medicalAdvice && (
+                      <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-2">Medical Advisory</div>
+                        <p className="text-white/70 text-xs leading-relaxed mb-2">{roadmap.medicalAdvice}</p>
+                        <Link href="/guides/class-1-medical" className="inline-flex items-center gap-1 text-[10px] font-semibold no-underline" style={{ color: "oklch(0.72 0.18 65)" }}>
+                          Class 1 Medical guide <ArrowRight className="w-2.5 h-2.5" />
+                        </Link>
+                      </div>
+                    )}
+                    {roadmap.financeConsiderations && (
+                      <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-2">Finance Advisory</div>
+                        <p className="text-white/70 text-xs leading-relaxed mb-2">{roadmap.financeConsiderations}</p>
+                        <Link href="/guides/finance-guide" className="inline-flex items-center gap-1 text-[10px] font-semibold no-underline" style={{ color: "oklch(0.72 0.18 65)" }}>
+                          Finance guide <ArrowRight className="w-2.5 h-2.5" />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Disclaimer */}
+                {roadmap.disclaimer && (
+                  <div className="flex items-start gap-2 p-3 rounded-lg" style={{ background: "oklch(0.72 0.18 65 / 0.08)", border: "1px solid oklch(0.72 0.18 65 / 0.15)" }}>
+                    <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: "oklch(0.72 0.18 65)" }} />
+                    <p className="text-[10px] leading-relaxed" style={{ color: "oklch(0.72 0.18 65 / 0.8)" }}>{roadmap.disclaimer}</p>
+                  </div>
+                )}
+              </div>
             </div>
           ) : null}
 

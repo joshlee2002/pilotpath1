@@ -7,14 +7,15 @@ import { notifyOwner } from "./_core/notification";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import {
-  createAdminNote,
+  getPublicPlatformStats,
+  createLead,
   createFlightSchool,
   createIntroductionRequest,
-  createLead,
   createLeadAssignment,
   createSchoolWaitlistEntry,
   deleteLead,
   deleteFlightSchool,
+  createAdminNote,
   getAdminNotesByLeadId,
   getAllLeadsForExport,
   getFlightSchoolById,
@@ -719,6 +720,11 @@ Use honest, direct language. If their barrier is funding, say so clearly and giv
       }),
   }),
   // ─── Analytics (admin only) ───────────────────────────────────────────────
+  platform: router({
+    stats: publicProcedure.query(async () => {
+      return getPublicPlatformStats();
+    }),
+  }),
   analytics: router({
     overview: adminProcedure.query(async () => {
       return getLeadAnalytics();

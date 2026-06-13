@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
+import { trpc } from "@/lib/trpc";
 import {
   Plane,
   ArrowRight,
@@ -24,6 +25,9 @@ import {
 } from "lucide-react";
 
 function HeroSection() {
+  const statsQuery = trpc.platform.stats.useQuery(undefined, { staleTime: 60_000 });
+  const stats = statsQuery.data;
+
   return (
     <section className="bg-hero relative overflow-hidden">
       {/* Radar grid overlay */}
@@ -88,43 +92,34 @@ function HeroSection() {
                 <span className="text-white/40 text-xs">Live</span>
               </div>
 
-              {/* Score preview */}
-              <div className="flex items-center gap-4 mb-5 p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.1)" }}>
-                <div className="relative w-16 h-16 flex-shrink-0">
-                  <svg className="w-full h-full -rotate-90" viewBox="0 0 64 64">
-                    <circle cx="32" cy="32" r="26" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="6" />
-                    <circle cx="32" cy="32" r="26" fill="none" stroke="oklch(0.72 0.18 65)" strokeWidth="6"
-                      strokeLinecap="round" strokeDasharray="163.4" strokeDashoffset="57"
-                      style={{ transition: "stroke-dashoffset 1.2s cubic-bezier(0.23,1,0.32,1)" }} />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white font-black text-sm">65</span>
-                  </div>
-                </div>
-                <div>
-                  <div className="text-white font-display font-bold text-sm mb-0.5">Sample AviatorIQ Score</div>
-                  <div className="text-white/50 text-xs mb-2">Development Phase · Finance barrier identified</div>
-                  <div className="flex gap-1.5">
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: "oklch(0.72 0.18 65 / 0.2)", color: "oklch(0.85 0.15 65)" }}>Warm Lead</span>
-                    <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: "oklch(0.65 0.18 230 / 0.2)", color: "oklch(0.8 0.15 230)" }}>Modular ATPL</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 4 stat tiles */}
-              <div className="grid grid-cols-2 gap-2.5 mb-5">
+              {/* Live platform stats */}
+              <div className="grid grid-cols-3 gap-2.5 mb-5">
                 {[
-                  { label: "Biggest Barrier", value: "Finance", icon: <TrendingUp className="w-3.5 h-3.5" />, color: "oklch(0.72 0.18 65)" },
-                  { label: "Strongest Asset", value: "Motivation", icon: <Zap className="w-3.5 h-3.5" />, color: "oklch(0.72 0.2 145)" },
-                  { label: "Best Route", value: "Modular ATPL", icon: <Plane className="w-3.5 h-3.5" />, color: "oklch(0.65 0.18 230)" },
-                  { label: "Timeline", value: "3–5 years", icon: <Clock className="w-3.5 h-3.5" />, color: "oklch(0.75 0.12 290)" },
+                  {
+                    label: "Assessments Taken",
+                    value: stats ? (stats.totalAssessments >= 1000 ? `${(stats.totalAssessments / 1000).toFixed(1)}k` : stats.totalAssessments.toString()) : "—",
+                    icon: <Users className="w-3.5 h-3.5" />,
+                    color: "oklch(0.65 0.18 230)",
+                  },
+                  {
+                    label: "Avg IQ Score",
+                    value: stats ? `${stats.avgScore}` : "—",
+                    icon: <Activity className="w-3.5 h-3.5" />,
+                    color: "oklch(0.72 0.18 65)",
+                  },
+                  {
+                    label: "Top Barrier",
+                    value: stats ? (stats.mostCommonBarrier.length > 12 ? stats.mostCommonBarrier.slice(0, 12) + "…" : stats.mostCommonBarrier) : "Finance",
+                    icon: <TrendingUp className="w-3.5 h-3.5" />,
+                    color: "oklch(0.78 0.18 25)",
+                  },
                 ].map((tile) => (
                   <div key={tile.label} className="stat-tile">
                     <div className="flex items-center gap-1.5 mb-1.5" style={{ color: tile.color }}>
                       {tile.icon}
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40">{tile.label}</span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40 leading-tight">{tile.label}</span>
                     </div>
-                    <div className="text-white font-display font-bold text-sm">{tile.value}</div>
+                    <div className="text-white font-display font-bold text-base">{tile.value}</div>
                   </div>
                 ))}
               </div>

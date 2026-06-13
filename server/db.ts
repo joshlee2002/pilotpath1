@@ -571,3 +571,28 @@ export async function createCalcSession(data: Omit<InsertCalcSession, "id" | "cr
     console.error("[DB] createCalcSession failed:", e);
   }
 }
+
+// ─── Public Platform Stats (homepage) ───────────────────────────────────────
+export async function getPublicPlatformStats() {
+  const db = await getDb();
+  if (!db) return { totalAssessments: 0, avgScore: 0, mostCommonBarrier: "Finance" };
+
+  const allLeads = await db.select({
+    leadScore: leads.leadScore,
+    biggestConcern: leads.biggestConcern,
+  }).from(leads);
+
+  const totalAssessments = allLeads.length;
+  const avgScore = totalAssessments > 0
+    ? Math.round(allLeads.reduce((s, l) => s + (l.leadScore ?? 0), 0) / totalAssessments)
+    : 0;
+
+  const barrierMap: Record<string, number> = {};
+  for (const l of allLeads) {
+    const b = l.biggestConcern ?? "Finance";
+    barrierMap[b] = (barrierMap[b] ?? 0) + 1;
+  }
+  const mostCommonBarrier = Object.entries(barrierMap).sort((a, b) => b[1] - a[1])[0]?.[0] ?? "Finance";
+
+  return { totalAssessments, avgScore, mostCommonBarrier };
+}
