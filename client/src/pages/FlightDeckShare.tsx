@@ -1,22 +1,15 @@
-import { useState, useEffect } from "react";
-import { useLocation, Link } from "wouter";
-import { scoreFlightDeckQuiz, FlightDeckResult, FlightDeckInput } from "@/lib/flightDeckScoring";
+import { useParams, Link } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
+import { FlightDeckResult } from "@/lib/flightDeckScoring";
 import {
   Plane,
-  Share2,
   ArrowRight,
   AlertCircle,
   Star,
   Zap,
   RefreshCw,
-  ChevronRight,
-  Link2,
-  CheckCircle2,
 } from "lucide-react";
 
-// ─── Score ring ───────────────────────────────────────────────────────────────
 function ScoreRing({ score, phase }: { score: number; phase: string }) {
   const radius = 54;
   const circumference = 2 * Math.PI * radius;
@@ -49,56 +42,47 @@ function ScoreRing({ score, phase }: { score: number; phase: string }) {
   );
 }
 
-// ─── Main component ───────────────────────────────────────────────────────────
-export default function FlightDeckResults() {
-  const [, navigate] = useLocation();
-  const [result, setResult] = useState<FlightDeckResult | null>(null);
-  const [shareId, setShareId] = useState<string | null>(null);
-  const [linkCopied, setLinkCopied] = useState(false);
-  const saveShare = trpc.flightDeck.saveShare.useMutation({
-    onSuccess: (data) => setShareId(data.shareId),
-  });
-  useEffect(() => {
-    document.title = "Your Pilot Profile | AviatorIQ";
-    const stored = sessionStorage.getItem("flightDeckAnswers");
-    if (!stored) {
-      navigate("/quiz/flight-deck");
-      return;
-    }
-    try {
-      const answers = JSON.parse(stored) as FlightDeckInput;
-      const scored = scoreFlightDeckQuiz(answers);
-      setResult(scored);
-      // Save to DB for shareable URL
-      saveShare.mutate({ resultJson: JSON.stringify(scored) });
-    } catch {
-      navigate("/quiz/flight-deck");
-    }
-  }, [navigate]);
-  if (!result) return null;
-  const shareUrl = shareId
-    ? `${window.location.origin}/quiz/flight-deck/share/${shareId}`
-    : `${window.location.origin}/quiz/flight-deck`;
-  const handleCopyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      setLinkCopied(true);
-      toast.success("Link copied!");
-      setTimeout(() => setLinkCopied(false), 3000);
-    } catch {
-      toast.error("Could not copy link");
-    }
-  };
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({ title: "What's Really Stopping You Becoming A Pilot?", text: result.shareText, url: shareUrl }).catch(() => {});
-    } else {
-      window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(result.shareText + "\n" + shareUrl)}`,
-        "_blank"
-      );
-    }
-  };
+export default function FlightDeckShare() {
+  const params = useParams<{ shareId: string }>();
+  const shareId = params.shareId ?? "";
+
+  const { data, isLoading, isError } = trpc.flightDeck.getShare.useQuery(
+    { shareId },
+    { enabled: !!shareId }
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
+        <div className="text-white/40 text-sm animate-pulse">Loading result...</div>
+      </div>
+    );
+  }
+
+  if (isError || !data) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
+        <AlertCircle className="w-10 h-10 text-white/30" />
+        <p className="text-white/60 text-sm">This result link has expired or does not exist.</p>
+        <Link href="/quiz/flight-deck">
+          <button className="mt-2 px-5 py-2.5 rounded-xl bg-white/10 text-white text-sm hover:bg-white/15 transition-colors">
+            Take the quiz
+          </button>
+        </Link>
+      </div>
+    );
+  }
+
+  let result: FlightDeckResult;
+  try {
+    result = JSON.parse(data.resultJson) as FlightDeckResult;
+  } catch {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
+        <p className="text-white/40 text-sm">Unable to load this result.</p>
+      </div>
+    );
+  }
 
   const barrierColour =
     result.phase === "Flight Ready"
@@ -109,42 +93,29 @@ export default function FlightDeckResults() {
 
   return (
     <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
-      {/* Header */}
       <header className="flex items-center justify-between px-6 py-4 border-b border-white/10">
         <Link href="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
           <Plane className="w-5 h-5 text-[var(--color-gold)]" />
           <span className="font-display font-bold text-sm">AviatorIQ</span>
         </Link>
-        <button onClick={handleShare} className="flex items-center gap-1.5 text-white/45 hover:text-white/70 text-xs transition-colors">
-          <Share2 className="w-4 h-4" />
-          Share result
-        </button>
+        <span className="text-white/30 text-xs">Shared result</span>
       </header>
-
-      <div className="max-w-xl mx-auto px-4 py-10 space-y-4">
-
-        {/* ── Headline card ── */}
+      <div className="bg-white/5 border-b border-white/10 px-6 py-3 text-center">
+        <p className="text-white/45 text-xs">Someone shared their AviatorIQ pilot profile with you.</p>
+      </div>
+      <div className="max-w-lg mx-auto px-4 py-8 space-y-4">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-7 text-center">
-          <p className="text-white/35 text-xs uppercase tracking-widest mb-5">Your pilot profile</p>
-          <h1 className="text-2xl md:text-2xl font-display font-bold text-white mb-2 leading-tight">
-            {result.headline}
-          </h1>
-          <p className="text-white/60 text-sm leading-relaxed max-w-sm mx-auto mb-6">
-            {result.subheadline}
-          </p>
+          <p className="text-white/35 text-xs uppercase tracking-widest mb-5">Their pilot profile</p>
+          <h1 className="text-2xl font-display font-bold text-white mb-2 leading-tight">{result.headline}</h1>
+          <p className="text-white/60 text-sm leading-relaxed max-w-sm mx-auto mb-6">{result.subheadline}</p>
           <ScoreRing score={result.score} phase={result.phase} />
         </div>
-
-        {/* ── Archetype ── */}
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <p className="text-white/35 text-xs uppercase tracking-widest mb-2">You are</p>
+          <p className="text-white/35 text-xs uppercase tracking-widest mb-2">Archetype</p>
           <p className="font-display font-bold text-white text-lg mb-2">{result.archetype}</p>
           <p className="text-white/60 text-sm leading-relaxed">{result.archetypeDescription}</p>
         </div>
-
-        {/* ── Two-column: Barrier + Asset ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {/* Biggest barrier */}
           <div className={`rounded-2xl border p-5 ${barrierColour}`}>
             <div className="flex items-center gap-2 mb-2">
               <AlertCircle className="w-4 h-4 shrink-0" />
@@ -153,8 +124,6 @@ export default function FlightDeckResults() {
             <p className="font-display font-bold text-white text-xl mb-2">{result.biggestBarrier}</p>
             <p className="text-white/65 text-sm leading-relaxed">{result.barrierAdvice}</p>
           </div>
-
-          {/* Strongest asset */}
           <div className="rounded-2xl border border-[var(--color-gold)]/30 bg-[var(--color-gold)]/8 p-5">
             <div className="flex items-center gap-2 mb-2">
               <Star className="w-4 h-4 text-[var(--color-gold)] shrink-0" />
@@ -164,58 +133,36 @@ export default function FlightDeckResults() {
             <p className="text-white/65 text-sm leading-relaxed">{result.assetDescription}</p>
           </div>
         </div>
-
-        {/* ── Next action ── */}
         <div className="rounded-2xl border border-white/15 bg-white/5 p-5">
           <div className="flex items-center gap-2 mb-2">
             <Zap className="w-4 h-4 text-[var(--color-gold)] shrink-0" />
-            <p className="text-xs uppercase tracking-wider font-semibold text-white/50">Your next action</p>
+            <p className="text-xs uppercase tracking-wider font-semibold text-white/50">Their next action</p>
           </div>
           <p className="text-white font-semibold text-base leading-relaxed">{result.nextAction}</p>
         </div>
-
-        {/* ── Main CTA ── */}
         <div className="rounded-2xl border border-[var(--color-gold)]/25 bg-[var(--color-gold)]/5 p-6 text-center">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Go deeper</p>
-          <h2 className="text-xl font-display font-bold text-white mb-2">
-            Career Readiness Assessment
-          </h2>
+          <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Curious about your own profile?</p>
+          <h2 className="text-xl font-display font-bold text-white mb-2">Find your biggest barrier</h2>
           <p className="text-white/55 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
-            10 minutes. Get your full AviatorIQ Score, an AI-generated training roadmap, a breakdown of your specific barriers, and matched flight schools — completely free.
+            Take the free 2-minute Flight Deck quiz and discover what is really stopping you becoming a pilot.
           </p>
-          <Link href="/quiz">
+          <Link href="/quiz/flight-deck">
             <button className="w-full py-4 rounded-xl bg-[var(--color-gold)] text-[var(--color-navy)] font-bold text-sm hover:bg-[var(--color-gold)]/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-              Take the Career Readiness Assessment
+              Take the Flight Deck Quiz
               <ArrowRight className="w-4 h-4" />
             </button>
           </Link>
           <div className="flex items-center justify-center gap-4 mt-3 text-white/25 text-xs">
-            <span>✓ Free PDF blueprint</span>
-            <span>✓ Matched schools</span>
-            <span>✓ AI roadmap</span>
+            <span>Free</span>
+            <span>2 minutes</span>
+            <span>Instant result</span>
           </div>
         </div>
-
-        {/* ── Secondary actions ── */}
-        <div className="flex items-center justify-center gap-6 pb-6">
-          <button onClick={handleCopyLink} className="flex items-center gap-1.5 text-white/30 hover:text-white/55 text-xs transition-colors">
-            {linkCopied ? <CheckCircle2 className="w-3.5 h-3.5 text-green-400" /> : <Link2 className="w-3.5 h-3.5" />}
-            {linkCopied ? "Copied!" : "Copy link"}
-          </button>
-          <button onClick={handleShare} className="flex items-center gap-1.5 text-white/30 hover:text-white/55 text-xs transition-colors">
-            <Share2 className="w-3.5 h-3.5" />
-            Share
-          </button>
+        <div className="flex items-center justify-center pb-6">
           <Link href="/quiz/flight-deck">
             <button className="flex items-center gap-1.5 text-white/30 hover:text-white/55 text-xs transition-colors">
               <RefreshCw className="w-3.5 h-3.5" />
-              Retake
-            </button>
-          </Link>
-          <Link href="/schools">
-            <button className="flex items-center gap-1 text-white/30 hover:text-white/55 text-xs transition-colors">
-              Browse schools
-              <ChevronRight className="w-3 h-3" />
+              Take the quiz yourself
             </button>
           </Link>
         </div>

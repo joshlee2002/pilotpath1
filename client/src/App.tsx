@@ -30,6 +30,7 @@ import LicenceQuizResults from "./pages/LicenceQuizResults";
 // Flight Deck quiz (top-of-funnel)
 import FlightDeckQuiz from "./pages/FlightDeckQuiz";
 import FlightDeckResults from "./pages/FlightDeckResults";
+import FlightDeckShare from "./pages/FlightDeckShare";
 
 // Admin
 import AdminDashboard from "./pages/AdminDashboard";
@@ -60,6 +61,7 @@ function Router() {
       {/* Flight Deck quiz (top-of-funnel) */}
       <Route path="/quiz/flight-deck" component={FlightDeckQuiz} />
       <Route path="/quiz/flight-deck/results" component={FlightDeckResults} />
+      <Route path="/quiz/flight-deck/share/:shareId" component={FlightDeckShare} />
 
       {/* Directory & tools */}
       <Route path="/schools" component={Schools} />

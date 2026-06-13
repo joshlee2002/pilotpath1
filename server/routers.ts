@@ -34,7 +34,8 @@ import {
 import { scoreLead } from "./scoring";
 import { generatePilotBlueprint } from "./pdfReport";
 import { scoreLicenceQuiz } from "./licenceQuizScoring";
-import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail } from "./db";
+import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail, createFinanceInterest, createFlightDeckShare, getFlightDeckShare } from "./db";
+import { nanoid } from "nanoid";
 
 // ─── Admin guard ──────────────────────────────────────────────────────────────
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -651,6 +652,46 @@ Use honest, direct language. If their barrier is funding, say so clearly and giv
     }),
   }),
 
+  // ─── Finance Interest ──────────────────────────────────────────────────────
+  finance: router({
+    submitInterest: publicProcedure
+      .input(z.object({
+        name: z.string().min(2),
+        email: z.string().email(),
+        phone: z.string().optional(),
+        trainingRoute: z.enum(["integrated", "modular", "unsure"]).optional(),
+        estimatedBudget: z.enum(["under50k", "50k_80k", "80k_100k", "over100k", "unsure"]).optional(),
+        message: z.string().optional(),
+        source: z.string().optional(),
+        leadId: z.number().optional(),
+        consentToContact: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        const id = await createFinanceInterest(input);
+        await notifyOwner({
+          title: "New Finance Interest Lead",
+          content: `Name: ${input.name}\nEmail: ${input.email}\nPhone: ${input.phone ?? "N/A"}\nRoute: ${input.trainingRoute ?? "N/A"}\nBudget: ${input.estimatedBudget ?? "N/A"}\nSource: ${input.source ?? "N/A"}`,
+        });
+        return { success: true, id };
+      }),
+  }),
+  // ─── Flight Deck Share ───────────────────────────────────────────────────────
+  flightDeck: router({
+    saveShare: publicProcedure
+      .input(z.object({ resultJson: z.string() }))
+      .mutation(async ({ input }) => {
+        const shareId = nanoid(12);
+        await createFlightDeckShare(shareId, input.resultJson);
+        return { shareId };
+      }),
+    getShare: publicProcedure
+      .input(z.object({ shareId: z.string() }))
+      .query(async ({ input }) => {
+        const resultJson = await getFlightDeckShare(input.shareId);
+        if (!resultJson) throw new TRPCError({ code: "NOT_FOUND", message: "Share not found" });
+        return { resultJson };
+      }),
+  }),
   // ─── Analytics (admin only) ───────────────────────────────────────────────
   analytics: router({
     overview: adminProcedure.query(async () => {

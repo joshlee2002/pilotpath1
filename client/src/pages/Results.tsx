@@ -150,6 +150,18 @@ export default function Results() {
     onError: () => setRoadmapError(true),
   });
   const requestIntros = trpc.introductions.requestIntroductions.useMutation();
+  const [financeFormOpen, setFinanceFormOpen] = useState(false);
+  const [financeSubmitted, setFinanceSubmitted] = useState(false);
+  const [financeName, setFinanceName] = useState("");
+  const [financeEmail, setFinanceEmail] = useState("");
+  const [financePhone, setFinancePhone] = useState("");
+  const [financeRoute, setFinanceRoute] = useState<"integrated" | "modular" | "unsure">("unsure");
+  const [financeBudget, setFinanceBudget] = useState<"under50k" | "50k_80k" | "80k_100k" | "over100k" | "unsure">("unsure");
+  const [financeConsent, setFinanceConsent] = useState(false);
+  const submitFinanceInterest = trpc.finance.submitInterest.useMutation({
+    onSuccess: () => { setFinanceSubmitted(true); toast.success("We'll be in touch with finance guidance."); },
+    onError: () => toast.error("Something went wrong. Please try again."),
+  });
 
   useEffect(() => {
     if (resultQuery.data && !roadmap && !roadmapMutation.isPending && !roadmapMutation.isSuccess) {
@@ -637,6 +649,77 @@ export default function Results() {
             </div>
           ) : null}
 
+          {/* ── Finance Referral Card ── */}
+          <div className="card-base p-6 border-2 border-[var(--color-primary)] bg-gradient-to-br from-[var(--color-primary-light)] to-white animate-fade-in-up">
+            <div className="flex items-start gap-4 mb-4">
+              <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center flex-shrink-0">
+                <PoundSterling className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h3 className="font-display font-bold text-[var(--color-navy)] text-lg mb-1">Get free finance guidance</h3>
+                <p className="text-sm text-[var(--color-muted-foreground)]">Funding is the biggest barrier for most aspiring pilots. Leave your details and we will connect you with specialist aviation finance guidance — no obligation, no hard sell.</p>
+              </div>
+            </div>
+            {financeSubmitted ? (
+              <div className="flex items-center gap-2 text-green-700 bg-green-50 rounded-lg p-3">
+                <CheckCircle2 className="w-5 h-5" />
+                <span className="text-sm font-semibold">Received — we will be in touch shortly.</span>
+              </div>
+            ) : !financeFormOpen ? (
+              <button onClick={() => setFinanceFormOpen(true)} className="btn-cta text-sm w-full sm:w-auto">
+                Get finance guidance <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <div className="space-y-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--color-navy)] mb-1">Your name *</label>
+                    <input value={financeName} onChange={e => setFinanceName(e.target.value)} placeholder="Full name" className="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--color-navy)] mb-1">Email address *</label>
+                    <input value={financeEmail} onChange={e => setFinanceEmail(e.target.value)} placeholder="you@example.com" type="email" className="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--color-navy)] mb-1">Phone (optional)</label>
+                    <input value={financePhone} onChange={e => setFinancePhone(e.target.value)} placeholder="07xxx xxxxxx" className="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-[var(--color-navy)] mb-1">Training route</label>
+                    <select value={financeRoute} onChange={e => setFinanceRoute(e.target.value as any)} className="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+                      <option value="unsure">Not sure yet</option>
+                      <option value="integrated">Integrated ATPL</option>
+                      <option value="modular">Modular</option>
+                    </select>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-semibold text-[var(--color-navy)] mb-1">Estimated training budget</label>
+                    <select value={financeBudget} onChange={e => setFinanceBudget(e.target.value as any)} className="w-full border border-[var(--color-border)] rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]">
+                      <option value="unsure">Not sure yet</option>
+                      <option value="under50k">Under £50,000</option>
+                      <option value="50k_80k">£50,000 – £80,000</option>
+                      <option value="80k_100k">£80,000 – £100,000</option>
+                      <option value="over100k">Over £100,000</option>
+                    </select>
+                  </div>
+                </div>
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input type="checkbox" checked={financeConsent} onChange={e => setFinanceConsent(e.target.checked)} className="mt-0.5" />
+                  <span className="text-xs text-[var(--color-muted-foreground)]">I consent to being contacted with finance guidance. I understand this is not financial advice.</span>
+                </label>
+                <button
+                  onClick={() => {
+                    if (!financeName || !financeEmail || !financeConsent) { toast.error("Please fill in your name, email, and consent."); return; }
+                    submitFinanceInterest.mutate({ name: financeName, email: financeEmail, phone: financePhone || undefined, trainingRoute: financeRoute, estimatedBudget: financeBudget, source: "results_page", leadId: leadId || undefined, consentToContact: financeConsent });
+                  }}
+                  disabled={submitFinanceInterest.isPending}
+                  className="btn-cta text-sm w-full"
+                >
+                  {submitFinanceInterest.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : "Submit"}
+                </button>
+              </div>
+            )}
+          </div>
           {/* ── Final CTA ── */}
           <div className="card-base p-6 bg-[var(--color-navy)] text-white text-center">
             <Clock className="w-8 h-8 text-[var(--color-cta)] mx-auto mb-3" />

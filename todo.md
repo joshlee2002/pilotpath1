@@ -195,3 +195,20 @@
 - [x] Update PublicNav Quizzes link to point to /quiz/flight-deck
 - [x] Write vitest tests for flightDeckScoring engine (10 tests)
 - [x] Write vitest tests for licenceQuizScoring engine (8 tests)
+
+## Phase 17 – Monetisation: Finance Referral, Shareable Results, Guide Rewrites
+- [x] finance_interests table added to schema and applied to live DB
+- [x] flight_deck_shares table added to schema and applied to live DB
+- [x] Finance referral lead capture card on Results page (email, name, phone capture + owner notification)
+- [x] Finance referral card on FlightDeckResults page
+- [x] Shareable Flight Deck result URL at /quiz/flight-deck/share/:shareId
+- [x] Copy-link button on FlightDeckResults page (saves result to DB, generates share URL)
+- [x] FlightDeckShare public page (loads result by shareId, CTA to take quiz)
+- [x] Rewrite HowToBecomePilot guide (12 min, 6+ sections, tables, quiz CTA)
+- [x] Rewrite AirlinePilotSalary guide (8 min, salary tables, airline comparison)
+- [x] Rewrite Class1Medical guide (10 min, conditions table, AME info)
+- [x] Rewrite FinanceGuide (10 min, funding sources table, cadet programmes)
+- [x] Rewrite IntegratedVsModular guide (9 min, comparison table)
+- [x] Rewrite PilotTrainingCosts guide (11 min, full cost breakdown table)
+- [x] Rewrite BestRouteToAirline guide (9 min, cadet programme table)
+- [x] Rewrite TrainingTimeline guide (8 min, timeline table)

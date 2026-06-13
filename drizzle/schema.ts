@@ -206,3 +206,30 @@ export const licenceQuizLeads = mysqlTable("licence_quiz_leads", {
 
 export type LicenceQuizLead = typeof licenceQuizLeads.$inferSelect;
 export type InsertLicenceQuizLead = typeof licenceQuizLeads.$inferInsert;
+
+// ─── Finance Interest Leads ───────────────────────────────────────────────────
+export const financeInterests = mysqlTable("finance_interests", {
+  id: int("id").autoincrement().primaryKey(),
+  name: varchar("name", { length: 200 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  phone: varchar("phone", { length: 50 }),
+  trainingRoute: varchar("trainingRoute", { length: 50 }),  // integrated | modular | unsure
+  estimatedBudget: varchar("estimatedBudget", { length: 50 }), // under50k | 50k_80k | 80k_100k | over100k | unsure
+  message: text("message"),
+  source: varchar("source", { length: 100 }),  // results_page | flight_deck_results | other
+  leadId: int("leadId"),  // optional FK to leads table
+  consentToContact: boolean("consentToContact").default(false).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type FinanceInterest = typeof financeInterests.$inferSelect;
+export type InsertFinanceInterest = typeof financeInterests.$inferInsert;
+
+// ─── Flight Deck Shares ───────────────────────────────────────────────────────
+export const flightDeckShares = mysqlTable("flight_deck_shares", {
+  id: int("id").autoincrement().primaryKey(),
+  shareId: varchar("shareId", { length: 32 }).notNull().unique(),
+  resultJson: text("resultJson").notNull(),  // serialised FlightDeckResult JSON
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type FlightDeckShare = typeof flightDeckShares.$inferSelect;
+export type InsertFlightDeckShare = typeof flightDeckShares.$inferInsert;

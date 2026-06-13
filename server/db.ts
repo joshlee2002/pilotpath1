@@ -514,3 +514,47 @@ export async function getLicenceQuizStats(): Promise<Record<string, { total: num
     ])
   );
 }
+
+// ─── Finance Interest helpers ─────────────────────────────────────────────────
+import { financeInterests, flightDeckShares } from "../drizzle/schema";
+
+export async function createFinanceInterest(data: {
+  name: string;
+  email: string;
+  phone?: string;
+  trainingRoute?: string;
+  estimatedBudget?: string;
+  message?: string;
+  source?: string;
+  leadId?: number;
+  consentToContact: boolean;
+}): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db.insert(financeInterests).values({
+    name: data.name,
+    email: data.email,
+    phone: data.phone ?? null,
+    trainingRoute: data.trainingRoute ?? null,
+    estimatedBudget: data.estimatedBudget ?? null,
+    message: data.message ?? null,
+    source: data.source ?? null,
+    leadId: data.leadId ?? null,
+    consentToContact: data.consentToContact,
+  });
+  return (result as any)[0]?.insertId ?? null;
+}
+
+// ─── Flight Deck Share helpers ────────────────────────────────────────────────
+export async function createFlightDeckShare(shareId: string, resultJson: string): Promise<void> {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(flightDeckShares).values({ shareId, resultJson });
+}
+
+export async function getFlightDeckShare(shareId: string): Promise<string | null> {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db.select().from(flightDeckShares).where(eq(flightDeckShares.shareId, shareId)).limit(1);
+  return rows[0]?.resultJson ?? null;
+}
