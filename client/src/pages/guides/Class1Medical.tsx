@@ -7,6 +7,15 @@ const Class1Medical: React.FC = () => {
     <GuideLayout
       title="Class 1 Medical for Pilots: What to Expect and How to Pass"
       subtitle="A complete guide to the CAA Class 1 medical examination — what it tests, what can disqualify you, and what to do if you have a pre-existing condition."
+      canonical="/guides/class-1-medical"
+      metaDescription="Class 1 medical guide for pilots 2025: what the CAA tests, what conditions can disqualify you, how to prepare, and what to do if you have a pre-existing condition."
+      faqSchema={[
+        { question: "What does a Class 1 medical test for pilots?", answer: "The CAA Class 1 medical tests vision, hearing, cardiovascular health, neurological function, mental health, respiratory function, and general physical fitness. It includes blood tests, ECG, lung function tests and a full physical examination." },
+        { question: "Can I become a pilot with anxiety or depression?", answer: "It depends on severity and treatment. Mild, well-controlled anxiety or depression does not automatically disqualify you. The CAA assesses each case individually. Some antidepressants are now accepted. Always disclose conditions honestly to an AME." },
+        { question: "How much does a Class 1 medical cost in the UK?", answer: "A Class 1 medical with a CAA-approved Aeromedical Examiner (AME) typically costs £700–£1,500 for the initial examination. Renewals are cheaper. The CAA recommends getting your medical before committing to expensive training." },
+        { question: "Can I fly with glasses or contact lenses?", answer: "Yes. Corrected vision is acceptable for a Class 1 medical provided your uncorrected vision meets minimum standards. Laser eye surgery is also accepted by the CAA after a suitable recovery period, typically 12 months." },
+        { question: "What should I do if I have a pre-existing medical condition?", answer: "Consult a CAA-approved Aeromedical Examiner (AME) before starting training. An AME can advise whether your condition is likely to be accepted, what documentation you need, and whether you should apply for an OML (Operational Multi-crew Limitation)." },
+      ]}
       readTime="10 min read"
       ctaHref="/quiz/flight-deck"
       ctaText="Check your readiness for free"

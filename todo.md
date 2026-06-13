@@ -221,3 +221,13 @@
 - [x] calc_sessions table added to schema and applied to live DB (analytics)
 - [x] tRPC procedure: saveCalcSession (saves inputs + result for analytics)
 - [x] Write vitest tests for cost calculation engine
+
+- [x] Add SEO meta tags (title, description, canonical) to all guide pages and tool pages
+- [x] Add FAQ schema (JSON-LD) to all guide pages for rich snippets
+- [x] Add Open Graph tags for social sharing
+- [x] Remove direct school website links from Results page matched schools section
+- [x] Remove direct school website links from Schools directory listing cards
+- [x] Make "Request Introduction" the only school CTA on Results and Schools pages
+- [x] Build Integrated vs Modular Decision Tool (/tools/integrated-vs-modular)
+- [x] Build Class 1 Medical Readiness Check (/tools/class-1-medical-check)
+- [x] Add both new tools to nav Tools dropdown and homepage tools section

@@ -7,8 +7,13 @@ const navLinks = [
   { label: "Quizzes", href: "/quiz/flight-deck" },
   { label: "Flight Schools", href: "/schools" },
   { label: "Guides", href: "/guides" },
-  { label: "Cost Calculator", href: "/calculator" },
   { label: "About", href: "/about" },
+];
+
+const toolLinks = [
+  { label: "Cost Calculator", href: "/calculator", desc: "Estimate your total training cost" },
+  { label: "Integrated vs Modular", href: "/tools/integrated-vs-modular", desc: "Find the right training route" },
+  { label: "Medical Readiness Check", href: "/tools/class-1-medical-check", desc: "Assess your Class 1 eligibility" },
 ];
 
 const FOR_SCHOOLS = { label: "For Schools", href: "/partner" };
@@ -74,8 +79,18 @@ function CurrencySwitcher() {
 
 export default function PublicNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const toolsRef = useRef<HTMLDivElement>(null);
   const [location] = useLocation();
   const { currency, setCurrency } = useCurrency();
+
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) setToolsOpen(false);
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-[var(--color-border)] shadow-sm">
@@ -104,6 +119,36 @@ export default function PublicNav() {
                 {link.label}
               </Link>
             ))}
+            {/* Tools dropdown */}
+            <div ref={toolsRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setToolsOpen(!toolsOpen)}
+                className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  toolLinks.some(t => location === t.href)
+                    ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                    : "text-[var(--color-muted-foreground)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-muted)]"
+                }`}
+              >
+                Tools
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${toolsOpen ? "rotate-180" : ""}`} />
+              </button>
+              {toolsOpen && (
+                <div className="absolute left-0 top-full mt-1.5 w-64 bg-white rounded-xl border border-[var(--color-border)] shadow-lg z-50 py-1 animate-fade-in">
+                  {toolLinks.map((t) => (
+                    <Link
+                      key={t.href}
+                      href={t.href}
+                      onClick={() => setToolsOpen(false)}
+                      className="block px-4 py-3 hover:bg-[var(--color-muted)] transition-colors no-underline"
+                    >
+                      <div className="text-sm font-semibold text-[var(--color-navy)]">{t.label}</div>
+                      <div className="text-xs text-[var(--color-muted-foreground)] mt-0.5">{t.desc}</div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* CTA + currency */}
@@ -139,6 +184,19 @@ export default function PublicNav() {
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="block px-4 py-3 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-muted)] rounded-lg no-underline"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <div className="px-4 py-2">
+              <p className="text-xs text-[var(--color-muted-foreground)] mb-1 font-medium uppercase tracking-wide">Tools</p>
+            </div>
+            {toolLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block px-4 py-2.5 text-sm font-medium text-[var(--color-foreground)] hover:bg-[var(--color-muted)] rounded-lg no-underline"
               >
                 {link.label}
               </Link>

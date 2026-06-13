@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useEffect } from "react";
+import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import {
@@ -497,12 +497,25 @@ function CtaBannerSection() {
 }
 
 export default function Home() {
-  useEffect(() => {
-    document.title = "AviatorIQ – What's Really Stopping You Becoming A Pilot?";
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="AviatorIQ – What's Really Stopping You Becoming A Pilot?"
+        description="Find your best route into pilot training. Take the free AviatorIQ career assessment and get a personalised pilot training roadmap matched to real flight schools."
+        canonical="/"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "name": "AviatorIQ",
+          "url": "https://aviatoriq.com",
+          "description": "The decision platform for people thinking about becoming a pilot.",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://aviatoriq.com/schools?search={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }}
+      />
       <PublicNav />
       <main className="flex-1">
         <HeroSection />

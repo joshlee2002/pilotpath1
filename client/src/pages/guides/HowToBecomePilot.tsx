@@ -6,6 +6,15 @@ const HowToBecomePilot = () => {
     <GuideLayout
       title="How to Become a Pilot in the UK (2025 Complete Guide)"
       subtitle="Everything you need to know about pilot training routes, costs, timelines and requirements — from zero experience to airline cockpit."
+      canonical="/guides/how-to-become-a-pilot"
+      metaDescription="Step-by-step guide to becoming a pilot in the UK in 2025. Covers training routes (integrated vs modular), costs, medical requirements, timelines and how to get your first airline job."
+      faqSchema={[
+        { question: "How long does it take to become a pilot in the UK?", answer: "Integrated ATPL training takes 18–24 months full-time. Modular training typically takes 3–5 years part-time. From zero experience to airline first officer usually takes 2–4 years depending on the route." },
+        { question: "How much does it cost to become a pilot in the UK?", answer: "Integrated ATPL training costs £90,000–£130,000. Modular ATPL training costs £40,000–£80,000 depending on how many modules you complete and where. A PPL alone costs £8,000–£15,000." },
+        { question: "Do I need a degree to become a pilot?", answer: "No. Airlines do not require a degree to become a pilot. You need GCSEs in Maths and English, pass a Class 1 medical, and complete ATPL training. Some airlines prefer A-levels or equivalent." },
+        { question: "What is the minimum age to become a commercial pilot?", answer: "You must be at least 18 to obtain a CPL or ATPL. You can start PPL training at 14 and fly solo at 16. There is no upper age limit for private flying, but airline careers are affected by the mandatory retirement age of 65." },
+        { question: "Can I become a pilot with glasses?", answer: "Yes. Corrected vision is acceptable for a Class 1 medical provided your uncorrected vision meets minimum standards and your corrected vision reaches the required level. Laser eye surgery is also accepted by the CAA after a suitable recovery period." },
+      ]}
       readTime="12 min read"
       ctaHref="/quiz"
       ctaText="Find your training route"

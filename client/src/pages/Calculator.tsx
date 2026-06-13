@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { Link } from "wouter";
+import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, ArrowLeft, Calculator as CalcIcon, Info, CheckCircle2, ChevronRight } from "lucide-react";
@@ -326,6 +327,19 @@ export default function Calculator() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--color-background)]">
+      <SEO
+        title="Pilot Training Cost Calculator 2025 | AviatorIQ"
+        description="Get a personalised estimate of your pilot training costs. Choose your route (integrated, modular, PPL), location and funding method. Free, instant, no registration."
+        canonical="/calculator"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "Pilot Training Cost Calculator",
+          description: "Personalised pilot training cost estimator for UK and international routes",
+          url: "https://aviatoriq.com/calculator",
+          applicationCategory: "EducationalApplication",
+        }}
+      />
       <PublicNav />
       <main className="flex-1">
         {/* Hero */}

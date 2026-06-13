@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useEffect } from "react";
+import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, Clock, BookOpen, ChevronRight } from "lucide-react";
@@ -23,6 +23,9 @@ interface GuideLayoutProps {
   relatedGuides?: RelatedGuide[];
   ctaText?: string;
   ctaHref?: string;
+  canonical?: string;
+  metaDescription?: string;
+  faqSchema?: { question: string; answer: string }[];
 }
 
 export default function GuideLayout({
@@ -33,13 +36,40 @@ export default function GuideLayout({
   relatedGuides = [],
   ctaText = "Take the free pilot assessment",
   ctaHref = "/quiz",
+  canonical,
+  metaDescription,
+  faqSchema,
 }: GuideLayoutProps) {
-  useEffect(() => {
-    document.title = `${title} – AviatorIQ`;
-  }, [title]);
+  const schemas: object[] = [];
+
+  if (faqSchema && faqSchema.length > 0) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqSchema.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    });
+  }
+
+  schemas.push({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: title,
+    description: metaDescription || subtitle,
+    publisher: { "@type": "Organization", name: "AviatorIQ", url: "https://aviatoriq.com" },
+  });
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title={`${title} | AviatorIQ`}
+        description={metaDescription || subtitle}
+        canonical={canonical}
+        schema={schemas}
+      />
       <PublicNav />
       <main className="flex-1">
         {/* Hero */}

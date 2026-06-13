@@ -5,6 +5,14 @@ const FinanceGuide = () => {
     <GuideLayout
       title="How to Finance Pilot Training in the UK (2025 Guide)"
       subtitle="Realistic options for funding £80,000–£130,000 of pilot training — from career development loans to airline sponsorship schemes."
+      canonical="/guides/finance-guide"
+      metaDescription="How to finance pilot training in the UK 2025: career development loans, aviation finance providers, airline sponsorship, and how to close the funding gap for £80k–£130k of training."
+      faqSchema={[
+        { question: "Can I get a loan for pilot training in the UK?", answer: "Yes. Options include specialist aviation finance providers (BBVA, FlyNow Finance), Career Development Loans, personal loans, and some flight schools offer payment plans. Interest rates and terms vary significantly." },
+        { question: "Do airlines sponsor pilot training?", answer: "Some airlines run cadet programmes that include funded or part-funded training. These are highly competitive. Examples include Ryanair, easyJet and TUI cadet schemes. Most require you to bond to the airline for a period after qualification." },
+        { question: "How can I become a pilot without rich parents?", answer: "Modular training allows you to fund training in stages while working. Finance options exist for aviation training. Some airlines offer cadet programmes. Scholarships are available from organisations like the Air League and GAPAN." },
+        { question: "What is the cheapest way to become a commercial pilot?", answer: "Modular ATPL training is the cheapest route at £40,000–£80,000, spread over 3–5 years. Training abroad (Spain, USA, South Africa) can reduce costs further. However the cheapest route is not always the fastest or most employment-friendly." },
+      ]}
       readTime="10 min read"
       ctaHref="/quiz"
       ctaText="Get your personalised finance roadmap"

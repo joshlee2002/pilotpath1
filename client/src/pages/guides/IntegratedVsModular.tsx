@@ -5,6 +5,14 @@ export default function IntegratedVsModular() {
     <GuideLayout
       title="Integrated vs Modular ATPL Training: Which Is Right for You?"
       subtitle="An honest comparison of the two main routes to an ATPL — including cost, timeline, employment prospects, and which suits different life situations."
+      canonical="/guides/integrated-vs-modular"
+      metaDescription="Integrated vs modular ATPL training: honest 2025 comparison of cost, timeline, employment prospects and which route suits your situation. Includes a free decision tool."
+      faqSchema={[
+        { question: "What is the difference between integrated and modular ATPL training?", answer: "Integrated training is a single full-time programme (18–24 months, £90k–£130k) that takes you from zero to frozen ATPL. Modular training lets you complete each licence stage separately (3–5 years part-time, £40k–£80k), allowing you to keep working." },
+        { question: "Is integrated or modular training better for getting an airline job?", answer: "Historically integrated graduates had an advantage with some airlines. Today most major airlines accept both routes. What matters more is your total hours, sim performance and interview preparation." },
+        { question: "Can I do modular ATPL training while working full-time?", answer: "Yes. Modular training is specifically designed to allow this. You complete modules in stages — PPL, night rating, instrument rating, CPL, multi-engine, and ATPL theory — around your existing commitments." },
+        { question: "Which is cheaper, integrated or modular ATPL?", answer: "Modular is typically cheaper: £40,000–£80,000 vs £90,000–£130,000 for integrated. However modular takes longer, so you need to factor in living costs and the opportunity cost of training part-time." },
+      ]}
       readTime="9 min read"
       ctaHref="/quiz"
       ctaText="Find your best training route"

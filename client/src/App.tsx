@@ -35,6 +35,10 @@ import FlightDeckShare from "./pages/FlightDeckShare";
 // Admin
 import AdminDashboard from "./pages/AdminDashboard";
 
+// Decision tools
+import IntModDecision from "./pages/IntModDecision";
+import MedicalCheck from "./pages/MedicalCheck";
+
 // Partner page
 import Partner from "./pages/Partner";
 
@@ -66,6 +70,8 @@ function Router() {
       {/* Directory & tools */}
       <Route path="/schools" component={Schools} />
       <Route path="/calculator" component={Calculator} />
+      <Route path="/tools/integrated-vs-modular" component={IntModDecision} />
+      <Route path="/tools/class-1-medical-check" component={MedicalCheck} />
 
       {/* Guides */}
       <Route path="/guides" component={GuidesIndex} />

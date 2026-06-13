@@ -5,6 +5,14 @@ const AirlinePilotSalary = () => {
     <GuideLayout
       title="UK Airline Pilot Salary Guide 2025"
       subtitle="Real salary figures for first officers and captains at UK airlines — including base pay, allowances, and what affects your earnings."
+      canonical="/guides/airline-pilot-salary"
+      metaDescription="UK airline pilot salary 2025: first officer pay £30k–£55k, captain pay £80k–£150k+. Real figures from easyJet, Ryanair, British Airways and more."
+      faqSchema={[
+        { question: "How much do airline pilots earn in the UK?", answer: "UK airline first officers typically earn £30,000–£55,000. Captains earn £80,000–£150,000+. Pay varies significantly by airline, aircraft type, seniority and whether you receive allowances and bonuses." },
+        { question: "How much do easyJet pilots earn?", answer: "easyJet first officers typically earn £45,000–£65,000. Captains earn £100,000–£140,000+. Pay includes base salary, sector pay and allowances." },
+        { question: "How long does it take to become a captain?", answer: "Typically 8–15 years from starting training, depending on the airline and your seniority progression. Some low-cost carriers promote first officers to captain faster due to rapid expansion." },
+        { question: "Is pilot training worth the cost given the salary?", answer: "For most who complete training and secure an airline job, yes. The return on investment is positive over a career, but the upfront cost of £90k–£130k is significant and there is no employment guarantee after training." },
+      ]}
       readTime="8 min read"
       ctaHref="/quiz"
       ctaText="Get your personalised pilot roadmap"

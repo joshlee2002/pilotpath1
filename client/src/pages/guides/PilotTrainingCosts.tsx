@@ -5,6 +5,14 @@ export default function PilotTrainingCosts() {
     <GuideLayout
       title="Pilot Training Costs in the UK: The Complete 2025 Breakdown"
       subtitle="A detailed breakdown of every cost involved in becoming an airline pilot in the UK — including hidden costs most guides don't mention."
+      canonical="/guides/pilot-training-costs"
+      metaDescription="Complete 2025 breakdown of UK pilot training costs. Integrated ATPL £90k–£130k, modular £40k–£80k. Includes hidden costs, finance options and a free cost calculator."
+      faqSchema={[
+        { question: "How much does ATPL training cost in the UK?", answer: "Integrated ATPL training costs £90,000–£130,000. Modular ATPL training costs £40,000–£80,000 spread over 3–5 years. Costs vary significantly by school, location and whether you need accommodation." },
+        { question: "Is pilot training worth the debt?", answer: "For most people who complete training and get an airline job, yes. UK airline first officers typically earn £30,000–£55,000 rising to £100,000+ as a captain. However the financial risk is real — there is no guarantee of employment after training." },
+        { question: "Can I get a loan for pilot training?", answer: "Yes. Options include Career Development Loans, specialist aviation finance providers like BBVA and FlyNow Finance, and some schools offer payment plans. Airline cadet programmes sometimes include funding." },
+        { question: "What are the hidden costs of pilot training?", answer: "Beyond tuition, budget for: Class 1 medical (£700–£1,500), ATPL ground school exams (£200–£400), headset (£300–£1,000), accommodation if training abroad, type rating (£20,000–£30,000 if not included), and living costs during training." },
+      ]}
       readTime="11 min read"
       ctaHref="/quiz"
       ctaText="Get a cost estimate for your situation"

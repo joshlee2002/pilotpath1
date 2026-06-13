@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Analytics } from "@/lib/analytics";
@@ -6,20 +6,18 @@ import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { convertPriceString } from "@/lib/currencyUtils";
+import SEO from "@/components/SEO";
 import {
   MapPin,
   Globe,
   CreditCard,
-  Home,
   Building2,
-  ExternalLink,
   Search,
   Filter,
   X,
   Loader2,
   ArrowRight,
-  Phone,
-  Mail,
+  ChevronRight,
 } from "lucide-react";
 
 const COUNTRIES = [
@@ -29,9 +27,6 @@ const COUNTRIES = [
 ];
 
 export default function Schools() {
-  useEffect(() => {
-    document.title = "Flight School Directory – AviatorIQ";
-  }, []);
   const { formatPrice, currency } = useCurrency();
   const [country, setCountry] = useState("");
   const [trainingType, setTrainingType] = useState("");
@@ -62,6 +57,18 @@ export default function Schools() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <SEO
+        title="Flight School Directory UK 2025 | AviatorIQ"
+        description="Browse 54+ UK and international flight schools. Filter by country, training type and finance. Request an introduction through AviatorIQ — we match you with the right school."
+        canonical="/schools"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Flight School Directory",
+          description: "Directory of UK and international flight schools for aspiring pilots",
+          url: "https://aviatoriq.com/schools",
+        }}
+      />
       <PublicNav />
       <main className="flex-1">
         {/* Hero */}
@@ -165,18 +172,6 @@ export default function Schools() {
                           {school.airport && <span className="text-xs">· {school.airport}</span>}
                         </div>
                       </div>
-                      {school.website && (
-                        <a
-                          href={school.website.startsWith("http") ? school.website : `https://${school.website}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => Analytics.schoolRecommendationClicked(school.name)}
-                          className="flex-shrink-0 p-2 rounded-lg bg-[var(--color-muted)] hover:bg-[var(--color-primary-light)] transition-colors"
-                          title="Visit website"
-                        >
-                          <ExternalLink className="w-4 h-4 text-[var(--color-muted-foreground)]" />
-                        </a>
-                      )}
                     </div>
 
                     {/* Course tags */}
@@ -234,27 +229,14 @@ export default function Schools() {
                           </div>
                         )}
                       </div>
-                      <div className="flex gap-2">
-                        {school.contactEmail && (
-                          <a
-                            href={`mailto:${school.contactEmail}`}
-                            onClick={() => Analytics.contactRequested()}
-                            className="p-2 rounded-lg bg-[var(--color-muted)] hover:bg-[var(--color-primary-light)] transition-colors"
-                            title="Send email"
-                          >
-                            <Mail className="w-3.5 h-3.5 text-[var(--color-muted-foreground)]" />
-                          </a>
-                        )}
-                        {school.phone && (
-                          <a
-                            href={`tel:${school.phone}`}
-                            className="p-2 rounded-lg bg-[var(--color-muted)] hover:bg-[var(--color-primary-light)] transition-colors"
-                            title="Call"
-                          >
-                            <Phone className="w-3.5 h-3.5 text-[var(--color-muted-foreground)]" />
-                          </a>
-                        )}
-                      </div>
+                      <Link
+                        href="/quiz"
+                        onClick={() => Analytics.schoolRecommendationClicked(school.name)}
+                        className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-primary)] hover:text-[var(--color-navy)] transition-colors"
+                      >
+                        Request introduction
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </Link>
                     </div>
                   </div>
                 ))}
