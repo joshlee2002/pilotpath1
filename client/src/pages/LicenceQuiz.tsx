@@ -190,7 +190,7 @@ export default function LicenceQuiz() {
             <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-[var(--color-gold)] text-[var(--color-navy)] text-xs font-bold">
               {currentStep + 1}
             </span>
-            <span className="text-white/40 text-xs uppercase tracking-widest">
+            <span className="text-white/65 text-xs uppercase tracking-widest">
               Which Pilot Licence Is Right For You?
             </span>
           </div>
@@ -225,7 +225,7 @@ export default function LicenceQuiz() {
                         {option.label}
                       </span>
                       {option.hint && (
-                        <p className="text-white/45 text-xs mt-0.5">{option.hint}</p>
+                        <p className="text-white/65 text-xs mt-0.5">{option.hint}</p>
                       )}
                     </div>
                     {isSelected ? (
@@ -243,7 +243,7 @@ export default function LicenceQuiz() {
           {currentStep > 0 && (
             <button
               onClick={handleBack}
-              className="mt-6 flex items-center gap-1.5 text-white/40 hover:text-white/70 text-sm transition-colors"
+              className="mt-6 flex items-center gap-1.5 text-white/55 hover:text-white/80 text-sm transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -264,7 +264,7 @@ export default function LicenceQuiz() {
 
       {/* Footer note */}
       <div className="text-center pb-6 px-4">
-        <p className="text-white/25 text-xs">
+        <p className="text-white/55 text-xs">
           Free · No registration required · Takes 2–3 minutes
         </p>
       </div>

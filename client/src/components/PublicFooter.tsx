@@ -94,7 +94,7 @@ export default function PublicFooter() {
               </Link>
             ))}
           </div>
-          <p className="text-xs text-white/40">
+          <p className="text-xs text-white/60">
             Guidance only — not official career, medical or financial advice.
           </p>
         </div>

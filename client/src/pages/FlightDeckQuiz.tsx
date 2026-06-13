@@ -141,7 +141,7 @@ export default function FlightDeckQuiz() {
           <span className="font-display font-bold text-sm">AviatorIQ</span>
         </Link>
         <div className="flex items-center gap-3">
-          <span className="text-white/40 text-xs">{currentStep + 1} / {STEPS.length}</span>
+          <span className="text-white/70 text-xs">{currentStep + 1} / {STEPS.length}</span>
         </div>
       </header>
 
@@ -157,7 +157,7 @@ export default function FlightDeckQuiz() {
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-10">
         <div className="w-full max-w-lg">
           {/* Quiz label */}
-          <p className="text-white/35 text-xs uppercase tracking-widest mb-5 text-center">
+          <p className="text-white/60 text-xs uppercase tracking-widest mb-5 text-center">
             What's Really Stopping You?
           </p>
 
@@ -194,7 +194,7 @@ export default function FlightDeckQuiz() {
                         {option.label}
                       </span>
                       {option.hint && (
-                        <p className="text-white/40 text-xs mt-0.5">{option.hint}</p>
+                        <p className="text-white/65 text-xs mt-0.5">{option.hint}</p>
                       )}
                     </div>
                     {isSelected ? (
@@ -212,7 +212,7 @@ export default function FlightDeckQuiz() {
           {currentStep > 0 && (
             <button
               onClick={handleBack}
-              className="mt-6 flex items-center gap-1.5 text-white/35 hover:text-white/60 text-sm transition-colors mx-auto"
+              className="mt-6 flex items-center gap-1.5 text-white/55 hover:text-white/80 text-sm transition-colors mx-auto"
             >
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -231,7 +231,7 @@ export default function FlightDeckQuiz() {
       </div>
 
       <div className="text-center pb-6 px-4">
-        <p className="text-white/20 text-xs">
+        <p className="text-white/50 text-xs">
           Free · No registration · 7 questions · Takes 2 minutes
         </p>
       </div>

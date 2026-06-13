@@ -31,13 +31,13 @@ function ScoreRing({ score, phase }: { score: number; phase: string }) {
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-3xl font-display font-bold text-white leading-none">{score}</span>
-          <span className="text-white/40 text-xs mt-1">/ 100</span>
+          <span className="text-white/60 text-xs mt-1">/ 100</span>
         </div>
       </div>
       <div className="mt-2 px-3 py-1 rounded-full text-xs font-bold text-white" style={{ backgroundColor: phaseColour }}>
         {phaseLabel}
       </div>
-      <p className="text-white/30 text-xs mt-1.5">Flight Potential Score</p>
+      <p className="text-white/60 text-xs mt-1.5">Flight Potential Score</p>
     </div>
   );
 }
@@ -54,7 +54,7 @@ export default function FlightDeckShare() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
-        <div className="text-white/40 text-sm animate-pulse">Loading result...</div>
+        <div className="text-white/65 text-sm animate-pulse">Loading result...</div>
       </div>
     );
   }
@@ -79,7 +79,7 @@ export default function FlightDeckShare() {
   } catch {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ background: "linear-gradient(135deg, #0a1628 0%, #1a2d4e 60%, #0f2040 100%)" }}>
-        <p className="text-white/40 text-sm">Unable to load this result.</p>
+        <p className="text-white/65 text-sm">Unable to load this result.</p>
       </div>
     );
   }
@@ -98,20 +98,20 @@ export default function FlightDeckShare() {
           <Plane className="w-5 h-5 text-[var(--color-gold)]" />
           <span className="font-display font-bold text-sm">AviatorIQ</span>
         </Link>
-        <span className="text-white/30 text-xs">Shared result</span>
+        <span className="text-white/60 text-xs">Shared result</span>
       </header>
       <div className="bg-white/5 border-b border-white/10 px-6 py-3 text-center">
-        <p className="text-white/45 text-xs">Someone shared their AviatorIQ pilot profile with you.</p>
+        <p className="text-white/70 text-xs">Someone shared their AviatorIQ pilot profile with you.</p>
       </div>
       <div className="max-w-lg mx-auto px-4 py-8 space-y-4">
         <div className="rounded-2xl border border-white/10 bg-white/5 p-7 text-center">
-          <p className="text-white/35 text-xs uppercase tracking-widest mb-5">Their pilot profile</p>
+          <p className="text-white/65 text-xs uppercase tracking-widest mb-5">Their pilot profile</p>
           <h1 className="text-2xl font-display font-bold text-white mb-2 leading-tight">{result.headline}</h1>
           <p className="text-white/60 text-sm leading-relaxed max-w-sm mx-auto mb-6">{result.subheadline}</p>
           <ScoreRing score={result.score} phase={result.phase} />
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-          <p className="text-white/35 text-xs uppercase tracking-widest mb-2">Archetype</p>
+          <p className="text-white/65 text-xs uppercase tracking-widest mb-2">Archetype</p>
           <p className="font-display font-bold text-white text-lg mb-2">{result.archetype}</p>
           <p className="text-white/60 text-sm leading-relaxed">{result.archetypeDescription}</p>
         </div>
@@ -141,7 +141,7 @@ export default function FlightDeckShare() {
           <p className="text-white font-semibold text-base leading-relaxed">{result.nextAction}</p>
         </div>
         <div className="rounded-2xl border border-[var(--color-gold)]/25 bg-[var(--color-gold)]/5 p-6 text-center">
-          <p className="text-white/40 text-xs uppercase tracking-widest mb-3">Curious about your own profile?</p>
+          <p className="text-white/65 text-xs uppercase tracking-widest mb-3">Curious about your own profile?</p>
           <h2 className="text-xl font-display font-bold text-white mb-2">Find your biggest barrier</h2>
           <p className="text-white/55 text-sm mb-5 max-w-sm mx-auto leading-relaxed">
             Take the free 2-minute Flight Deck quiz and discover what is really stopping you becoming a pilot.
@@ -152,7 +152,7 @@ export default function FlightDeckShare() {
               <ArrowRight className="w-4 h-4" />
             </button>
           </Link>
-          <div className="flex items-center justify-center gap-4 mt-3 text-white/25 text-xs">
+          <div className="flex items-center justify-center gap-4 mt-3 text-white/55 text-xs">
             <span>Free</span>
             <span>2 minutes</span>
             <span>Instant result</span>
@@ -160,7 +160,7 @@ export default function FlightDeckShare() {
         </div>
         <div className="flex items-center justify-center pb-6">
           <Link href="/quiz/flight-deck">
-            <button className="flex items-center gap-1.5 text-white/30 hover:text-white/55 text-xs transition-colors">
+            <button className="flex items-center gap-1.5 text-white/55 hover:text-white/80 text-xs transition-colors">
               <RefreshCw className="w-3.5 h-3.5" />
               Take the quiz yourself
             </button>

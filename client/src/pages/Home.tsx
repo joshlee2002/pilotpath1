@@ -89,7 +89,7 @@ function HeroSection() {
                   <div className="w-2 h-2 rounded-full bg-[var(--color-cockpit-green)] animate-pulse" />
                   <span className="text-white/60 text-xs font-semibold uppercase tracking-widest">AviatorIQ Platform</span>
                 </div>
-                <span className="text-white/40 text-xs">Live</span>
+                <span className="text-white/60 text-xs">Live</span>
               </div>
 
               {/* Live platform stats */}
@@ -117,7 +117,7 @@ function HeroSection() {
                   <div key={tile.label} className="stat-tile">
                     <div className="flex items-center gap-1.5 mb-1.5" style={{ color: tile.color }}>
                       {tile.icon}
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40 leading-tight">{tile.label}</span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white/60 leading-tight">{tile.label}</span>
                     </div>
                     <div className="text-white font-display font-bold text-base">{tile.value}</div>
                   </div>

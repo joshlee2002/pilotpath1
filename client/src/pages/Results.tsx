@@ -263,7 +263,7 @@ export default function Results() {
                     Download PDF
                   </a>
                 ) : (
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/40 text-xs"
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/60 text-xs"
                     style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
                     <Loader2 className="w-3 h-3 animate-spin" />
                     Generating PDF…
@@ -291,14 +291,14 @@ export default function Results() {
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-5xl font-black text-white leading-none">{lead.leadScore}</span>
-                    <span className="text-white/40 text-xs mt-1">/ 100</span>
+                    <span className="text-white/60 text-xs mt-1">/ 100</span>
                   </div>
                 </div>
                 <div>
                   <div className="flex justify-center mb-1">
                     <CategoryBadge category={lead.leadCategory} />
                   </div>
-                  <p className="text-white/40 text-xs text-center">AviatorIQ Score</p>
+                  <p className="text-white/65 text-xs text-center">AviatorIQ Score</p>
                 </div>
               </div>
 
@@ -328,7 +328,7 @@ export default function Results() {
                     <div key={tile.label} className="stat-tile">
                       <div className="flex items-center gap-1.5 mb-1.5" style={{ color: tile.color }}>
                         {tile.icon}
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40">{tile.label}</span>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-white/60">{tile.label}</span>
                       </div>
                       <div className="text-white font-display font-bold text-sm leading-tight">{tile.value}</div>
                     </div>
@@ -337,7 +337,7 @@ export default function Results() {
 
                 {/* Share row */}
                 <div className="flex flex-wrap items-center gap-2 pt-1">
-                  <span className="text-white/40 text-xs font-medium uppercase tracking-wide">Share</span>
+                  <span className="text-white/60 text-xs font-medium uppercase tracking-wide">Share</span>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Could you actually become an airline pilot? I just took the AviatorIQ assessment to find out. ✈️')}&url=${encodeURIComponent(window.location.origin + '/quiz')}`}
                     target="_blank" rel="noopener noreferrer"
@@ -597,18 +597,18 @@ export default function Results() {
                   <div className="grid grid-cols-2 gap-3 mb-6">
                     {roadmap.estimatedCostMin && roadmap.estimatedCostMax && (
                       <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
-                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-1">Est. Cost</div>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/60 mb-1">Est. Cost</div>
                         <div className="font-display font-bold text-[var(--color-gold)] text-sm">
                           {formatPrice(roadmap.estimatedCostMin!)} – {formatPrice(roadmap.estimatedCostMax!)}
                         </div>
                         {currency.code !== "GBP" && (
-                          <div className="text-[10px] text-white/40 mt-0.5">≈ £{roadmap.estimatedCostMin!.toLocaleString("en-GB")} – £{roadmap.estimatedCostMax!.toLocaleString("en-GB")} GBP</div>
+                          <div className="text-[10px] text-white/60 mt-0.5">≈ £{roadmap.estimatedCostMin!.toLocaleString("en-GB")} – £{roadmap.estimatedCostMax!.toLocaleString("en-GB")} GBP</div>
                         )}
                       </div>
                     )}
                     {roadmap.estimatedDuration && (
                       <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
-                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-1">Duration</div>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/60 mb-1">Duration</div>
                         <div className="font-display font-bold text-white text-sm">{roadmap.estimatedDuration}</div>
                       </div>
                     )}
@@ -618,7 +618,7 @@ export default function Results() {
                 {/* Waypoints — next steps */}
                 {roadmap.nextSteps && roadmap.nextSteps.length > 0 && (
                   <div className="mb-6">
-                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-4">Waypoints</div>
+                    <div className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-4">Waypoints</div>
                     <div className="relative">
                       {/* Vertical runway line */}
                       <div className="absolute left-[18px] top-6 bottom-6 w-px" style={{ background: "linear-gradient(to bottom, oklch(0.72 0.18 65 / 0.6), oklch(0.65 0.18 230 / 0.3))" }} />
@@ -649,7 +649,7 @@ export default function Results() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
                     {roadmap.medicalAdvice && (
                       <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
-                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-2">Medical Advisory</div>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-2">Medical Advisory</div>
                         <p className="text-white/70 text-xs leading-relaxed mb-2">{roadmap.medicalAdvice}</p>
                         <Link href="/guides/class-1-medical" className="inline-flex items-center gap-1 text-[10px] font-semibold no-underline" style={{ color: "oklch(0.72 0.18 65)" }}>
                           Class 1 Medical guide <ArrowRight className="w-2.5 h-2.5" />
@@ -658,7 +658,7 @@ export default function Results() {
                     )}
                     {roadmap.financeConsiderations && (
                       <div className="p-4 rounded-xl" style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
-                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-2">Finance Advisory</div>
+                        <div className="text-[10px] font-semibold uppercase tracking-widest text-white/65 mb-2">Finance Advisory</div>
                         <p className="text-white/70 text-xs leading-relaxed mb-2">{roadmap.financeConsiderations}</p>
                         <Link href="/guides/finance-guide" className="inline-flex items-center gap-1 text-[10px] font-semibold no-underline" style={{ color: "oklch(0.72 0.18 65)" }}>
                           Finance guide <ArrowRight className="w-2.5 h-2.5" />
