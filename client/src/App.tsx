@@ -101,6 +101,28 @@ import PilotCvGuide from "./pages/guides/PilotCvGuide";
 import PilotAptitudeTestPrep from "./pages/guides/PilotAptitudeTestPrep";
 import SimulatorAssessmentGuide from "./pages/guides/SimulatorAssessmentGuide";
 
+// New UK licence & career guides
+import PplGuideUK from "./pages/guides/PplGuideUK";
+import CplGuideUK from "./pages/guides/CplGuideUK";
+import InstrumentRatingUK from "./pages/guides/InstrumentRatingUK";
+import FrozenAtplUK from "./pages/guides/FrozenAtplUK";
+import FirstOfficerUK from "./pages/guides/FirstOfficerUK";
+import FlightInstructorUK from "./pages/guides/FlightInstructorUK";
+import MccJocUK from "./pages/guides/MccJocUK";
+import PilotEyesightUK from "./pages/guides/PilotEyesightUK";
+
+// New US guides
+import PilotSalaryUSA from "./pages/guides/PilotSalaryUSA";
+import FundPilotTrainingUSA from "./pages/guides/FundPilotTrainingUSA";
+import PplRequirementsUSA from "./pages/guides/PplRequirementsUSA";
+import CommercialPilotCertUSA from "./pages/guides/CommercialPilotCertUSA";
+import GiBillFlightTraining from "./pages/guides/GiBillFlightTraining";
+import InstrumentRatingUSA from "./pages/guides/InstrumentRatingUSA";
+import UsPilotCareerOutlook from "./pages/guides/UsPilotCareerOutlook";
+import AdhdFaaMedical from "./pages/guides/AdhdFaaMedical";
+import AtpCertificateUSA from "./pages/guides/AtpCertificateUSA";
+import CfiCareerUSA from "./pages/guides/CfiCareerUSA";
+
 // New section pages
 import Stories from "./pages/Stories";
 import Jobs from "./pages/Jobs";
@@ -191,6 +213,16 @@ function Router() {
       <Route path="/guides/pilot-aptitude-test-preparation" component={PilotAptitudeTestPrep} />
       <Route path="/guides/airline-simulator-assessment" component={SimulatorAssessmentGuide} />
 
+      {/* New UK licence & career guides */}
+      <Route path="/guides/ppl-uk" component={PplGuideUK} />
+      <Route path="/guides/cpl-uk" component={CplGuideUK} />
+      <Route path="/guides/instrument-rating-uk" component={InstrumentRatingUK} />
+      <Route path="/guides/frozen-atpl-uk" component={FrozenAtplUK} />
+      <Route path="/guides/first-officer-uk" component={FirstOfficerUK} />
+      <Route path="/guides/flight-instructor-uk" component={FlightInstructorUK} />
+      <Route path="/guides/mcc-joc-uk" component={MccJocUK} />
+      <Route path="/guides/pilot-eyesight-requirements-uk" component={PilotEyesightUK} />
+
       {/* New section pages */}
       <Route path="/stories" component={Stories} />
       <Route path="/jobs" component={Jobs} />
@@ -228,6 +260,18 @@ function Router() {
       <Route path="/us/guides/part-61-vs-141" component={Part61Vs141} />
       <Route path="/us/guides/faa-medical-requirements" component={FaaMedicalGuide} />
       <Route path="/us/schools" component={SchoolsUS} />
+
+      {/* New US guides */}
+      <Route path="/us/guides/airline-pilot-salary-usa" component={PilotSalaryUSA} />
+      <Route path="/us/guides/how-to-fund-pilot-training-usa" component={FundPilotTrainingUSA} />
+      <Route path="/us/guides/ppl-requirements-usa" component={PplRequirementsUSA} />
+      <Route path="/us/guides/commercial-pilot-certificate-usa" component={CommercialPilotCertUSA} />
+      <Route path="/us/guides/gi-bill-flight-training" component={GiBillFlightTraining} />
+      <Route path="/us/guides/instrument-rating-usa" component={InstrumentRatingUSA} />
+      <Route path="/us/guides/us-pilot-career-outlook" component={UsPilotCareerOutlook} />
+      <Route path="/us/guides/adhd-faa-medical" component={AdhdFaaMedical} />
+      <Route path="/us/guides/atp-certificate-usa" component={AtpCertificateUSA} />
+      <Route path="/us/guides/cfi-career-usa" component={CfiCareerUSA} />
 
       {/* 404 */}
       <Route path="/404" component={NotFound} />
