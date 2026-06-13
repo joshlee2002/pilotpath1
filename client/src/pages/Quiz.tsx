@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { Analytics } from "@/lib/analytics";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
-import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Plane } from "lucide-react";
+import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Plane, AlertCircle } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface QuizData {
@@ -111,40 +111,130 @@ function StepCard({ title, subtitle, children }: { title: string; subtitle?: str
   );
 }
 
+// ─── Inline field error ───────────────────────────────────────────────────────
+function FieldError({ message }: { message: string }) {
+  return (
+    <p className="flex items-center gap-1.5 text-xs text-red-500 mt-1.5" role="alert">
+      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+      {message}
+    </p>
+  );
+}
+
 // ─── Step 1: Contact details ──────────────────────────────────────────────────
-function Step1({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step1({
+  data,
+  update,
+  showErrors,
+}: {
+  data: QuizData;
+  update: (k: keyof QuizData, v: string) => void;
+  showErrors: boolean;
+}) {
+  const [touchedAge, setTouchedAge] = useState(false);
+  const [touchedEmail, setTouchedEmail] = useState(false);
+  const [touchedName, setTouchedName] = useState(false);
+
   const countries = [
     "United Kingdom", "Ireland", "United States", "Canada", "Australia", "New Zealand",
     "Germany", "France", "Spain", "Netherlands", "Sweden", "Norway", "Denmark",
     "South Africa", "UAE", "Singapore", "India", "Other",
   ];
+
+  // Validation helpers
+  const nameError = (touchedName || showErrors) && data.fullName.trim().length < 2
+    ? "Please enter your full name (at least 2 characters)."
+    : null;
+
+  const emailError = (touchedEmail || showErrors) && !data.email.includes("@")
+    ? "Please enter a valid email address."
+    : null;
+
+  const ageNum = data.age ? parseInt(data.age, 10) : null;
+  const ageError = (touchedAge || showErrors) && data.age !== ""
+    ? (isNaN(ageNum!) || ageNum! < 14 || ageNum! > 99
+        ? "Age must be between 14 and 99."
+        : null)
+    : null;
+
+  const nameInvalid = !!(touchedName || showErrors) && data.fullName.trim().length < 2;
+  const emailInvalid = !!(touchedEmail || showErrors) && !data.email.includes("@");
+  const ageInvalid = !!(touchedAge || showErrors) && data.age !== "" && (isNaN(ageNum!) || ageNum! < 14 || ageNum! > 99);
+
   return (
     <StepCard title="Let's start with you" subtitle="Your roadmap will be personalised to your profile. We'll never share your details without your permission.">
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-semibold text-[var(--color-foreground)] mb-2">Full name *</label>
-          <input type="text" value={data.fullName} onChange={(e) => update("fullName", e.target.value)} placeholder="Your full name"
-            className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none text-sm transition-colors bg-white" />
+          <input
+            type="text"
+            value={data.fullName}
+            onChange={(e) => update("fullName", e.target.value)}
+            onBlur={() => setTouchedName(true)}
+            placeholder="Your full name"
+            aria-invalid={nameInvalid}
+            className={`w-full px-4 py-3 rounded-xl border-2 outline-none text-sm transition-colors bg-white ${
+              nameInvalid
+                ? "border-red-400 focus:border-red-500"
+                : "border-[var(--color-border)] focus:border-[var(--color-primary)]"
+            }`}
+          />
+          {nameError && <FieldError message={nameError} />}
         </div>
         <div>
           <label className="block text-sm font-semibold text-[var(--color-foreground)] mb-2">Email address *</label>
-          <input type="email" value={data.email} onChange={(e) => update("email", e.target.value)} placeholder="your@email.com"
-            className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none text-sm transition-colors bg-white" />
-          <p className="text-xs text-[var(--color-muted-foreground)] mt-1">Your roadmap will be sent here.</p>
+          <input
+            type="email"
+            value={data.email}
+            onChange={(e) => update("email", e.target.value)}
+            onBlur={() => setTouchedEmail(true)}
+            placeholder="your@email.com"
+            aria-invalid={emailInvalid}
+            className={`w-full px-4 py-3 rounded-xl border-2 outline-none text-sm transition-colors bg-white ${
+              emailInvalid
+                ? "border-red-400 focus:border-red-500"
+                : "border-[var(--color-border)] focus:border-[var(--color-primary)]"
+            }`}
+          />
+          {emailError
+            ? <FieldError message={emailError} />
+            : <p className="text-xs text-[var(--color-muted-foreground)] mt-1">Your roadmap will be sent here.</p>
+          }
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold text-[var(--color-foreground)] mb-2">Country</label>
-            <select value={data.country} onChange={(e) => update("country", e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none text-sm transition-colors bg-white">
+            <select
+              value={data.country}
+              onChange={(e) => update("country", e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none text-sm transition-colors bg-white"
+            >
               <option value="">Select country</option>
               {countries.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+            <p className="text-xs text-[var(--color-muted-foreground)] mt-1">Helps us tailor school matches.</p>
           </div>
           <div>
             <label className="block text-sm font-semibold text-[var(--color-foreground)] mb-2">Age</label>
-            <input type="number" value={data.age} onChange={(e) => update("age", e.target.value)} placeholder="Your age" min="14" max="99"
-              className="w-full px-4 py-3 rounded-xl border-2 border-[var(--color-border)] focus:border-[var(--color-primary)] outline-none text-sm transition-colors bg-white" />
+            <input
+              type="number"
+              value={data.age}
+              onChange={(e) => update("age", e.target.value)}
+              onBlur={() => setTouchedAge(true)}
+              placeholder="e.g. 25"
+              min="14"
+              max="99"
+              aria-invalid={ageInvalid}
+              className={`w-full px-4 py-3 rounded-xl border-2 outline-none text-sm transition-colors bg-white ${
+                ageInvalid
+                  ? "border-red-400 focus:border-red-500"
+                  : "border-[var(--color-border)] focus:border-[var(--color-primary)]"
+              }`}
+            />
+            {ageError
+              ? <FieldError message={ageError} />
+              : <p className="text-xs text-[var(--color-muted-foreground)] mt-1">Must be 14–99.</p>
+            }
           </div>
         </div>
       </div>
@@ -489,6 +579,7 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<QuizData>(EMPTY);
   const [started, setStarted] = useState(false);
+  const [showStep1Errors, setShowStep1Errors] = useState(false);
   const [, navigate] = useLocation();
 
   const submitMutation = trpc.leads.submit.useMutation({
@@ -517,6 +608,10 @@ export default function Quiz() {
   };
 
   const handleNext = () => {
+    if (step === 1 && !canAdvance()) {
+      setShowStep1Errors(true);
+      return;
+    }
     if (step < TOTAL_STEPS) setStep((s) => s + 1);
   };
 
@@ -579,7 +674,7 @@ export default function Quiz() {
   }
 
   const stepComponents: Record<number, React.ReactNode> = {
-    1: <Step1 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
+    1: <Step1 data={data} update={update as (k: keyof QuizData, v: string) => void} showErrors={showStep1Errors} />,
     2: <Step2 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
     3: <Step3 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
     4: <Step4 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
@@ -604,7 +699,7 @@ export default function Quiz() {
               Back
             </button>
             {step < TOTAL_STEPS ? (
-              <button onClick={handleNext} disabled={!canAdvance()} className="btn-primary text-sm disabled:opacity-40 disabled:cursor-not-allowed">
+              <button onClick={handleNext} className="btn-primary text-sm disabled:opacity-40 disabled:cursor-not-allowed">
                 Continue
                 <ArrowRight className="w-4 h-4" />
               </button>
