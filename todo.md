@@ -169,3 +169,18 @@
 - [x] Update Results page cost estimates to show converted currency
 - [x] Add manual currency switcher (flag + code) in PublicNav
 - [x] Write vitest tests for currency formatting and conversion logic
+
+## Phase 15 – Licence Quiz ("Which Pilot Licence Is Right For You?")
+
+- [ ] Add licenceQuizLeads table to drizzle schema and apply migration
+- [ ] Build scoring logic in server/licenceQuizScoring.ts (6 outcomes)
+- [ ] Add tRPC procedures: submitLicenceQuiz, getLicenceQuizStats
+- [ ] Build 8-step quiz UI at /quiz/licence
+- [ ] Build results page at /quiz/licence/results with immediate result display
+- [ ] Add email gate for detailed PDF breakdown (email + consent only)
+- [ ] Add social proof stat ("X% of users with this result take the career assessment")
+- [ ] Add AviatorIQ Career Assessment CTA funnel on results page
+- [ ] Add licence quiz entry point card on homepage
+- [ ] Add licence quiz link in PublicNav and footer
+- [ ] Register /quiz/licence and /quiz/licence/results routes in App.tsx
+- [ ] Write vitest tests for licence quiz scoring logic

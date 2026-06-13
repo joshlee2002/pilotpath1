@@ -4,6 +4,7 @@ import { Menu, X, Plane, ChevronDown } from "lucide-react";
 import { useCurrency, SUPPORTED_CURRENCIES } from "@/contexts/CurrencyContext";
 
 const navLinks = [
+  { label: "Quizzes", href: "/quiz/flight-deck" },
   { label: "Flight Schools", href: "/schools" },
   { label: "Guides", href: "/guides" },
   { label: "Cost Calculator", href: "/calculator" },

@@ -8,6 +8,7 @@ import {
   InsertIntroductionRequest,
   InsertLead,
   InsertLeadAssignment,
+  InsertLicenceQuizLead,
   InsertSchoolWaitlistEntry,
   InsertUser,
   IntroductionRequest,
@@ -19,6 +20,7 @@ import {
   introductionRequests,
   leadAssignments,
   leads,
+  licenceQuizLeads,
   schoolWaitlist,
   users,
 } from "../drizzle/schema";
@@ -471,4 +473,44 @@ export async function getLeadAnalytics() {
     scoreDistribution,
     leadsPerDay,
   };
+}
+
+// ─── Licence Quiz Helpers ─────────────────────────────────────────────────────
+
+export async function createLicenceQuizLead(
+  data: Omit<InsertLicenceQuizLead, "id" | "createdAt" | "email" | "consentToContact" | "proceededToMainQuiz">
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database unavailable");
+  const [result] = await db.insert(licenceQuizLeads).values({
+    ...data,
+    consentToContact: false,
+    proceededToMainQuiz: false,
+  });
+  return { id: (result as any).insertId as number };
+}
+
+export async function updateLicenceQuizEmail(id: number, email: string, consentToContact: boolean) {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(licenceQuizLeads).set({ email, consentToContact }).where(eq(licenceQuizLeads.id, id));
+}
+
+export async function getLicenceQuizStats(): Promise<Record<string, { total: number; proceededRate: number }>> {
+  const db = await getDb();
+  if (!db) return {};
+  const rows = await db.select().from(licenceQuizLeads);
+  const stats: Record<string, { total: number; proceeded: number }> = {};
+  for (const row of rows) {
+    const key = row.recommendedLicence;
+    if (!stats[key]) stats[key] = { total: 0, proceeded: 0 };
+    stats[key].total++;
+    if (row.proceededToMainQuiz) stats[key].proceeded++;
+  }
+  return Object.fromEntries(
+    Object.entries(stats).map(([k, v]) => [
+      k,
+      { total: v.total, proceededRate: v.total > 0 ? Math.round((v.proceeded / v.total) * 100) : 0 },
+    ])
+  );
 }

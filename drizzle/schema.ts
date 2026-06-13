@@ -180,3 +180,29 @@ export const introductionRequests = mysqlTable("introduction_requests", {
 
 export type IntroductionRequest = typeof introductionRequests.$inferSelect;
 export type InsertIntroductionRequest = typeof introductionRequests.$inferInsert;
+
+// ─── Licence Quiz Leads ───────────────────────────────────────────────────────
+export const licenceQuizLeads = mysqlTable("licence_quiz_leads", {
+  id: int("id").autoincrement().primaryKey(),
+  // Quiz answers
+  goal: varchar("goal", { length: 50 }),           // professional | recreational | business | exploring
+  timeCommitment: varchar("timeCommitment", { length: 50 }), // fulltime | parttime | flexible | limited
+  budget: varchar("budget", { length: 50 }),        // under10k | 10k_30k | 30k_80k | 80k_130k | over130k | unsure
+  wantsCommercial: varchar("wantsCommercial", { length: 50 }), // yes_commercial | maybe | no
+  experience: varchar("experience", { length: 50 }), // none | trial | has_licence | experienced
+  location: varchar("location", { length: 50 }),   // uk | europe | north_america | aus_nz | other
+  speedPriority: varchar("speedPriority", { length: 50 }), // fast | balanced | slow
+  mainPriority: varchar("mainPriority", { length: 50 }), // get_flying | career | research | value
+  // Result
+  recommendedLicence: varchar("recommendedLicence", { length: 50 }).notNull(), // LAPL | PPL | CPL | Integrated_ATPL | Modular_ATPL | FAA_PPL
+  // Email capture (optional — gated behind detailed breakdown)
+  email: varchar("email", { length: 320 }),
+  consentToContact: boolean("consentToContact").default(false).notNull(),
+  // Funnel tracking
+  proceededToMainQuiz: boolean("proceededToMainQuiz").default(false).notNull(),
+  source: varchar("source", { length: 100 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type LicenceQuizLead = typeof licenceQuizLeads.$inferSelect;
+export type InsertLicenceQuizLead = typeof licenceQuizLeads.$inferInsert;

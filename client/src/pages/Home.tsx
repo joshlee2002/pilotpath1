@@ -144,6 +144,78 @@ function HowItWorksSection() {
   );
 }
 
+function QuizTeaserSection() {
+  return (
+    <section className="section bg-[var(--color-muted)]">
+      <div className="container">
+        <div className="text-center mb-10">
+          <span className="inline-block px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs font-semibold uppercase tracking-wider mb-4">
+            Three ways to find your path
+          </span>
+          <h2 className="text-3xl md:text-4xl font-display font-bold text-[var(--color-navy)] mb-4">
+            Start wherever you are
+          </h2>
+          <p className="text-lg text-[var(--color-muted-foreground)] max-w-2xl mx-auto">
+            From a 2-minute curiosity check to a full career assessment — pick the one that fits where you are right now.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* Flight Deck quiz — top of funnel */}
+          <div className="card-base p-6 flex flex-col">
+            <div className="text-3xl mb-4">✈️</div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">2 minutes</span>
+              <span className="text-xs bg-[var(--color-primary)] text-white px-2 py-0.5 rounded-full font-semibold">New</span>
+            </div>
+            <h3 className="text-lg font-display font-bold text-[var(--color-navy)] mb-2">
+              How Close Are You To The Flight Deck?
+            </h3>
+            <p className="text-[var(--color-muted-foreground)] text-sm mb-5 flex-1 leading-relaxed">
+              6 quick questions. Get your Flight Potential Score, biggest barrier, and recommended route — no sign-up needed.
+            </p>
+            <Link href="/quiz/flight-deck" className="btn-primary text-sm text-center no-underline">
+              Find out now →
+            </Link>
+          </div>
+          {/* Licence quiz */}
+          <div className="card-base p-6 flex flex-col">
+            <div className="text-3xl mb-4">🎓</div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">2–3 minutes</span>
+            </div>
+            <h3 className="text-lg font-display font-bold text-[var(--color-navy)] mb-2">
+              Which Pilot Licence Is Right For You?
+            </h3>
+            <p className="text-[var(--color-muted-foreground)] text-sm mb-5 flex-1 leading-relaxed">
+              PPL, ATPL, LAPL or CPL? Answer 8 questions and get a personalised licence recommendation with cost estimates.
+            </p>
+            <Link href="/quiz/licence" className="btn-secondary text-sm text-center no-underline">
+              Find my licence →
+            </Link>
+          </div>
+          {/* Career assessment */}
+          <div className="card-base p-6 flex flex-col border-[var(--color-primary)]/30 bg-[var(--color-primary)]/5">
+            <div className="text-3xl mb-4">🛫</div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold text-[var(--color-primary)] uppercase tracking-wider">5–10 minutes</span>
+              <span className="text-xs bg-[var(--color-cta)] text-white px-2 py-0.5 rounded-full font-semibold">Most popular</span>
+            </div>
+            <h3 className="text-lg font-display font-bold text-[var(--color-navy)] mb-2">
+              Career Readiness Assessment
+            </h3>
+            <p className="text-[var(--color-muted-foreground)] text-sm mb-5 flex-1 leading-relaxed">
+              AviatorIQ Score, AI training roadmap, matched flight schools, and a free PDF blueprint.
+            </p>
+            <Link href="/quiz" className="btn-cta text-sm text-center no-underline">
+              Take the assessment →
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function TrainingRoutesSection() {
   const routes = [
     {
@@ -435,6 +507,7 @@ export default function Home() {
       <main className="flex-1">
         <HeroSection />
         <HowItWorksSection />
+        <QuizTeaserSection />
         <TrainingRoutesSection />
         <CostSection />
         <SchoolMatchingSection />

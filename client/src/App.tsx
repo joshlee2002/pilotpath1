@@ -23,6 +23,14 @@ import BestRouteToAirline from "./pages/guides/BestRouteToAirline";
 import FinanceGuide from "./pages/guides/FinanceGuide";
 import TrainingTimeline from "./pages/guides/TrainingTimeline";
 
+// Licence quiz
+import LicenceQuiz from "./pages/LicenceQuiz";
+import LicenceQuizResults from "./pages/LicenceQuizResults";
+
+// Flight Deck quiz (top-of-funnel)
+import FlightDeckQuiz from "./pages/FlightDeckQuiz";
+import FlightDeckResults from "./pages/FlightDeckResults";
+
 // Admin
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -44,6 +52,14 @@ function Router() {
       {/* Quiz funnel */}
       <Route path="/quiz" component={Quiz} />
       <Route path="/results/:leadId" component={Results} />
+
+      {/* Licence quiz */}
+      <Route path="/quiz/licence" component={LicenceQuiz} />
+      <Route path="/quiz/licence/results" component={LicenceQuizResults} />
+
+      {/* Flight Deck quiz (top-of-funnel) */}
+      <Route path="/quiz/flight-deck" component={FlightDeckQuiz} />
+      <Route path="/quiz/flight-deck/results" component={FlightDeckResults} />
 
       {/* Directory & tools */}
       <Route path="/schools" component={Schools} />

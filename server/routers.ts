@@ -33,6 +33,8 @@ import {
 } from "./db";
 import { scoreLead } from "./scoring";
 import { generatePilotBlueprint } from "./pdfReport";
+import { scoreLicenceQuiz } from "./licenceQuizScoring";
+import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail } from "./db";
 
 // ─── Admin guard ──────────────────────────────────────────────────────────────
 const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
@@ -592,6 +594,49 @@ Use cautious, helpful language. Do not invent specific school prices unless they
       }),
     listWaitlist: adminProcedure.query(async () => {
       return listSchoolWaitlist();
+    }),
+  }),
+
+  // ─── Licence Quiz ──────────────────────────────────────────────────────────
+  licenceQuiz: router({
+    /** Submit answers, get result back immediately. Saves a record without email. */
+    submit: publicProcedure
+      .input(z.object({
+        goal: z.string(),
+        timeCommitment: z.string(),
+        budget: z.string(),
+        wantsCommercial: z.string(),
+        experience: z.string(),
+        location: z.string(),
+        speedPriority: z.string(),
+        mainPriority: z.string(),
+        source: z.string().optional(),
+      }))
+      .mutation(async ({ input }) => {
+        const result = scoreLicenceQuiz(input);
+        const record = await createLicenceQuizLead({
+          ...input,
+          recommendedLicence: result.licence,
+          source: input.source ?? null,
+        });
+        return { id: record.id, result };
+      }),
+
+    /** Capture email after result is shown — gated behind detailed breakdown. */
+    captureEmail: publicProcedure
+      .input(z.object({
+        id: z.number(),
+        email: z.string().email(),
+        consentToContact: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        await updateLicenceQuizEmail(input.id, input.email, input.consentToContact);
+        return { success: true };
+      }),
+
+    /** Social proof stats — how many with each result proceeded to main quiz. */
+    stats: publicProcedure.query(async () => {
+      return getLicenceQuizStats();
     }),
   }),
 
