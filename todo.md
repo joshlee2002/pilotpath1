@@ -231,3 +231,11 @@
 - [x] Build Integrated vs Modular Decision Tool (/tools/integrated-vs-modular)
 - [x] Build Class 1 Medical Readiness Check (/tools/class-1-medical-check)
 - [x] Add both new tools to nav Tools dropdown and homepage tools section
+
+- [ ] Homepage hero: new identity-led headline "Could You Actually Become An Airline Pilot?"
+- [ ] Homepage hero: live stats block (assessments taken, avg score, most common barrier)
+- [ ] Homepage: replace "How it works" with dashboard preview section
+- [ ] Results page: circular arc score gauge (SVG)
+- [ ] Results page: 4-stat instrument panel (Barrier, Asset, Route Fit, Timeline)
+- [ ] Results page: Flight Plan styled roadmap with waypoints
+- [ ] Global CSS: glassmorphism card tokens, aviation colour palette, cockpit-inspired styles

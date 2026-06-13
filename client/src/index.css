@@ -65,6 +65,23 @@
   /* Easings */
   --ease-out-snappy: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-in-out-smooth: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* Glassmorphism */
+  --glass-bg: oklch(1 0 0 / 0.07);
+  --glass-bg-strong: oklch(1 0 0 / 0.12);
+  --glass-border: oklch(1 0 0 / 0.15);
+  --glass-border-strong: oklch(1 0 0 / 0.25);
+  --glass-shadow: 0 8px 32px oklch(0.1 0.05 250 / 0.4);
+
+  /* Cockpit accent colours */
+  --color-cockpit-green: oklch(0.72 0.2 145);
+  --color-cockpit-amber: oklch(0.78 0.18 75);
+  --color-cockpit-red: oklch(0.62 0.22 25);
+  --color-cockpit-blue: oklch(0.65 0.18 230);
+
+  /* Dark hero surface */
+  --color-hero-surface: oklch(0.18 0.12 250);
+  --color-hero-surface-2: oklch(0.24 0.14 245);
 }
 
 /* ─── Base Layer ─────────────────────────────────────────────────────────── */
@@ -245,10 +262,53 @@
 
   /* Gradient backgrounds */
   .bg-hero {
-    background: linear-gradient(135deg, oklch(0.18 0.12 250) 0%, oklch(0.28 0.15 245) 50%, oklch(0.35 0.12 235) 100%);
+    background: linear-gradient(135deg, oklch(0.14 0.12 255) 0%, oklch(0.22 0.15 248) 50%, oklch(0.28 0.12 240) 100%);
+    position: relative;
+  }
+  .bg-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, oklch(1 0 0 / 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
   }
   .bg-sky-subtle {
     background: linear-gradient(180deg, oklch(0.97 0.015 240) 0%, oklch(0.99 0.005 240) 100%);
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--glass-shadow);
+  }
+  .glass-card-strong {
+    background: var(--glass-bg-strong);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: var(--radius-xl);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Cockpit stat tile */
+  .stat-tile {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 1.25rem 1.5rem;
+    transition: background 200ms var(--ease-out-snappy), border-color 200ms var(--ease-out-snappy);
+  }
+  .stat-tile:hover {
+    background: var(--glass-bg-strong);
+    border-color: var(--glass-border-strong);
   }
 }
 

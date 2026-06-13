@@ -187,6 +187,8 @@ export default function Results() {
     );
   };
 
+  const { formatPrice, currency } = useCurrency();
+
   const handleRequestIntros = async () => {
     if (!selectedSchoolIds.length) return;
     try {
@@ -225,7 +227,6 @@ export default function Results() {
   const recommendedRoute = (resultQuery.data as unknown as { recommendedRoute?: string }).recommendedRoute;
 
   const isGenerating = roadmapMutation.isPending || (!roadmap && !roadmapError);
-  const { formatPrice, currency } = useCurrency();
 
   const dimensionConfig = [
     { key: "readiness" as const, label: "Readiness", icon: <Clock className="w-4 h-4" />, color: "text-blue-500" },
@@ -238,101 +239,231 @@ export default function Results() {
   return (
     <div className="min-h-screen flex flex-col">
       <PublicNav />
-      <main className="flex-1 bg-sky-subtle">
+      <main className="flex-1" style={{ background: "oklch(0.97 0.015 240)" }}>
 
-        {/* ── Hero: AviatorIQ Score ── */}
-        <div className="bg-hero py-12 px-4">
-          <div className="container max-w-3xl">
-            <div className="flex flex-col items-center text-center gap-4 animate-fade-in-up">
-              <div className="flex items-center gap-2 text-white/70 text-sm">
-                <CheckCircle2 className="w-4 h-4 text-[var(--color-cta)]" />
-                Assessment complete — your AviatorIQ Score is ready
-              </div>
-              <h1 className="text-3xl md:text-4xl font-display font-bold text-white">
-                {lead.fullName}'s Pilot Readiness Report
-              </h1>
-              <ScoreRing score={lead.leadScore} />
+        {/* ── Mission Control Hero ── */}
+        <div className="bg-hero relative overflow-hidden">
+          {/* Radar grid */}
+          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "linear-gradient(oklch(1 0 0 / 1) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 1) 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-10" style={{ background: "radial-gradient(circle, oklch(0.65 0.18 230) 0%, transparent 70%)", transform: "translate(30%, -30%)" }} />
+
+          <div className="container relative py-10 md:py-14">
+            {/* Status bar */}
+            <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
-                <CategoryBadge category={lead.leadCategory} />
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="text-white/50 hover:text-white/90 transition-colors" aria-label="What does this phase mean?">
-                        <Info className="w-4 h-4" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom" className="max-w-xs text-left p-4 space-y-2">
-                      <p className="font-semibold text-sm">
-                        {lead.leadCategory === "Hot" ? "Flight Ready" : lead.leadCategory === "Warm" ? "Development Phase" : "Exploration Phase"}
-                      </p>
-                      <p className="text-xs text-muted-foreground leading-relaxed">
-                        {lead.leadCategory === "Hot"
-                          ? "You have strong readiness across finance, medical, and career clarity. You're well-positioned to begin serious training conversations with flight schools."
-                          : lead.leadCategory === "Warm"
-                          ? "You're building solid foundations but have a few areas to develop — typically finance, medical clearance, or training route clarity. Work through your roadmap below to progress to Flight Ready."
-                          : "You're at the start of your pilot journey — exactly where most pilots begin. Use your personalised roadmap below to understand what steps will move you toward Development Phase and beyond."}
-                      </p>
-                      <p className="text-xs font-medium">
-                        {lead.leadCategory === "Hot"
-                          ? "Score: 85–100"
-                          : lead.leadCategory === "Warm"
-                          ? "Score: 55–84"
-                          : "Score: 0–54"}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <div className="w-2 h-2 rounded-full bg-[var(--color-cockpit-green)] animate-pulse" />
+                <span className="text-white/50 text-xs font-semibold uppercase tracking-widest">Assessment Complete</span>
               </div>
-              <p className="text-white/70 text-sm max-w-md">
-                {lead.leadCategory === "Hot"
-                  ? "Your profile shows strong readiness. You have the foundations to start training seriously."
-                  : lead.leadCategory === "Warm"
-                  ? "You're building towards readiness. A few key areas to develop before you begin."
-                  : "You're in the exploration phase — exactly where many pilots start. Let's map out your path forward."}
-              </p>
-              {/* PDF Download */}
-              {pdfQuery.data?.pdfUrl ? (
-                <a
-                  href={pdfQuery.data.pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-semibold transition-colors"
-                >
-                  <FileDown className="w-4 h-4" />
-                  Download Your Pilot Blueprint PDF
-                </a>
-              ) : (
-                <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 border border-white/10 text-white/50 text-sm">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Generating your Blueprint PDF…
-                </div>
-              )}
+              <div className="flex items-center gap-3">
+                {pdfQuery.data?.pdfUrl ? (
+                  <a href={pdfQuery.data.pdfUrl} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/70 hover:text-white text-xs font-medium transition-colors no-underline"
+                    style={{ background: "oklch(1 0 0 / 0.08)", border: "1px solid oklch(1 0 0 / 0.15)" }}>
+                    <FileDown className="w-3.5 h-3.5" />
+                    Download PDF
+                  </a>
+                ) : (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/40 text-xs"
+                    style={{ background: "oklch(1 0 0 / 0.05)", border: "1px solid oklch(1 0 0 / 0.08)" }}>
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Generating PDF…
+                  </div>
+                )}
+              </div>
+            </div>
 
-              {/* Social sharing */}
-              <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                <span className="text-white/60 text-xs font-medium uppercase tracking-wide">Share your result</span>
-                <div className="flex gap-2">
+            {/* Main instrument panel */}
+            <div className="grid grid-cols-1 lg:grid-cols-[auto_1fr] gap-6 items-start">
+
+              {/* Score gauge */}
+              <div className="flex flex-col items-center gap-3 animate-scale-in">
+                <div className="relative w-40 h-40">
+                  <svg className="w-full h-full -rotate-90" viewBox="0 0 160 160">
+                    <circle cx="80" cy="80" r="66" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="12" />
+                    <circle
+                      cx="80" cy="80" r="66" fill="none"
+                      stroke={lead.leadScore >= 85 ? "oklch(0.72 0.2 145)" : lead.leadScore >= 55 ? "oklch(0.78 0.18 75)" : "oklch(0.65 0.18 230)"}
+                      strokeWidth="12" strokeLinecap="round"
+                      strokeDasharray={`${2 * Math.PI * 66}`}
+                      strokeDashoffset={`${2 * Math.PI * 66 * (1 - lead.leadScore / 100)}`}
+                      style={{ transition: "stroke-dashoffset 1.4s cubic-bezier(0.23,1,0.32,1)" }}
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <span className="text-5xl font-black text-white leading-none">{lead.leadScore}</span>
+                    <span className="text-white/40 text-xs mt-1">/ 100</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-center mb-1">
+                    <CategoryBadge category={lead.leadCategory} />
+                  </div>
+                  <p className="text-white/40 text-xs text-center">AviatorIQ Score</p>
+                </div>
+              </div>
+
+              {/* Right panel */}
+              <div className="space-y-4 animate-fade-in-up">
+                <div>
+                  <h1 className="text-2xl md:text-3xl font-display font-bold text-white mb-1">
+                    {lead.fullName.split(" ")[0]}'s Pilot Command Centre
+                  </h1>
+                  <p className="text-white/60 text-sm">
+                    {lead.leadCategory === "Hot"
+                      ? "Strong readiness across all dimensions. You're positioned to begin serious training conversations."
+                      : lead.leadCategory === "Warm"
+                      ? "Building solid foundations. A few key areas to develop before you're flight-ready."
+                      : "Exploration phase — exactly where most pilots start. Your roadmap is below."}
+                  </p>
+                </div>
+
+                {/* 4-tile instrument panel */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+                  {[
+                    { label: "Biggest Risk", value: biggestRisk ?? "—", color: "oklch(0.78 0.18 25)", icon: <AlertTriangle className="w-3.5 h-3.5" /> },
+                    { label: "Best Route", value: recommendedRoute ?? "—", color: "oklch(0.65 0.18 230)", icon: <Plane className="w-3.5 h-3.5" /> },
+                    { label: "Est. Cost", value: estimatedCostRange ? estimatedCostRange.split("–")[0].trim() + "–" + (estimatedCostRange.split("–")[1] ?? "").trim() : "—", color: "oklch(0.72 0.2 145)", icon: <PoundSterling className="w-3.5 h-3.5" /> },
+                    { label: "Timeline", value: estimatedTimeline ?? "—", color: "oklch(0.75 0.12 290)", icon: <Clock className="w-3.5 h-3.5" /> },
+                  ].map((tile) => (
+                    <div key={tile.label} className="stat-tile">
+                      <div className="flex items-center gap-1.5 mb-1.5" style={{ color: tile.color }}>
+                        {tile.icon}
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-white/40">{tile.label}</span>
+                      </div>
+                      <div className="text-white font-display font-bold text-sm leading-tight">{tile.value}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Share row */}
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <span className="text-white/40 text-xs font-medium uppercase tracking-wide">Share</span>
                   <a
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Could you actually become an airline pilot? I just took the AviatorIQ assessment to find out. ✈️')}&url=${encodeURIComponent(window.location.origin + '/quiz')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-black/30 hover:bg-black/50 border border-white/20 text-white text-sm font-medium transition-colors no-underline"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/70 hover:text-white text-xs font-medium transition-colors no-underline"
+                    style={{ background: "oklch(0 0 0 / 0.3)", border: "1px solid oklch(1 0 0 / 0.15)" }}>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                     Share on X
                   </a>
                   <a
                     href={`https://wa.me/?text=${encodeURIComponent('Could you actually become an airline pilot? I just took the AviatorIQ assessment to find out: ' + window.location.origin + '/quiz ✈️')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600/70 hover:bg-green-600/90 border border-white/20 text-white text-sm font-medium transition-colors no-underline"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-                    Share on WhatsApp
+                    target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/70 hover:text-white text-xs font-medium transition-colors no-underline"
+                    style={{ background: "oklch(0.45 0.18 145 / 0.4)", border: "1px solid oklch(1 0 0 / 0.15)" }}>
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    WhatsApp
                   </a>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="container max-w-4xl py-10 px-4 space-y-6">
+
+          {/* ── Quick summary cards — REMOVED (now in hero instrument panel) ── */}
+
+          {/* ── Matched Schools + Request Introduction ── */}
+          <div className="card-base p-6 animate-fade-in-up">
+            <h2 className="font-display font-bold text-[var(--color-navy)] text-xl mb-1">Matched Flight Schools</h2>
+            <p className="text-sm text-[var(--color-muted-foreground)] mb-5">
+              {matchedSchools.length > 0
+                ? `We found ${matchedSchools.length} school${matchedSchools.length !== 1 ? "s" : ""} that match your profile. Select up to 3 and request an introduction — we'll make the connection on your behalf.`
+                : "We're expanding our school network. Your profile has been saved and we'll notify you when suitable schools are added."}
+            </p>
+
+            {matchedSchools.length > 0 ? (
+              <>
+                <div className="space-y-3 mb-5">
+                  {(matchedSchools as FlightSchool[]).map((school) => {
+                    const isSelected = selectedSchoolIds.includes(school.id);
+                    const isDisabled = !isSelected && selectedSchoolIds.length >= 3;
+                    return (
+                      <div
+                        key={school.id}
+                        onClick={() => !introSubmitted && !isDisabled && toggleSchool(school.id)}
+                        className={`border rounded-xl p-4 transition-all cursor-pointer ${
+                          introSubmitted ? "opacity-60 cursor-default" :
+                          isSelected ? "border-[var(--color-primary)] bg-[var(--color-primary-light)] shadow-sm" :
+                          isDisabled ? "border-border opacity-50 cursor-not-allowed" :
+                          "border-border hover:border-[var(--color-primary)]/50 hover:bg-muted/30"
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <Checkbox
+                            checked={isSelected}
+                            disabled={introSubmitted || isDisabled}
+                            onCheckedChange={() => !introSubmitted && !isDisabled && toggleSchool(school.id)}
+                            className="mt-0.5 flex-shrink-0"
+                            onClick={(e) => e.stopPropagation()}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="font-display font-semibold text-[var(--color-navy)] text-sm">{school.name}</h3>
+                              {school.financeAvailable === "yes" && (
+                                <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Finance available</span>
+                              )}
+                            </div>
+                            <p className="text-xs text-[var(--color-muted-foreground)] mt-0.5 flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {[school.city, school.country].filter(Boolean).join(", ")}
+                              {school.priceRange && ` · ${convertPriceString(school.priceRange, formatPrice)}${currency.code !== "GBP" ? ` (${currency.code})` : ""}`}
+                            </p>
+                            <div className="flex gap-1 mt-1.5 flex-wrap">
+                              {school.integratedAtpl && <span className="text-xs bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">Integrated ATPL</span>}
+                              {school.modularAtpl && <span className="text-xs bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full">Modular ATPL</span>}
+                              {school.ppl && <span className="text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full">PPL</span>}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {!introSubmitted ? (
+                  <div className="space-y-3">
+                    <p className="text-xs text-[var(--color-muted-foreground)]">
+                      {selectedSchoolIds.length === 0
+                        ? "Select up to 3 schools above to request introductions."
+                        : `${selectedSchoolIds.length} school${selectedSchoolIds.length !== 1 ? "s" : ""} selected. We'll send your qualified profile to them — no cold calls, no spam.`}
+                    </p>
+                    <Button
+                      onClick={handleRequestIntros}
+                      disabled={selectedSchoolIds.length === 0 || requestIntros.isPending}
+                      className="w-full btn-cta"
+                      size="lg"
+                    >
+                      {requestIntros.isPending ? (
+                        <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Sending requests…</>
+                      ) : (
+                        <><School className="w-4 h-4 mr-2" /> Request Introductions ({selectedSchoolIds.length})</>
+                      )}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-xl">
+                    <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-green-800 text-sm">Introduction requests sent!</p>
+                      <p className="text-xs text-green-700 mt-0.5">We've notified the selected schools. Expect to hear back within 2–3 business days.</p>
+                    </div>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-center py-6">
+                <Globe className="w-8 h-8 text-[var(--color-muted-foreground)] mx-auto mb-3" />
+                <p className="font-display font-semibold text-[var(--color-navy)] mb-1">Expanding our school network</p>
+                <p className="text-sm text-[var(--color-muted-foreground)]">
+                  We are still adding schools that match your profile. Your results have been saved.
+                </p>
+                <Link href="/schools" className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-primary)] mt-3">
+                  Browse all schools <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            )}
           </div>
         </div>
 
