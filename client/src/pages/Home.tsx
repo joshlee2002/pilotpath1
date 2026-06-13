@@ -204,8 +204,8 @@ function SocialProofBar() {
         <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
           {[
             { value: "16+", label: "UK flight schools listed" },
-            { value: "30+", label: "In-depth training guides" },
-            { value: "9", label: "Free interactive tools" },
+            { value: "33+", label: "In-depth training guides" },
+            { value: "11", label: "Free interactive tools" },
             { value: "Free", label: "Always, no registration" },
           ].map((stat) => (
             <div key={stat.label} className="flex items-center gap-3">

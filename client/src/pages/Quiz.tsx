@@ -1,10 +1,20 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Analytics } from "@/lib/analytics";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, ArrowLeft, CheckCircle2, Loader2, Plane, AlertCircle, Shield, Clock, Star } from "lucide-react";
+
+// ─── Auto-advance helper ──────────────────────────────────────────────────────
+// Returns an updater that sets the field AND calls onAdvance after a short delay
+function useAutoAdvance(update: (k: keyof QuizData, v: string) => void, onAdvance: () => void) {
+  return useCallback((key: keyof QuizData, value: string) => {
+    update(key, value);
+    // Small delay so the selected state renders before advancing
+    setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance]);
+}
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface QuizData {
@@ -207,7 +217,19 @@ function Step1({ data, update, showErrors }: { data: QuizData; update: (k: keyof
 }
 
 // ─── Step 2: Goal & commitment ────────────────────────────────────────────────
-function Step2({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step2({ data, update, onAdvance }: { data: QuizData; update: (k: keyof QuizData, v: string) => void; onAdvance: () => void }) {
+  const autoAdvance = useAutoAdvance(update, onAdvance);
+  // Step 2 has two questions — only auto-advance after both are answered
+  const handlePilotGoal = useCallback((v: string) => {
+    update("pilotGoal", v);
+    // If spokenToSchool already answered, advance
+    if (data.spokenToSchool) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.spokenToSchool]);
+  const handleSpokenToSchool = useCallback((v: string) => {
+    update("spokenToSchool", v);
+    // If pilotGoal already answered, advance
+    if (data.pilotGoal) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.pilotGoal]);
   return (
     <StepCard title="Your goal and where you are now" subtitle="Honest answers lead to better guidance. There are no wrong answers here.">
       <div className="space-y-8">
@@ -215,7 +237,7 @@ function Step2({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">What type of pilot do you want to become?</p>
           <div className="space-y-2">
             {["Airline pilot (commercial)", "Private pilot (for fun)", "Corporate / private jet pilot", "Flight instructor", "Military pilot", "Not sure yet"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.pilotGoal === o} onClick={() => update("pilotGoal", o)} />
+              <OptionButton key={o} label={o} selected={data.pilotGoal === o} onClick={() => handlePilotGoal(o)} />
             ))}
           </div>
         </div>
@@ -224,7 +246,7 @@ function Step2({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-xs text-[oklch(0.5_0_0)] mb-4">This is one of the most useful questions — be honest.</p>
           <div className="space-y-2">
             {["I've applied to a flight school","I've visited a flight school or attended an open day","I've done a trial lesson","I've researched schools and training routes","I've watched videos and read forums","Mostly just thought about it"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.spokenToSchool === o} onClick={() => update("spokenToSchool", o)} />
+              <OptionButton key={o} label={o} selected={data.spokenToSchool === o} onClick={() => handleSpokenToSchool(o)} />
             ))}
           </div>
         </div>
@@ -234,7 +256,15 @@ function Step2({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
 }
 
 // ─── Step 3: Barriers ────────────────────────────────────────────────────────
-function Step3({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step3({ data, update, onAdvance }: { data: QuizData; update: (k: keyof QuizData, v: string) => void; onAdvance: () => void }) {
+  const handleConcern = useCallback((v: string) => {
+    update("biggestConcern", v);
+    if (data.seriousness) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.seriousness]);
+  const handleSeriousness = useCallback((v: string) => {
+    update("seriousness", v);
+    if (data.biggestConcern) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.biggestConcern]);
   return (
     <StepCard title="What's really stopping you?" subtitle="This is the most important question in the assessment. Your answer shapes everything that follows.">
       <div className="space-y-8">
@@ -243,7 +273,7 @@ function Step3({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-xs text-[oklch(0.5_0_0)] mb-4">Pick the one that feels most true right now.</p>
           <div className="space-y-2">
             {["The cost — I can't fund it","I'm not sure I could actually do it","I'm worried about passing the medical","I don't have the time right now","I think I might be too old","I'd be risking too much (career, income, stability)","I have too many unanswered questions","Nothing — I'm ready to start"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.biggestConcern === o} onClick={() => update("biggestConcern", o)} />
+              <OptionButton key={o} label={o} selected={data.biggestConcern === o} onClick={() => handleConcern(o)} />
             ))}
           </div>
         </div>
@@ -251,7 +281,7 @@ function Step3({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">How often do you think about becoming a pilot?</p>
           <div className="space-y-2">
             {["Every day — it's always on my mind","Most weeks","Occasionally","Rarely — I'm just exploring"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.seriousness === o} onClick={() => update("seriousness", o)} />
+              <OptionButton key={o} label={o} selected={data.seriousness === o} onClick={() => handleSeriousness(o)} />
             ))}
           </div>
         </div>
@@ -261,7 +291,15 @@ function Step3({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
 }
 
 // ─── Step 4: Training route ───────────────────────────────────────────────────
-function Step4({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step4({ data, update, onAdvance }: { data: QuizData; update: (k: keyof QuizData, v: string) => void; onAdvance: () => void }) {
+  const handleRoute = useCallback((v: string) => {
+    update("preferredRoute", v);
+    if (data.openToAbroad) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.openToAbroad]);
+  const handleAbroad = useCallback((v: string) => {
+    update("openToAbroad", v);
+    if (data.preferredRoute) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.preferredRoute]);
   return (
     <StepCard title="Training route" subtitle="Not sure of the difference between integrated and modular? We'll explain it in your roadmap.">
       <div className="space-y-8">
@@ -269,7 +307,7 @@ function Step4({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">Which training route interests you most?</p>
           <div className="space-y-2">
             {["Integrated ATPL (full-time, 18–24 months, £80k–£120k)","Modular ATPL (part-time, 3–5 years, £40k–£80k)","PPL only (private licence, £8k–£15k)","I don't know the difference yet"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.preferredRoute === o} onClick={() => update("preferredRoute", o)} />
+              <OptionButton key={o} label={o} selected={data.preferredRoute === o} onClick={() => handleRoute(o)} />
             ))}
           </div>
         </div>
@@ -277,7 +315,7 @@ function Step4({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">Are you open to training abroad?</p>
           <div className="space-y-2">
             {["Yes — I'd consider it for the right school","No — I want to train in my home country","Maybe, depending on cost","I need guidance on this"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.openToAbroad === o} onClick={() => update("openToAbroad", o)} />
+              <OptionButton key={o} label={o} selected={data.openToAbroad === o} onClick={() => handleAbroad(o)} />
             ))}
           </div>
         </div>
@@ -287,7 +325,19 @@ function Step4({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
 }
 
 // ─── Step 5: Finance ──────────────────────────────────────────────────────────
-function Step5({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step5({ data, update, onAdvance }: { data: QuizData; update: (k: keyof QuizData, v: string) => void; onAdvance: () => void }) {
+  const handleFunding = useCallback((v: string) => {
+    update("fundingMethod", v);
+    if (data.budgetRange && data.wantsFinanceInfo) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.budgetRange, data.wantsFinanceInfo]);
+  const handleBudget = useCallback((v: string) => {
+    update("budgetRange", v);
+    if (data.fundingMethod && data.wantsFinanceInfo) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.fundingMethod, data.wantsFinanceInfo]);
+  const handleFinanceInfo = useCallback((v: string) => {
+    update("wantsFinanceInfo", v);
+    if (data.fundingMethod && data.budgetRange) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.fundingMethod, data.budgetRange]);
   return (
     <StepCard title="Can you afford it?" subtitle="This is one of the 10 questions aspiring pilots ask most. Let's be honest about your situation.">
       <div className="space-y-8">
@@ -295,7 +345,7 @@ function Step5({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">How do you expect to fund your training?</p>
           <div className="space-y-2">
             {["Self-funded from savings","Family support","Career development loan or finance","Airline cadet sponsorship","Scholarship","I haven't figured this out yet"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.fundingMethod === o} onClick={() => update("fundingMethod", o)} />
+              <OptionButton key={o} label={o} selected={data.fundingMethod === o} onClick={() => handleFunding(o)} />
             ))}
           </div>
         </div>
@@ -303,7 +353,7 @@ function Step5({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">What training budget are you realistically working with?</p>
           <div className="space-y-2">
             {["Under £10,000","£10,000–£25,000","£25,000–£50,000","£50,000–£100,000","£100,000+","I need finance — I don't have savings"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.budgetRange === o} onClick={() => update("budgetRange", o)} />
+              <OptionButton key={o} label={o} selected={data.budgetRange === o} onClick={() => handleBudget(o)} />
             ))}
           </div>
         </div>
@@ -311,7 +361,7 @@ function Step5({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">Would you like information about finance options?</p>
           <div className="space-y-2">
             {["Yes — please include this","No","Maybe"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.wantsFinanceInfo === o} onClick={() => update("wantsFinanceInfo", o)} />
+              <OptionButton key={o} label={o} selected={data.wantsFinanceInfo === o} onClick={() => handleFinanceInfo(o)} />
             ))}
           </div>
         </div>
@@ -321,7 +371,23 @@ function Step5({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
 }
 
 // ─── Step 6: Background & medical ────────────────────────────────────────────
-function Step6({ data, update }: { data: QuizData; update: (k: keyof QuizData, v: string) => void }) {
+function Step6({ data, update, onAdvance }: { data: QuizData; update: (k: keyof QuizData, v: string) => void; onAdvance: () => void }) {
+  const handleFlying = useCallback((v: string) => {
+    update("flyingExperience", v);
+    if (data.class1Medical && data.rightToWorkStudy && data.educationLevel) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.class1Medical, data.rightToWorkStudy, data.educationLevel]);
+  const handleMedical = useCallback((v: string) => {
+    update("class1Medical", v);
+    if (data.flyingExperience && data.rightToWorkStudy && data.educationLevel) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.flyingExperience, data.rightToWorkStudy, data.educationLevel]);
+  const handleRightToWork = useCallback((v: string) => {
+    update("rightToWorkStudy", v);
+    if (data.flyingExperience && data.class1Medical && data.educationLevel) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.flyingExperience, data.class1Medical, data.educationLevel]);
+  const handleEducation = useCallback((v: string) => {
+    update("educationLevel", v);
+    if (data.flyingExperience && data.class1Medical && data.rightToWorkStudy) setTimeout(() => onAdvance(), 280);
+  }, [update, onAdvance, data.flyingExperience, data.class1Medical, data.rightToWorkStudy]);
   return (
     <StepCard title="Your background" subtitle="This helps us assess your readiness and flag anything that needs attention before you spend a penny.">
       <div className="space-y-8">
@@ -329,7 +395,7 @@ function Step6({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">Have you ever been in the cockpit?</p>
           <div className="space-y-2">
             {["Never — complete beginner","I've done a trial lesson or two","I hold a PPL or LAPL","I have 50+ hours of flight time","I hold a commercial licence"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.flyingExperience === o} onClick={() => update("flyingExperience", o)} />
+              <OptionButton key={o} label={o} selected={data.flyingExperience === o} onClick={() => handleFlying(o)} />
             ))}
           </div>
         </div>
@@ -338,7 +404,7 @@ function Step6({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-xs text-[oklch(0.5_0_0)] mb-4">Required for commercial flying. Most people pass — but uncertainty is common.</p>
           <div className="space-y-2">
             {["I already hold a Class 1 medical","No concerns — I'm in good health","Minor concerns but probably fine","I genuinely don't know","I have significant concerns"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.class1Medical === o} onClick={() => update("class1Medical", o)} />
+              <OptionButton key={o} label={o} selected={data.class1Medical === o} onClick={() => handleMedical(o)} />
             ))}
           </div>
         </div>
@@ -346,7 +412,7 @@ function Step6({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">Do you have the right to study or work in your chosen training country?</p>
           <div className="space-y-2">
             {["Yes","No","Unsure"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.rightToWorkStudy === o} onClick={() => update("rightToWorkStudy", o)} />
+              <OptionButton key={o} label={o} selected={data.rightToWorkStudy === o} onClick={() => handleRightToWork(o)} />
             ))}
           </div>
         </div>
@@ -354,7 +420,7 @@ function Step6({ data, update }: { data: QuizData; update: (k: keyof QuizData, v
           <p className="text-sm font-semibold text-[oklch(0.85_0_0)] mb-4">What is your highest education level?</p>
           <div className="space-y-2">
             {["GCSE or equivalent","A-levels or equivalent","Degree","Currently studying","Other"].map((o) => (
-              <OptionButton key={o} label={o} selected={data.educationLevel === o} onClick={() => update("educationLevel", o)} />
+              <OptionButton key={o} label={o} selected={data.educationLevel === o} onClick={() => handleEducation(o)} />
             ))}
           </div>
         </div>
@@ -513,6 +579,7 @@ export default function Quiz() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<QuizData>(EMPTY);
   const [started, setStarted] = useState(false);
+  const topRef = useRef<HTMLDivElement>(null);
   const [showStep1Errors, setShowStep1Errors] = useState(false);
   const [, navigate] = useLocation();
 
@@ -536,10 +603,18 @@ export default function Quiz() {
     return true;
   };
 
-  const handleNext = () => {
+  const scrollToTop = useCallback(() => {
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+  const handleNext = useCallback(() => {
     if (step === 1 && !canAdvance()) { setShowStep1Errors(true); return; }
-    if (step < TOTAL_STEPS) setStep((s) => s + 1);
-  };
+    if (step < TOTAL_STEPS) {
+      setStep((s) => s + 1);
+      scrollToTop();
+    }
+  }, [step, canAdvance, scrollToTop]);
 
   const handleBack = () => { if (step > 1) setStep((s) => s - 1); };
 
@@ -624,13 +699,14 @@ export default function Quiz() {
     );
   }
 
+  const stepUpdate = update as (k: keyof QuizData, v: string) => void;
   const stepComponents: Record<number, React.ReactNode> = {
-    1: <Step1 data={data} update={update as (k: keyof QuizData, v: string) => void} showErrors={showStep1Errors} />,
-    2: <Step2 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
-    3: <Step3 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
-    4: <Step4 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
-    5: <Step5 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
-    6: <Step6 data={data} update={update as (k: keyof QuizData, v: string) => void} />,
+    1: <Step1 data={data} update={stepUpdate} showErrors={showStep1Errors} />,
+    2: <Step2 data={data} update={stepUpdate} onAdvance={handleNext} />,
+    3: <Step3 data={data} update={stepUpdate} onAdvance={handleNext} />,
+    4: <Step4 data={data} update={stepUpdate} onAdvance={handleNext} />,
+    5: <Step5 data={data} update={stepUpdate} onAdvance={handleNext} />,
+    6: <Step6 data={data} update={stepUpdate} onAdvance={handleNext} />,
     7: <Step7 data={data} update={update} />,
   };
 
@@ -642,7 +718,7 @@ export default function Quiz() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full opacity-10 pointer-events-none"
           style={{ background: "radial-gradient(ellipse, oklch(0.55 0.18 240), transparent 70%)" }} />
 
-        <div className="max-w-2xl mx-auto relative z-10">
+        <div ref={topRef} className="max-w-2xl mx-auto relative z-10">
           <ProgressBar step={step} total={TOTAL_STEPS} />
 
           {/* Step card */}

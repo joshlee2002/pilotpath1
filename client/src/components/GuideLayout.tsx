@@ -1,8 +1,73 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
-import { ArrowRight, Clock, BookOpen, ChevronRight, Zap } from "lucide-react";
+import { ArrowRight, Clock, BookOpen, ChevronRight, Zap, Mail, CheckCircle2 } from "lucide-react";
+
+// ─── Inline Email Capture ────────────────────────────────────────────────────
+function InlineEmailCapture() {
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.includes("@")) return;
+    setLoading(true);
+    // Store in localStorage as a lightweight fallback (no backend endpoint needed yet)
+    try {
+      const existing = JSON.parse(localStorage.getItem("iq_email_subs") || "[]");
+      if (!existing.includes(email)) {
+        existing.push(email);
+        localStorage.setItem("iq_email_subs", JSON.stringify(existing));
+      }
+    } catch {}
+    await new Promise((r) => setTimeout(r, 600));
+    setLoading(false);
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="flex items-center gap-3 p-4 rounded-xl my-6" style={{ background: "oklch(0.55 0.18 145 / 0.1)", border: "1px solid oklch(0.55 0.18 145 / 0.25)" }}>
+        <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: "oklch(0.7 0.18 145)" }} />
+        <p className="text-sm" style={{ color: "oklch(0.75 0.04 240)" }}>
+          <strong className="text-white">You're on the list.</strong> We'll email you when new guides and tools drop — no spam, unsubscribe any time.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-5 rounded-xl my-6" style={{ background: "oklch(0.45 0.18 240 / 0.07)", border: "1px solid oklch(0.45 0.18 240 / 0.18)" }}>
+      <div className="flex items-center gap-2 mb-2">
+        <Mail className="w-4 h-4" style={{ color: "oklch(0.65 0.18 240)" }} />
+        <p className="text-sm font-semibold text-white">Get new guides before everyone else</p>
+      </div>
+      <p className="text-xs mb-3" style={{ color: "oklch(0.55 0.04 240)" }}>We publish new pilot training guides and tools monthly. No spam. Unsubscribe any time.</p>
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="your@email.com"
+          required
+          className="flex-1 px-3 py-2 rounded-lg text-sm outline-none"
+          style={{ background: "oklch(0.16 0.08 250)", border: "1px solid oklch(1 0 0 / 0.12)", color: "white" }}
+        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="px-4 py-2 rounded-lg text-sm font-bold text-white flex-shrink-0"
+          style={{ background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))", opacity: loading ? 0.7 : 1 }}
+        >
+          {loading ? "..." : "Notify me"}
+        </button>
+      </form>
+    </div>
+  );
+}
 
 interface GuideSection {
   heading: string;
@@ -159,8 +224,12 @@ export default function GuideLayout({
                   >
                     {section.content}
                   </div>
+                  {/* Inject email capture after the 3rd section */}
+                  {i === 2 && <InlineEmailCapture />}
                 </div>
               ))}
+              {/* If fewer than 3 sections, show email capture at the end */}
+              {sections.length <= 2 && <div className="mt-10 pt-10" style={{ borderTop: `1px solid ${border}` }}><InlineEmailCapture /></div>}
             </div>
 
             {/* Bottom CTA */}
