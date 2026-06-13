@@ -128,7 +128,7 @@ export default function PublicNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
   const toolsRef = useRef<HTMLDivElement>(null);
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const { currency, setCurrency } = useCurrency();
   const { country, setCountry } = useCountry();
   const [scrolled, setScrolled] = useState(false);
@@ -248,7 +248,11 @@ export default function PublicNav() {
             {/* Country Switcher */}
             <button
               type="button"
-              onClick={() => setCountry(country === "us" ? "uk" : "us")}
+              onClick={() => {
+                const next = country === "us" ? "uk" : "us";
+                setCountry(next);
+                navigate(next === "us" ? "/us" : "/");
+              }}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
               style={{ color: "oklch(0.75 0.04 240)", border: "1px solid oklch(1 0 0 / 0.12)" }}
               title={country === "us" ? "Switch to UK version" : "Switch to US version"}

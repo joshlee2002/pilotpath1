@@ -7,6 +7,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { CountryProvider } from "./contexts/CountryContext";
 
+// Country selector
+import CountrySelect from "./pages/CountrySelect";
+
 // US pages
 import HomeUS from "./pages/HomeUS";
 import MedicalConditionLookupUS from "./pages/MedicalConditionLookupUS";
@@ -199,6 +202,9 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
+
+      {/* Country selector */}
+      <Route path="/select" component={CountrySelect} />
 
       {/* US routes */}
       <Route path="/us" component={HomeUS} />
