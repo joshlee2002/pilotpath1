@@ -277,7 +277,7 @@ Candidate profile:
 - Open to abroad: ${lead.openToAbroad ?? "Unknown"}
 - Biggest concern: ${lead.biggestConcern ?? "Unknown"}
 - Written answer: ${lead.writtenAnswer ?? "None provided"}
-- Readiness score: ${lead.leadScore}/100 (${lead.leadCategory})
+- Readiness score: ${lead.leadScore}/100 (${lead.leadCategory === "Hot" ? "Flight Ready" : lead.leadCategory === "Warm" ? "Development Phase" : "Exploration Phase"})
 
 Return a JSON object with these exact keys:
 {

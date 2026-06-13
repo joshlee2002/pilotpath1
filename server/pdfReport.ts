@@ -31,9 +31,9 @@ function classificationLabel(category: string): string {
 }
 
 function scoreColour(score: number): string {
-  if (score >= 75) return GREEN;
-  if (score >= 45) return AMBER;
-  return RED;
+  if (score >= 85) return GREEN;
+  if (score >= 55) return AMBER;
+  return "#3B82F6"; // blue for Exploration Phase
 }
 
 function drawScoreBar(
