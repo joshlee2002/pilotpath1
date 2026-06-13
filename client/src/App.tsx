@@ -16,6 +16,7 @@ import MedicalConditionLookupUS from "./pages/MedicalConditionLookupUS";
 import CadetEligibilityUS from "./pages/CadetEligibilityUS";
 import CalculatorUS from "./pages/CalculatorUS";
 import HowToBecomePilotUS from "./pages/guides/HowToBecomePilotUS";
+import SchoolsUS from "./pages/SchoolsUS";
 import Part61Vs141 from "./pages/guides/Part61Vs141";
 import FaaMedicalGuide from "./pages/guides/FaaMedicalGuide";
 
@@ -93,6 +94,9 @@ import RyanairCadet from "./pages/guides/RyanairCadet";
 import WizzAirAcademy from "./pages/guides/WizzAirAcademy";
 import TuiMPL from "./pages/guides/TuiMPL";
 import PilotAptitudeTest from "./pages/guides/PilotAptitudeTest";
+import PilotCvGuide from "./pages/guides/PilotCvGuide";
+import PilotAptitudeTestPrep from "./pages/guides/PilotAptitudeTestPrep";
+import SimulatorAssessmentGuide from "./pages/guides/SimulatorAssessmentGuide";
 
 // New section pages
 import Stories from "./pages/Stories";
@@ -180,6 +184,9 @@ function Router() {
       <Route path="/guides/wizz-air-pilot-academy" component={WizzAirAcademy} />
       <Route path="/guides/tui-mpl-cadet-programme" component={TuiMPL} />
       <Route path="/guides/pilot-aptitude-test-uk" component={PilotAptitudeTest} />
+      <Route path="/guides/pilot-cv-cover-letter" component={PilotCvGuide} />
+      <Route path="/guides/pilot-aptitude-test-preparation" component={PilotAptitudeTestPrep} />
+      <Route path="/guides/airline-simulator-assessment" component={SimulatorAssessmentGuide} />
 
       {/* New section pages */}
       <Route path="/stories" component={Stories} />
@@ -214,6 +221,7 @@ function Router() {
       <Route path="/us/guides/how-to-become-a-pilot" component={HowToBecomePilotUS} />
       <Route path="/us/guides/part-61-vs-141" component={Part61Vs141} />
       <Route path="/us/guides/faa-medical-requirements" component={FaaMedicalGuide} />
+      <Route path="/us/schools" component={SchoolsUS} />
 
       {/* 404 */}
       <Route path="/404" component={NotFound} />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Core pages -->
+  <!-- ─── Core UK pages ──────────────────────────────────────────────────────── -->
   <url>
     <loc>https://aviatoriq.com/</loc>
     <changefreq>weekly</changefreq>
@@ -35,7 +35,7 @@
   <url>
     <loc>https://aviatoriq.com/guides</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
@@ -44,8 +44,46 @@
     <priority>0.7</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
+  <url>
+    <loc>https://aviatoriq.com/jobs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/stories</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
 
-  <!-- Quiz pages -->
+  <!-- ─── Decision tools ────────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://aviatoriq.com/tools/integrated-vs-modular</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/tools/class-1-medical-check</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/tools/medical-condition-lookup</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/tools/cadet-eligibility</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+
+  <!-- ─── Quiz pages ────────────────────────────────────────────────────────── -->
   <url>
     <loc>https://aviatoriq.com/quizzes/what-kind-of-pilot</loc>
     <changefreq>monthly</changefreq>
@@ -89,9 +127,15 @@
     <lastmod>2026-06-13</lastmod>
   </url>
 
-  <!-- Original guides -->
+  <!-- ─── UK Guides ─────────────────────────────────────────────────────────── -->
   <url>
-    <loc>https://aviatoriq.com/guides/how-to-become-a-pilot-uk</loc>
+    <loc>https://aviatoriq.com/guides/how-to-become-a-pilot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/pilot-training-costs</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <lastmod>2026-06-13</lastmod>
@@ -103,45 +147,19 @@
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/pilot-training-costs</loc>
+    <loc>https://aviatoriq.com/guides/modular-vs-integrated-pilot-training</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/integrated-vs-modular-cost</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/flight-school-guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
     <loc>https://aviatoriq.com/guides/class-1-medical</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/pilot-licences</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/atpl-theory</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/airline-applications</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-
-  <!-- New SEO guides -->
-  <url>
-    <loc>https://aviatoriq.com/guides/am-i-too-old-to-become-a-pilot</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2026-06-13</lastmod>
@@ -153,21 +171,39 @@
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/cadet-pilot-programmes</loc>
+    <loc>https://aviatoriq.com/guides/adhd-pilot-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/pilot-training-finance-2026</loc>
+    <loc>https://aviatoriq.com/guides/am-i-too-old-to-become-a-pilot</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/modular-vs-integrated-pilot-training</loc>
+    <loc>https://aviatoriq.com/guides/pilot-training-over-40</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/cadet-pilot-programmes-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/how-to-finance-pilot-training-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/finance-guide</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
@@ -177,19 +213,7 @@
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/am-i-ready-to-start-pilot-training</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/hour-building-guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/atpl-exams-guide</loc>
+    <loc>https://aviatoriq.com/guides/airline-pilot-salary</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-06-13</lastmod>
@@ -201,7 +225,37 @@
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/type-rating-guide</loc>
+    <loc>https://aviatoriq.com/guides/am-i-ready-to-start-pilot-training</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/best-route-to-airline</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/training-timeline</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/hour-building-pilot-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/atpl-theory-exams-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/pilot-type-rating-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-06-13</lastmod>
@@ -213,31 +267,135 @@
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/pilot-training-over-40</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
-    <loc>https://aviatoriq.com/guides/airline-pilot-interview-guide</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <lastmod>2026-06-13</lastmod>
-  </url>
-  <url>
     <loc>https://aviatoriq.com/guides/women-in-aviation-uk</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
   <url>
-    <loc>https://aviatoriq.com/guides/best-flight-schools-uk</loc>
+    <loc>https://aviatoriq.com/guides/best-flight-schools-uk-2026</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <lastmod>2026-06-13</lastmod>
   </url>
 
-  <!-- Partner / company pages -->
+  <!-- ─── UK Cadet programme guides ────────────────────────────────────────── -->
+  <url>
+    <loc>https://aviatoriq.com/guides/ba-speedbird-academy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/easyjet-generation-pilot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/ryanair-cadet-programme</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/wizz-air-pilot-academy</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/tui-mpl-cadet-programme</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+
+  <!-- ─── UK After Training guides ─────────────────────────────────────────── -->
+  <url>
+    <loc>https://aviatoriq.com/guides/airline-pilot-interview</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/pilot-aptitude-test-uk</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/pilot-cv-cover-letter</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/pilot-aptitude-test-preparation</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/guides/airline-simulator-assessment</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+
+  <!-- ─── US pages ──────────────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://aviatoriq.com/us</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/schools</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/calculator</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/cadet-eligibility</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/medical-lookup</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+
+  <!-- ─── US Guides ─────────────────────────────────────────────────────────── -->
+  <url>
+    <loc>https://aviatoriq.com/us/guides/how-to-become-a-pilot</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/guides/part-61-vs-141</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/us/guides/faa-medical-requirements</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+
+  <!-- ─── Platform / static pages ──────────────────────────────────────────── -->
   <url>
     <loc>https://aviatoriq.com/partner</loc>
     <changefreq>monthly</changefreq>
@@ -246,6 +404,12 @@
   </url>
   <url>
     <loc>https://aviatoriq.com/about</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2026-06-13</lastmod>
+  </url>
+  <url>
+    <loc>https://aviatoriq.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
     <lastmod>2026-06-13</lastmod>

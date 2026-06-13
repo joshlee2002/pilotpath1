@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Plane, ChevronDown, Zap, ArrowRight } from "lucide-react";
+import { Menu, X, Plane, ChevronDown, Zap } from "lucide-react";
 import { useCurrency, SUPPORTED_CURRENCIES } from "@/contexts/CurrencyContext";
 import { useCountry } from "@/contexts/CountryContext";
 
@@ -29,17 +29,18 @@ function AnnouncementBar() {
       className="w-full text-center py-2 px-4 text-xs font-semibold flex items-center justify-center gap-2"
       style={{ background: "oklch(0.55 0.20 65)", color: "oklch(0.10 0.05 50)" }}
     >
-      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider" style={{ background: "oklch(0.10 0.05 50 / 0.2)" }}>New</span>
-      <Link href={ann.href} className="no-underline hover:underline transition-all font-bold" style={{ color: "oklch(0.10 0.05 50)" }}>
+      <span className="inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider"
+        style={{ background: "oklch(0.10 0.05 50 / 0.15)" }}>
+        NEW
+      </span>
+      <a href={ann.href} className="hover:underline transition-all" style={{ color: "inherit" }}>
         {ann.text}
-      </Link>
-      <ArrowRight className="w-3 h-3 flex-shrink-0" />
+      </a>
     </div>
   );
 }
 
-
-const navLinks = [
+const ukNavLinks = [
   { label: "Quizzes", href: "/quizzes" },
   { label: "Flight Schools", href: "/schools" },
   { label: "Guides", href: "/guides" },
@@ -48,13 +49,27 @@ const navLinks = [
   { label: "About", href: "/about" },
 ];
 
-const toolLinks = [
+const usNavLinks = [
+  { label: "US Guides", href: "/guides" },
+  { label: "Flight Schools", href: "/schools" },
+  { label: "Jobs", href: "/jobs" },
+  { label: "Stories", href: "/stories" },
+  { label: "About", href: "/about" },
+];
+
+const ukToolLinks = [
   { label: "Pilot Roadmap Generator", href: "/roadmap", desc: "Get your personalised training roadmap", icon: "🗺️" },
   { label: "Cost Calculator", href: "/calculator", desc: "Estimate your total training cost", icon: "🧮" },
   { label: "Integrated vs Modular", href: "/tools/integrated-vs-modular", desc: "Find the right training route", icon: "⚖️" },
   { label: "Medical Readiness Check", href: "/tools/class-1-medical-check", desc: "Assess your Class 1 eligibility", icon: "🩺" },
   { label: "Medical Condition Lookup", href: "/tools/medical-condition-lookup", desc: "Check any condition against Class 1 standards", icon: "🔍" },
   { label: "Cadet Eligibility Checker", href: "/tools/cadet-eligibility", desc: "Find which cadet programmes you qualify for", icon: "✈️" },
+];
+
+const usToolLinks = [
+  { label: "US Cost Calculator", href: "/us/calculator", desc: "Part 61 vs 141 costs, checkrides, and FAA exams", icon: "🧮" },
+  { label: "FAA Medical Condition Lookup", href: "/us/medical-lookup", desc: "Check conditions against FAA First Class standards", icon: "🔍" },
+  { label: "US Cadet Eligibility Checker", href: "/us/cadet-eligibility", desc: "United Aviate, Delta Propel, American, Southwest", icon: "✈️" },
 ];
 
 const FOR_SCHOOLS = { label: "For Schools", href: "/partner" };
@@ -133,6 +148,13 @@ export default function PublicNav() {
   const { country, setCountry } = useCountry();
   const [scrolled, setScrolled] = useState(false);
 
+  const isUS = country === "us";
+  const navLinks = isUS ? usNavLinks : ukNavLinks;
+  const toolLinks = isUS ? usToolLinks : ukToolLinks;
+  const homeHref = isUS ? "/us" : "/";
+  const ctaHref = isUS ? "/us" : "/quiz";
+  const ctaLabel = isUS ? "US Platform" : "Free Assessment";
+
   useEffect(() => {
     function handler(e: MouseEvent) {
       if (toolsRef.current && !toolsRef.current.contains(e.target as Node)) setToolsOpen(false);
@@ -166,7 +188,7 @@ export default function PublicNav() {
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 font-display font-bold text-xl text-white no-underline group">
+          <Link href={homeHref} className="flex items-center gap-2.5 font-display font-bold text-xl text-white no-underline group">
             <div
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all group-hover:scale-105"
               style={{ background: "linear-gradient(135deg, oklch(0.45 0.18 240), oklch(0.6 0.18 200))" }}
@@ -180,14 +202,13 @@ export default function PublicNav() {
           <div className="hidden md:flex items-center gap-0.5">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.href + link.label}
                 href={link.href}
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-all no-underline ${
                   isActive(link.href)
                     ? "text-white bg-white/10"
                     : "text-white/60 hover:text-white hover:bg-white/8"
                 }`}
-                style={isActive(link.href) ? {} : {}}
               >
                 {link.label}
               </Link>
@@ -218,7 +239,7 @@ export default function PublicNav() {
                   }}
                 >
                   <p className="text-xs px-4 py-2 font-semibold uppercase tracking-widest" style={{ color: "oklch(0.45 0.04 240)" }}>
-                    Decision Tools
+                    {isUS ? "US Decision Tools" : "Decision Tools"}
                   </p>
                   {toolLinks.map((t) => (
                     <Link
@@ -237,6 +258,19 @@ export default function PublicNav() {
                       </div>
                     </Link>
                   ))}
+                  {/* Show UK tools link when on US, and vice versa */}
+                  <div style={{ borderTop: "1px solid oklch(1 0 0 / 0.08)" }} className="mt-1 pt-1">
+                    <Link
+                      href={isUS ? "/tools/medical-condition-lookup" : "/us/calculator"}
+                      onClick={() => setToolsOpen(false)}
+                      className="flex items-center gap-2 px-4 py-2 text-xs no-underline transition-colors"
+                      style={{ color: "oklch(0.5 0.04 240)" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "oklch(0.65 0.22 45)")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "oklch(0.5 0.04 240)")}
+                    >
+                      {isUS ? "→ View UK tools" : "→ View US tools"}
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>
@@ -253,7 +287,7 @@ export default function PublicNav() {
                 setCountry(next);
                 navigate(next === "us" ? "/us" : "/");
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-white/8"
               style={{ color: "oklch(0.75 0.04 240)", border: "1px solid oklch(1 0 0 / 0.12)" }}
               title={country === "us" ? "Switch to UK version" : "Switch to US version"}
             >
@@ -270,7 +304,7 @@ export default function PublicNav() {
               For Schools
             </Link>
             <Link
-              href="/quiz"
+              href={ctaHref}
               className="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-bold text-white no-underline transition-all"
               style={{
                 background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))",
@@ -278,7 +312,7 @@ export default function PublicNav() {
               }}
             >
               <Zap className="w-3.5 h-3.5" />
-              Free Assessment
+              {ctaLabel}
             </Link>
           </div>
 
@@ -300,7 +334,7 @@ export default function PublicNav() {
           >
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.href + link.label}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className="block px-4 py-3 text-sm font-medium rounded-lg no-underline transition-colors"
@@ -324,6 +358,24 @@ export default function PublicNav() {
                 {link.label}
               </Link>
             ))}
+
+            {/* Country switcher in mobile */}
+            <div className="px-4 py-3" style={{ borderTop: "1px solid oklch(1 0 0 / 0.08)" }}>
+              <button
+                type="button"
+                onClick={() => {
+                  const next = country === "us" ? "uk" : "us";
+                  setCountry(next);
+                  navigate(next === "us" ? "/us" : "/");
+                  setMobileOpen(false);
+                }}
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-semibold transition-all"
+                style={{ border: "1px solid oklch(1 0 0 / 0.15)", color: "oklch(0.75 0.04 240)" }}
+              >
+                {country === "us" ? "🇬🇧 Switch to UK version" : "🇺🇸 Switch to US version"}
+              </button>
+            </div>
+
             <Link
               href={FOR_SCHOOLS.href}
               onClick={() => setMobileOpen(false)}
@@ -359,13 +411,13 @@ export default function PublicNav() {
 
             <div className="px-4 pt-2 pb-1">
               <Link
-                href="/quiz"
+                href={ctaHref}
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-center gap-2 w-full py-3 rounded-lg text-sm font-bold text-white no-underline"
                 style={{ background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))" }}
               >
                 <Zap className="w-4 h-4" />
-                Take Free Assessment
+                {ctaLabel}
               </Link>
             </div>
           </div>

@@ -533,10 +533,10 @@ function TrainingRoutesSection() {
 // ─── After Training ─────────────────────────────────────────────────────────────
 function AfterTrainingSection() {
   const resources = [
-    { icon: <Briefcase className="w-6 h-6" />, color: "oklch(0.72 0.18 65)", title: "Pilot CV & Cover Letters", description: "How to structure an aviation CV, highlight your training achievements, and write a cover letter that passes airline screening.", href: "/guides" },
-    { icon: <Users className="w-6 h-6" />, color: "oklch(0.45 0.18 240)", title: "Airline Interview Prep", description: "Common technical and HR questions, group exercise strategies, and how to prepare for the competency-based interview.", href: "/guides" },
-    { icon: <BrainCircuit className="w-6 h-6" />, color: "oklch(0.6 0.18 200)", title: "Aptitude Testing", description: "What to expect from CUT-E, Symbiotics, and Pilapt tests. How to practice numerical reasoning, spatial awareness, and multitasking.", href: "/guides" },
-    { icon: <MonitorPlay className="w-6 h-6" />, color: "oklch(0.65 0.2 300)", title: "Simulator Assessments", description: "How airlines assess your raw flying ability and CRM (Crew Resource Management) in a full-motion simulator before hiring.", href: "/guides" },
+    { icon: <Briefcase className="w-6 h-6" />, color: "oklch(0.72 0.18 65)", title: "Pilot CV & Cover Letters", description: "How to structure an aviation CV, highlight your training achievements, and write a cover letter that passes airline screening.", href: "/guides/pilot-cv-cover-letter" },
+    { icon: <Users className="w-6 h-6" />, color: "oklch(0.45 0.18 240)", title: "Airline Interview Prep", description: "Common technical and HR questions, group exercise strategies, and how to prepare for the competency-based interview.", href: "/guides/airline-pilot-interview" },
+    { icon: <BrainCircuit className="w-6 h-6" />, color: "oklch(0.6 0.18 200)", title: "Aptitude Testing", description: "What to expect from CUT-E, Symbiotics, and Pilapt tests. How to practice numerical reasoning, spatial awareness, and multitasking.", href: "/guides/pilot-aptitude-test-preparation" },
+    { icon: <MonitorPlay className="w-6 h-6" />, color: "oklch(0.65 0.2 300)", title: "Simulator Assessments", description: "How airlines assess your raw flying ability and CRM (Crew Resource Management) in a full-motion simulator before hiring.", href: "/guides/airline-simulator-assessment" },
   ];
 
   return (

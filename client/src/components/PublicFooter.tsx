@@ -1,7 +1,8 @@
 import { Link } from "wouter";
-import { Plane, ArrowRight, Zap } from "lucide-react";
+import { Plane, Zap } from "lucide-react";
+import { useCountry } from "@/contexts/CountryContext";
 
-const guideLinks = [
+const ukGuideLinks = [
   { label: "How to Become a Pilot", href: "/guides/how-to-become-a-pilot" },
   { label: "Pilot Training Costs", href: "/guides/pilot-training-costs" },
   { label: "Integrated vs Modular", href: "/guides/integrated-vs-modular" },
@@ -12,13 +13,30 @@ const guideLinks = [
   { label: "Pilot Aptitude Tests", href: "/guides/pilot-aptitude-test-uk" },
 ];
 
-const toolLinks = [
+const usGuideLinks = [
+  { label: "How to Become a Pilot in the USA", href: "/us/guides/how-to-become-a-pilot" },
+  { label: "Part 61 vs Part 141", href: "/us/guides/part-61-vs-141" },
+  { label: "FAA Medical Requirements", href: "/us/guides/faa-medical-requirements" },
+  { label: "United Aviate Academy", href: "/guides" },
+  { label: "Delta Propel Flight Academy", href: "/guides" },
+  { label: "Southwest Destination 225°", href: "/guides" },
+];
+
+const ukToolLinks = [
   { label: "Pilot Roadmap Generator", href: "/roadmap" },
   { label: "Cost Calculator", href: "/calculator" },
   { label: "Integrated vs Modular Tool", href: "/tools/integrated-vs-modular" },
   { label: "Medical Readiness Check", href: "/tools/class-1-medical-check" },
   { label: "Medical Condition Lookup", href: "/tools/medical-condition-lookup" },
   { label: "Cadet Eligibility Checker", href: "/tools/cadet-eligibility" },
+];
+
+const usToolLinks = [
+  { label: "US Cost Calculator", href: "/us/calculator" },
+  { label: "FAA Medical Condition Lookup", href: "/us/medical-lookup" },
+  { label: "US Cadet Eligibility Checker", href: "/us/cadet-eligibility" },
+  { label: "Flight School Directory", href: "/schools" },
+  { label: "Quiz Hub", href: "/quizzes" },
 ];
 
 const platformLinks = [
@@ -38,6 +56,17 @@ const legalLinks = [
 ];
 
 export default function PublicFooter() {
+  const { country } = useCountry();
+  const isUS = country === "us";
+
+  const guideLinks = isUS ? usGuideLinks : ukGuideLinks;
+  const toolLinks = isUS ? usToolLinks : ukToolLinks;
+  const tagline = isUS
+    ? "The USA's most personalised pilot training guidance platform. FAA routes, real costs, and matched flight schools."
+    : "The UK's most personalised pilot training guidance platform. Find your route, understand your costs, and get matched with the right flight school.";
+  const assessmentHref = isUS ? "/us" : "/quiz";
+  const homeHref = isUS ? "/us" : "/";
+
   return (
     <footer style={{ background: "oklch(0.08 0.07 252)", borderTop: "1px solid oklch(1 0 0 / 0.07)" }}>
       <div className="container py-8 md:py-14">
@@ -45,7 +74,7 @@ export default function PublicFooter() {
 
           {/* Brand — spans 2 cols */}
           <div className="col-span-2 md:col-span-2">
-            <Link href="/" className="inline-flex items-center gap-2.5 mb-5 no-underline group">
+            <Link href={homeHref} className="inline-flex items-center gap-2.5 mb-5 no-underline group">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center transition-all group-hover:scale-105"
                 style={{ background: "linear-gradient(135deg, oklch(0.45 0.18 240), oklch(0.6 0.18 200))" }}
@@ -55,15 +84,15 @@ export default function PublicFooter() {
               <span className="font-display font-bold text-xl text-white">AviatorIQ</span>
             </Link>
             <p className="text-sm leading-relaxed mb-6" style={{ color: "oklch(0.5 0.04 240)" }}>
-              The UK's most personalised pilot training guidance platform. Find your route, understand your costs, and get matched with the right flight school.
+              {tagline}
             </p>
             <Link
-              href="/quiz"
+              href={assessmentHref}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white no-underline transition-all"
               style={{ background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))", boxShadow: "0 0 20px oklch(0.72 0.18 65 / 0.25)" }}
             >
               <Zap className="w-3.5 h-3.5" />
-              Free Assessment
+              {isUS ? "Explore US Platform" : "Free Assessment"}
             </Link>
           </div>
 
@@ -72,7 +101,7 @@ export default function PublicFooter() {
             <h4 className="font-display font-semibold text-xs uppercase tracking-widest mb-4" style={{ color: "oklch(0.45 0.04 240)" }}>Pilot Guides</h4>
             <ul className="space-y-2.5">
               {guideLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.href + link.label}>
                   <Link href={link.href} className="text-sm no-underline transition-colors" style={{ color: "oklch(0.55 0.04 240)" }}
                     onMouseEnter={e => (e.currentTarget.style.color = "white")}
                     onMouseLeave={e => (e.currentTarget.style.color = "oklch(0.55 0.04 240)")}
@@ -89,7 +118,7 @@ export default function PublicFooter() {
             <h4 className="font-display font-semibold text-xs uppercase tracking-widest mb-4" style={{ color: "oklch(0.45 0.04 240)" }}>Tools</h4>
             <ul className="space-y-2.5 mb-6">
               {toolLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.href + link.label}>
                   <Link href={link.href} className="text-sm no-underline transition-colors" style={{ color: "oklch(0.55 0.04 240)" }}
                     onMouseEnter={e => (e.currentTarget.style.color = "white")}
                     onMouseLeave={e => (e.currentTarget.style.color = "oklch(0.55 0.04 240)")}
@@ -118,12 +147,17 @@ export default function PublicFooter() {
           <div>
             <h4 className="font-display font-semibold text-xs uppercase tracking-widest mb-4" style={{ color: "oklch(0.45 0.04 240)" }}>Why AviatorIQ</h4>
             <div className="space-y-3">
-              {[
+              {(isUS ? [
+                { stat: "50+", label: "US flight schools listed" },
+                { stat: "20+", label: "US-specific guides" },
+                { stat: "Free", label: "Always, no paywall" },
+                { stat: "2026", label: "FAA data up to date" },
+              ] : [
                 { stat: "16+", label: "UK & international schools" },
                 { stat: "33+", label: "In-depth training guides" },
                 { stat: "Free", label: "Always, no paywall" },
                 { stat: "2026", label: "Data up to date" },
-              ].map((item) => (
+              ]).map((item) => (
                 <div key={item.label} className="flex items-center gap-3">
                   <span className="font-display font-bold text-sm" style={{ color: "oklch(0.65 0.18 240)" }}>{item.stat}</span>
                   <span className="text-xs" style={{ color: "oklch(0.5 0.04 240)" }}>{item.label}</span>
