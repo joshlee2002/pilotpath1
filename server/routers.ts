@@ -291,9 +291,34 @@ AviatorIQ Score: ${score}/100 (${category})`;
       }),
 
     generateRoadmap: publicProcedure
-      .input(z.object({ leadId: z.number() }))
+      .input(z.object({
+        leadId: z.number(),
+        // Optional client-side lead data for when DB is unavailable
+        leadData: z.object({
+          fullName: z.string().optional(),
+          age: z.number().optional().nullable(),
+          country: z.string().optional().nullable(),
+          pilotGoal: z.string().optional().nullable(),
+          biggestConcern: z.string().optional().nullable(),
+          spokenToSchool: z.string().optional().nullable(),
+          seriousness: z.string().optional().nullable(),
+          preferredRoute: z.string().optional().nullable(),
+          budgetRange: z.string().optional().nullable(),
+          fundingMethod: z.string().optional().nullable(),
+          wantsFinanceInfo: z.string().optional().nullable(),
+          class1Medical: z.string().optional().nullable(),
+          flyingExperience: z.string().optional().nullable(),
+          startTimeframe: z.string().optional().nullable(),
+          openToAbroad: z.string().optional().nullable(),
+          writtenAnswer: z.string().optional().nullable(),
+          leadScore: z.number().optional().nullable(),
+          leadCategory: z.string().optional().nullable(),
+        }).optional(),
+      }))
       .mutation(async ({ input }) => {
-        const lead = await getLeadById(input.leadId);
+        const dbLead = await getLeadById(input.leadId);
+        // Use DB lead if available, otherwise fall back to client-provided data
+        const lead = dbLead ?? (input.leadData ? { ...input.leadData, id: input.leadId, aiRoadmap: null } as any : null);
         if (!lead) throw new TRPCError({ code: "NOT_FOUND" });
 
         // Return cached roadmap if available

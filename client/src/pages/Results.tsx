@@ -182,9 +182,12 @@ export default function Results() {
     if (activeResult && !roadmap && !roadmapMutation.isPending && !roadmapMutation.isSuccess) {
       const cached = (activeResult.lead as any).aiRoadmap;
       if (cached) {
-        try { setRoadmap(JSON.parse(cached)); } catch { roadmapMutation.mutate({ leadId }); }
+        try { setRoadmap(JSON.parse(cached)); } catch {
+          roadmapMutation.mutate({ leadId, leadData: activeResult.lead as any });
+        }
       } else {
-        roadmapMutation.mutate({ leadId });
+        // Pass lead data as fallback so server can generate roadmap without DB
+        roadmapMutation.mutate({ leadId, leadData: activeResult.lead as any });
       }
     }
   }, [activeResult]);
