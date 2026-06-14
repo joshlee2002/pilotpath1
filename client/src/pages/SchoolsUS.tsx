@@ -48,13 +48,39 @@ export default function SchoolsUS() {
   const [financeFilter, setFinanceFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // State keyword map for matching against city strings
+  const STATE_KEYWORDS: Record<string, string[]> = {
+    "Alabama": ["al,", ", al", "alabama", "dothan"],
+    "Arizona": ["az,", ", az", "arizona", "prescott", "phoenix", "mesa", "scottsdale", "tempe"],
+    "California": ["ca,", ", ca", "california", "los angeles", "san diego", "fresno", "sacramento"],
+    "Colorado": ["co,", ", co", "colorado", "denver"],
+    "Florida": ["fl,", ", fl", "florida", "daytona", "sanford", "vero beach", "new smyrna", "fort lauderdale", "pompano", "jacksonville", "miami", "orlando"],
+    "Georgia": ["ga,", ", ga", "georgia", "atlanta"],
+    "Illinois": ["il,", ", il", "illinois", "chicago"],
+    "Michigan": ["mi,", ", mi", "michigan"],
+    "Minnesota": ["mn,", ", mn", "minnesota"],
+    "Nevada": ["nv,", ", nv", "nevada", "incline village", "las vegas"],
+    "New York": ["ny,", ", ny", "new york"],
+    "North Dakota": ["nd,", ", nd", "north dakota", "grand forks"],
+    "Ohio": ["oh,", ", oh", "ohio"],
+    "Oklahoma": ["ok,", ", ok", "oklahoma", "tulsa"],
+    "Oregon": ["or,", ", or", "oregon"],
+    "Pennsylvania": ["pa,", ", pa", "pennsylvania"],
+    "Tennessee": ["tn,", ", tn", "tennessee"],
+    "Texas": ["tx,", ", tx", "texas", "addison", "fort worth", "dallas"],
+    "Virginia": ["va,", ", va", "virginia"],
+    "Washington": ["wa,", ", wa", "washington"],
+    "Wisconsin": ["wi,", ", wi", "wisconsin"],
+  };
   const schools = US_SCHOOLS.filter((s) => {
     if (stateFilter && stateFilter !== "All States") {
       const city = (s.city ?? "").toLowerCase();
-      if (!city.includes(stateFilter.toLowerCase().slice(0, 4))) return false;
+      const keywords = STATE_KEYWORDS[stateFilter] ?? [stateFilter.toLowerCase()];
+      if (!keywords.some((k) => city.includes(k))) return false;
     }
-    if (trainingType === "part141" && !s.modularAtpl) return false;
-    if (trainingType === "university" && !(s.badge ?? "").toLowerCase().includes("university") && !s.name.toLowerCase().includes("university") && !s.name.toLowerCase().includes("riddle") && !s.name.toLowerCase().includes("und")) return false;
+    if (trainingType === "part141" && !s.integratedAtpl && !s.modularAtpl) return false;
+    if (trainingType === "part61" && s.integratedAtpl) return false;
+    if (trainingType === "university" && !(s.badge ?? "").toLowerCase().includes("university") && !s.name.toLowerCase().includes("university") && !s.name.toLowerCase().includes("riddle") && !s.name.toLowerCase().includes("und") && !s.name.toLowerCase().includes("embry")) return false;
     if (financeFilter && s.financeAvailable !== financeFilter) return false;
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
@@ -125,7 +151,7 @@ export default function SchoolsUS() {
         <div className="container">
           {/* Filters */}
           <div className="p-5 rounded-2xl mb-8" style={{ background: surface, border: `1px solid ${border}` }}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
               {/* Search */}
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: muted }} />
@@ -138,6 +164,18 @@ export default function SchoolsUS() {
                   style={{ background: "oklch(0.10 0.07 252)", border: `1px solid ${border}`, color: "white" }}
                 />
               </div>
+
+              {/* State filter */}
+              <select
+                value={stateFilter}
+                onChange={(e) => setStateFilter(e.target.value)}
+                className="px-3 py-2.5 rounded-lg text-sm outline-none appearance-none"
+                style={{ background: "oklch(0.10 0.07 252)", border: `1px solid ${border}`, color: stateFilter && stateFilter !== "All States" ? "white" : muted }}
+              >
+                {US_STATES.map((s) => (
+                  <option key={s} value={s === "All States" ? "" : s}>{s}</option>
+                ))}
+              </select>
 
               {/* Training type */}
               <select

@@ -62,12 +62,12 @@ export default function HomeUS() {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
                 <Link
-                  href="/quiz"
+                  href="/us/roadmap"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-base text-white no-underline transition-all hover:scale-[1.02]"
                   style={{ background: ctaGradient, boxShadow: "0 0 30px oklch(0.72 0.18 65 / 0.3)" }}
                 >
                   <Zap className="w-5 h-5" />
-                  Start free assessment
+                  Get my US roadmap
                 </Link>
                 <Link
                   href="/us/calculator"
@@ -147,7 +147,7 @@ export default function HomeUS() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { stat: "14+", label: "US flight schools listed" },
-              { stat: "3", label: "US-specific tools" },
+              { stat: "4", label: "US-specific tools" },
               { stat: "4", label: "Airline cadet programmes" },
               { stat: "Free", label: "Always, no paywall" },
             ].map((item) => (
@@ -306,8 +306,8 @@ export default function HomeUS() {
                 Everything you need to know about flying in America
               </h2>
             </div>
-            <Link href="/guides" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold no-underline flex-shrink-0" style={{ color: "oklch(0.65 0.18 240)" }}>
-              View all guides <ChevronRight className="w-4 h-4" />
+            <Link href="/us/guides" className="hidden sm:flex items-center gap-1.5 text-sm font-semibold no-underline flex-shrink-0" style={{ color: "oklch(0.65 0.18 240)" }}>
+              View all 13 US guides <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
 
