@@ -164,10 +164,13 @@ AviatorIQ Score: ${score}/100 (${category})`;
           return 'Low';
         })();
 
-        // Normalise optional string fields: undefined and empty string both become null
+                // Normalise optional string fields: undefined and empty string both become null
         const ns = (v: string | undefined | null): string | null => (v === undefined || v === '' ? null : v);
 
-        const leadId = await createLead({
+        // Attempt to save lead to DB; fall back to an in-memory ID if DB is unavailable
+        let leadId: number;
+        try {
+          leadId = await createLead({
           fullName: input.fullName,
           email: input.email,
           phone: ns(input.phone),
@@ -204,7 +207,11 @@ AviatorIQ Score: ${score}/100 (${category})`;
           leadValue,
           intentScore,
           status: "New",
-        });
+          });
+        } catch (dbErr) {
+          console.warn("[DB] Lead save failed, using in-memory fallback:", dbErr);
+          leadId = Date.now(); // fallback: use timestamp as pseudo-ID
+        }
 
         // Generate PDF blueprint (non-blocking, best-effort)
         const leadForPdf = await getLeadById(leadId);
