@@ -17,9 +17,9 @@ const usGuideLinks = [
   { label: "How to Become a Pilot in the USA", href: "/us/guides/how-to-become-a-pilot" },
   { label: "Part 61 vs Part 141", href: "/us/guides/part-61-vs-141" },
   { label: "FAA Medical Requirements", href: "/us/guides/faa-medical-requirements" },
-  { label: "United Aviate Academy", href: "/guides" },
-  { label: "Delta Propel Flight Academy", href: "/guides" },
-  { label: "Southwest Destination 225°", href: "/guides" },
+  { label: "Airline Pilot Salary USA", href: "/us/guides/airline-pilot-salary-usa" },
+  { label: "How to Fund Pilot Training", href: "/us/guides/how-to-fund-pilot-training-usa" },
+  { label: "ATP Certificate Guide", href: "/us/guides/atp-certificate-usa" },
 ];
 
 const ukToolLinks = [
@@ -153,8 +153,8 @@ export default function PublicFooter() {
                 { stat: "Free", label: "Always, no paywall" },
                 { stat: "2026", label: "FAA data up to date" },
               ] : [
-                { stat: "16+", label: "UK & international schools" },
-                { stat: "33+", label: "In-depth training guides" },
+                { stat: "50+", label: "UK & international schools" },
+                { stat: "60+", label: "In-depth training guides" },
                 { stat: "Free", label: "Always, no paywall" },
                 { stat: "2026", label: "Data up to date" },
               ]).map((item) => (

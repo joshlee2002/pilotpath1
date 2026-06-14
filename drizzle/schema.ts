@@ -234,6 +234,23 @@ export const flightDeckShares = mysqlTable("flight_deck_shares", {
 export type FlightDeckShare = typeof flightDeckShares.$inferSelect;
 export type InsertFlightDeckShare = typeof flightDeckShares.$inferInsert;
 
+// ─── Flight Deck Email Captures ───────────────────────────────────────────────
+// Captures email from users after they see their Flight Deck result.
+// Separate from flightDeckShares so we can track conversion independently.
+export const flightDeckEmailCaptures = mysqlTable("flight_deck_email_captures", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull(),
+  name: varchar("name", { length: 200 }),
+  phase: varchar("phase", { length: 50 }),            // Flight Ready | Development | Exploration
+  score: int("score"),
+  biggestBarrier: varchar("biggestBarrier", { length: 100 }),
+  consentToContact: boolean("consentToContact").default(false).notNull(),
+  source: varchar("source", { length: 100 }).default("flight_deck_results"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+export type FlightDeckEmailCapture = typeof flightDeckEmailCaptures.$inferSelect;
+export type InsertFlightDeckEmailCapture = typeof flightDeckEmailCaptures.$inferInsert;
+
 // ─── Calculator Sessions ──────────────────────────────────────────────────────
 export const calcSessions = mysqlTable("calc_sessions", {
   id: int("id").autoincrement().primaryKey(),
@@ -247,3 +264,24 @@ export const calcSessions = mysqlTable("calc_sessions", {
 });
 export type CalcSession = typeof calcSessions.$inferSelect;
 export type InsertCalcSession = typeof calcSessions.$inferInsert;
+
+// ─── School Subscription Tiers ────────────────────────────────────────────────
+// Tracks which schools have a paid partnership and at what tier.
+// Stripe integration can populate stripeCustomerId and stripeSubscriptionId.
+export const schoolSubscriptions = mysqlTable("school_subscriptions", {
+  id: int("id").autoincrement().primaryKey(),
+  schoolId: int("schoolId").notNull().unique(),
+  tier: mysqlEnum("tier", ["basic", "featured", "premium"]).default("basic").notNull(),
+  status: mysqlEnum("status", ["active", "trialing", "past_due", "cancelled", "pending"]).default("pending").notNull(),
+  stripeCustomerId: varchar("stripeCustomerId", { length: 255 }),
+  stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 255 }),
+  leadCreditsUsed: int("leadCreditsUsed").default(0).notNull(),
+  leadCreditsLimit: int("leadCreditsLimit").default(0).notNull(), // 0 = unlimited for premium
+  billingEmail: varchar("billingEmail", { length: 320 }),
+  activatedAt: timestamp("activatedAt"),
+  expiresAt: timestamp("expiresAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type SchoolSubscription = typeof schoolSubscriptions.$inferSelect;
+export type InsertSchoolSubscription = typeof schoolSubscriptions.$inferInsert;

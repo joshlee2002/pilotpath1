@@ -35,7 +35,7 @@ import {
 import { scoreLead } from "./scoring";
 import { generatePilotBlueprint } from "./pdfReport";
 import { scoreLicenceQuiz } from "./licenceQuizScoring";
-import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail, createFinanceInterest, createFlightDeckShare, getFlightDeckShare, createCalcSession } from "./db";
+import { createLicenceQuizLead, getLicenceQuizStats, updateLicenceQuizEmail, createFinanceInterest, createFlightDeckShare, getFlightDeckShare, createCalcSession, createFlightDeckEmailCapture } from "./db";
 import { nanoid } from "nanoid";
 
 // ─── Admin guard ──────────────────────────────────────────────────────────────
@@ -718,6 +718,36 @@ Use honest, direct language. If their barrier is funding, say so clearly and giv
         if (!resultJson) throw new TRPCError({ code: "NOT_FOUND", message: "Share not found" });
         return { resultJson };
       }),
+    captureEmail: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        name: z.string().optional(),
+        phase: z.string().optional(),
+        score: z.number().int().optional(),
+        biggestBarrier: z.string().optional(),
+        consentToContact: z.boolean(),
+      }))
+      .mutation(async ({ input }) => {
+        const id = await createFlightDeckEmailCapture({
+          email: input.email,
+          name: input.name,
+          phase: input.phase,
+          score: input.score,
+          biggestBarrier: input.biggestBarrier,
+          consentToContact: input.consentToContact,
+          source: 'flight_deck_results',
+        });
+        // Notify owner of new Flight Deck email capture
+        try {
+          await notifyOwner({
+            title: `✈️ New Flight Deck Email Captured`,
+            content: `Name: ${input.name ?? 'Unknown'}\nEmail: ${input.email}\nPhase: ${input.phase ?? 'N/A'}\nScore: ${input.score ?? 'N/A'}\nBiggest Barrier: ${input.biggestBarrier ?? 'N/A'}`,
+          });
+        } catch (e) {
+          // Non-fatal
+        }
+        return { ok: true, id };
+      }),
   }),
   // ─── Analytics (admin only) ───────────────────────────────────────────────
   platform: router({
@@ -732,6 +762,31 @@ Use honest, direct language. If their barrier is funding, say so clearly and giv
     launchStats: adminProcedure.query(async () => {
       return getLaunchStats();
     }),
+  }),
+  // ─── Guide Email Subscribe ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  guides: router({
+    subscribe: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        source: z.string().optional(), // which guide page they subscribed from
+      }))
+      .mutation(async ({ input }) => {
+        // Save as a flight deck email capture with source=guide_subscribe
+        await createFlightDeckEmailCapture({
+          email: input.email,
+          consentToContact: true,
+          source: input.source ?? 'guide_subscribe',
+        });
+        try {
+          await notifyOwner({
+            title: '📚 New Guide Email Subscriber',
+            content: `Email: ${input.email}\nSource: ${input.source ?? 'guide_subscribe'}`,
+          });
+        } catch (e) {
+          // Non-fatal
+        }
+        return { ok: true };
+      }),
   }),
   calculator: router({
     saveSession: publicProcedure

@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Link2,
   CheckCircle2,
+  Mail,
 } from "lucide-react";
 
 // ─── Score ring ───────────────────────────────────────────────────────────────
@@ -45,6 +46,100 @@ function ScoreRing({ score, phase }: { score: number; phase: string }) {
         {phaseLabel}
       </div>
       <p className="text-white/30 text-xs mt-1.5">Flight Potential Score</p>
+    </div>
+  );
+}
+
+// ─── Email capture card ───────────────────────────────────────────────────────
+function EmailCaptureCard({ result }: { result: FlightDeckResult }) {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const captureEmail = trpc.flightDeck.captureEmail.useMutation({
+    onSuccess: () => {
+      setSubmitted(true);
+      toast.success("We'll be in touch with your personalised next steps!");
+    },
+    onError: () => {
+      toast.error("Something went wrong. Please try again.");
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !consent) return;
+    captureEmail.mutate({
+      email,
+      name: name || undefined,
+      phase: result.phase,
+      score: result.score,
+      biggestBarrier: result.biggestBarrier,
+      consentToContact: consent,
+    });
+  };
+
+  if (submitted) {
+    return (
+      <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-6 text-center">
+        <CheckCircle2 className="w-8 h-8 text-green-400 mx-auto mb-3" />
+        <p className="font-display font-bold text-white text-base mb-1">You're on the list</p>
+        <p className="text-white/60 text-sm">We'll send your personalised pilot roadmap and next steps shortly.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl border border-white/15 bg-white/5 p-6">
+      <div className="flex items-center gap-2 mb-1">
+        <Mail className="w-4 h-4 text-[var(--color-gold)] shrink-0" />
+        <p className="text-xs uppercase tracking-wider font-semibold text-white/50">Save your result</p>
+      </div>
+      <p className="font-display font-bold text-white text-base mb-1">Get your pilot roadmap by email</p>
+      <p className="text-white/55 text-sm mb-4 leading-relaxed">
+        We'll send you a personalised action plan based on your score and biggest barrier — completely free.
+      </p>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <input
+          type="text"
+          placeholder="Your first name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/15 text-white placeholder-white/30 text-sm focus:outline-none focus:border-[var(--color-gold)]/50 transition-colors"
+        />
+        <input
+          type="email"
+          placeholder="Your email address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-3 rounded-xl bg-white/8 border border-white/15 text-white placeholder-white/30 text-sm focus:outline-none focus:border-[var(--color-gold)]/50 transition-colors"
+        />
+        <label className="flex items-start gap-2.5 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-0.5 w-4 h-4 rounded accent-[var(--color-gold)] shrink-0"
+          />
+          <span className="text-white/40 text-xs leading-relaxed">
+            I agree to receive my pilot roadmap and occasional guidance emails from AviatorIQ. No spam, unsubscribe anytime.
+          </span>
+        </label>
+        <button
+          type="submit"
+          disabled={!email || !consent || captureEmail.isPending}
+          className="w-full py-3 rounded-xl font-bold text-sm text-[var(--color-navy)] transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          style={{ background: "linear-gradient(135deg, var(--color-gold), oklch(0.65 0.2 50))" }}
+        >
+          {captureEmail.isPending ? (
+            <><div className="w-4 h-4 border-2 border-[var(--color-navy)] border-t-transparent rounded-full animate-spin" /> Sending…</>
+          ) : (
+            <>Send my roadmap <ArrowRight className="w-4 h-4" /></>
+          )}
+        </button>
+      </form>
     </div>
   );
 }
@@ -174,10 +269,13 @@ export default function FlightDeckResults() {
           <p className="text-white font-semibold text-base leading-relaxed">{result.nextAction}</p>
         </div>
 
+        {/* ── Email capture ── */}
+        <EmailCaptureCard result={result} />
+
         {/* ── Main CTA ── */}
         <div className="rounded-2xl overflow-hidden">
           <div className="bg-[var(--color-gold)] px-6 pt-6 pb-5 text-center">
-            <p className="text-[var(--color-navy)]/60 text-xs uppercase tracking-widest font-semibold mb-2">Your next step</p>
+            <p className="text-[var(--color-navy)]/60 text-xs uppercase tracking-widest font-semibold mb-2">Go deeper</p>
             <h2 className="text-xl font-display font-bold text-[var(--color-navy)] mb-2">
               Get Your Full Pilot Blueprint
             </h2>

@@ -518,7 +518,7 @@ export async function getLicenceQuizStats(): Promise<Record<string, { total: num
 }
 
 // ─── Finance Interest helpers ─────────────────────────────────────────────────
-import { financeInterests, flightDeckShares } from "../drizzle/schema";
+import { financeInterests, flightDeckShares, flightDeckEmailCaptures, schoolSubscriptions, InsertFlightDeckEmailCapture, InsertSchoolSubscription } from "../drizzle/schema";
 
 export async function createFinanceInterest(data: {
   name: string;
@@ -559,6 +559,54 @@ export async function getFlightDeckShare(shareId: string): Promise<string | null
   if (!db) return null;
   const rows = await db.select().from(flightDeckShares).where(eq(flightDeckShares.shareId, shareId)).limit(1);
   return rows[0]?.resultJson ?? null;
+}
+
+// ─── Flight Deck Email Captures ─────────────────────────────────────────────
+export async function createFlightDeckEmailCapture(data: {
+  email: string;
+  name?: string;
+  phase?: string;
+  score?: number;
+  biggestBarrier?: string;
+  consentToContact: boolean;
+  source?: string;
+}): Promise<number | null> {
+  const db = await getDb();
+  if (!db) return null;
+  try {
+    const result = await db.insert(flightDeckEmailCaptures).values({
+      email: data.email,
+      name: data.name ?? null,
+      phase: data.phase ?? null,
+      score: data.score ?? null,
+      biggestBarrier: data.biggestBarrier ?? null,
+      consentToContact: data.consentToContact,
+      source: data.source ?? 'flight_deck_results',
+    });
+    return (result as any)[0]?.insertId ?? null;
+  } catch (e) {
+    console.error('[DB] createFlightDeckEmailCapture failed:', e);
+    return null;
+  }
+}
+
+// ─── School Subscriptions ─────────────────────────────────────────────────────
+export async function getSchoolSubscription(schoolId: number) {
+  const db = await getDb();
+  if (!db) return null;
+  const rows = await db.select().from(schoolSubscriptions).where(eq(schoolSubscriptions.schoolId, schoolId)).limit(1);
+  return rows[0] ?? null;
+}
+
+export async function upsertSchoolSubscription(data: Omit<InsertSchoolSubscription, 'id' | 'createdAt' | 'updatedAt'>) {
+  const db = await getDb();
+  if (!db) return;
+  const existing = await getSchoolSubscription(data.schoolId);
+  if (existing) {
+    await db.update(schoolSubscriptions).set({ ...data }).where(eq(schoolSubscriptions.schoolId, data.schoolId));
+  } else {
+    await db.insert(schoolSubscriptions).values(data);
+  }
 }
 
 // ─── Calculator Sessions ──────────────────────────────────────────────────────

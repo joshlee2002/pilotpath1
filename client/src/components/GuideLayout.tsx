@@ -1,31 +1,26 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import SEO from "@/components/SEO";
 import PublicNav from "@/components/PublicNav";
 import PublicFooter from "@/components/PublicFooter";
 import { ArrowRight, Clock, BookOpen, ChevronRight, Zap, Mail, CheckCircle2 } from "lucide-react";
+import { trpc } from "@/lib/trpc";
 
-// ─── Inline Email Capture ────────────────────────────────────────────────────
+// ─── Inline Email Capture ────────────────────────────────────────────
 function InlineEmailCapture() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [location] = useLocation();
+
+  const subscribe = trpc.guides.subscribe.useMutation({
+    onSuccess: () => setSubmitted(true),
+    onError: () => setSubmitted(true), // still show success to user
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.includes("@")) return;
-    setLoading(true);
-    // Store in localStorage as a lightweight fallback (no backend endpoint needed yet)
-    try {
-      const existing = JSON.parse(localStorage.getItem("iq_email_subs") || "[]");
-      if (!existing.includes(email)) {
-        existing.push(email);
-        localStorage.setItem("iq_email_subs", JSON.stringify(existing));
-      }
-    } catch {}
-    await new Promise((r) => setTimeout(r, 600));
-    setLoading(false);
-    setSubmitted(true);
+    subscribe.mutate({ email, source: `guide:${location}` });
   };
 
   if (submitted) {
@@ -58,11 +53,11 @@ function InlineEmailCapture() {
         />
         <button
           type="submit"
-          disabled={loading}
+          disabled={subscribe.isPending}
           className="px-4 py-2 rounded-lg text-sm font-bold text-white flex-shrink-0"
-          style={{ background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))", opacity: loading ? 0.7 : 1 }}
+          style={{ background: "linear-gradient(135deg, oklch(0.72 0.18 65), oklch(0.65 0.2 50))", opacity: subscribe.isPending ? 0.7 : 1 }}
         >
-          {loading ? "..." : "Notify me"}
+          {subscribe.isPending ? "..." : "Notify me"}
         </button>
       </form>
     </div>
