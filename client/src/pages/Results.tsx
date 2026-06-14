@@ -141,7 +141,19 @@ export default function Results() {
   const [selectedSchoolIds, setSelectedSchoolIds] = useState<number[]>([]);
   const [introSubmitted, setIntroSubmitted] = useState(false);
 
-  const resultQuery = trpc.leads.getResult.useQuery({ leadId }, { enabled: !!leadId });
+  // Try to load cached result from sessionStorage (set by Quiz.tsx on submit)
+  const [cachedResult] = useState<typeof resultQuery.data | null>(() => {
+    try {
+      const raw = sessionStorage.getItem(`quiz_result_${leadId}`);
+      return raw ? JSON.parse(raw) : null;
+    } catch { return null; }
+  });
+
+  const resultQuery = trpc.leads.getResult.useQuery(
+    { leadId },
+    // Skip DB fetch if we already have the result from sessionStorage
+    { enabled: !!leadId && !cachedResult }
+  );
   const pdfQuery = trpc.leads.getPdfUrl.useQuery({ leadId }, { enabled: !!leadId, refetchInterval: (q) => (!q.state.data?.pdfUrl ? 5000 : false) });
   const roadmapMutation = trpc.leads.generateRoadmap.useMutation({
     onSuccess: (data) => {
@@ -163,20 +175,23 @@ export default function Results() {
     onError: () => toast.error("Something went wrong. Please try again."),
   });
 
+  // Use cachedResult (from sessionStorage) OR the DB query result
+  const activeResult = resultQuery.data ?? cachedResult;
+
   useEffect(() => {
-    if (resultQuery.data && !roadmap && !roadmapMutation.isPending && !roadmapMutation.isSuccess) {
-      const cached = resultQuery.data.lead.aiRoadmap;
+    if (activeResult && !roadmap && !roadmapMutation.isPending && !roadmapMutation.isSuccess) {
+      const cached = (activeResult.lead as any).aiRoadmap;
       if (cached) {
         try { setRoadmap(JSON.parse(cached)); } catch { roadmapMutation.mutate({ leadId }); }
       } else {
         roadmapMutation.mutate({ leadId });
       }
     }
-  }, [resultQuery.data]);
+  }, [activeResult]);
 
   useEffect(() => {
-    if (resultQuery.data) Analytics.quizCompleted();
-  }, [resultQuery.data]);
+    if (activeResult) Analytics.quizCompleted();
+  }, [activeResult]);
   useEffect(() => {
     document.title = "Your AviatorIQ Pilot Blueprint – Results";
   }, []);
@@ -201,7 +216,7 @@ export default function Results() {
     }
   };
 
-  if (resultQuery.isLoading || !resultQuery.data) {
+  if ((resultQuery.isLoading && !cachedResult) || !activeResult) {
     return (
       <div className="min-h-screen flex flex-col">
         <PublicNav />
@@ -217,14 +232,14 @@ export default function Results() {
     );
   }
 
-  const { lead, matchedSchools } = resultQuery.data;
-  const dimensions = (resultQuery.data as unknown as { dimensions?: Dimensions }).dimensions;
-  const labels = (resultQuery.data as unknown as { labels?: DimensionLabels }).labels;
-  const nextAction = (resultQuery.data as unknown as { nextAction?: string }).nextAction;
-  const biggestRisk = (resultQuery.data as unknown as { biggestRisk?: string }).biggestRisk;
-  const estimatedCostRange = (resultQuery.data as unknown as { estimatedCostRange?: string }).estimatedCostRange;
-  const estimatedTimeline = (resultQuery.data as unknown as { estimatedTimeline?: string }).estimatedTimeline;
-  const recommendedRoute = (resultQuery.data as unknown as { recommendedRoute?: string }).recommendedRoute;
+  const { lead, matchedSchools } = activeResult;
+  const dimensions = (activeResult as unknown as { dimensions?: Dimensions }).dimensions;
+  const labels = (activeResult as unknown as { labels?: DimensionLabels }).labels;
+  const nextAction = (activeResult as unknown as { nextAction?: string }).nextAction;
+  const biggestRisk = (activeResult as unknown as { biggestRisk?: string }).biggestRisk;
+  const estimatedCostRange = (activeResult as unknown as { estimatedCostRange?: string }).estimatedCostRange;
+  const estimatedTimeline = (activeResult as unknown as { estimatedTimeline?: string }).estimatedTimeline;
+  const recommendedRoute = (activeResult as unknown as { recommendedRoute?: string }).recommendedRoute;
 
   const isGenerating = roadmapMutation.isPending || (!roadmap && !roadmapError);
 

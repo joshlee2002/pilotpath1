@@ -588,6 +588,32 @@ export default function Quiz() {
       Analytics.quizCompleted();
       Analytics.leadSubmitted(result.score, result.category);
       if (result.category === "Hot") Analytics.hotLeadGenerated(data.country);
+      // Cache full result so Results page can render without a DB round-trip
+      try {
+        sessionStorage.setItem(`quiz_result_${result.leadId}`, JSON.stringify({
+          ...result,
+          lead: {
+            id: result.leadId,
+            fullName: data.fullName,
+            email: data.email,
+            country: data.country,
+            city: data.city || null,
+            pilotGoal: data.pilotGoal || null,
+            budgetRange: data.budgetRange || null,
+            startTimeframe: data.startTimeframe || null,
+            preferredRoute: data.preferredRoute || null,
+            fundingMethod: data.fundingMethod || null,
+            biggestConcern: data.biggestConcern || null,
+            flyingExperience: data.flyingExperience || null,
+            class1Medical: data.class1Medical || null,
+            age: data.age ? parseInt(String(data.age)) : null,
+            leadScore: result.score,
+            leadCategory: result.category,
+            pdfKey: null,
+            aiSummary: null,
+          },
+        }));
+      } catch (_e) { /* sessionStorage unavailable */ }
       navigate(`/results/${result.leadId}`);
     },
   });
